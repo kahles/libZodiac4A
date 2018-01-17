@@ -1,8 +1,7 @@
 # libZodiac
 framework providing functionality for building a lunar calendar
 
-### Motivation
-While writing [Mondtag](https://github.com/kahles/mondtag), I discovered that testing and experimenting with this code sucks in AndroidStudio with Android emulator - so I decided to outsource this into an external library ...
+This library was created while working on [Mondtag](https://github.com/kahles/mondtag), a lunar calendar for Android.
 
 ### Requirements
 
@@ -15,6 +14,8 @@ A [gradle](https://gradle.org) build script is included to manage dependencies a
 #### libnova
 Astronomical calculations are done with the help of [libnova](http://libnova.sourceforge.net/) by Liam Girdwood. Because the library is written in C, the
 portation [novaforjava v0.15.0.0](http://novaforjava.sourceforge.net/) by Richard van Nieuwenhoven is used.
+##### NOTE:
+Since novaforjava actually has a bug that leads to wrong lunar visibility values when calculating data using multiple threads and my patch is not integrated in the original version yet, I made a [fork of novaforjava](https://sourceforge.net/u/skahle/novaforjava/ci/multi-thread-bug/tree/).
 
 #### JUnit 4.12
 I'm trying to provide a reasonable test coverage using [JUnit](http://junit.org).
