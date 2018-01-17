@@ -5,7 +5,7 @@ import de.kah2.libZodiac.interpretation.Interpreter;
 import de.kah2.libZodiac.interpretation.StubInterpreter;
 import org.junit.Test;
 
-import java.time.LocalDate;
+import org.threeten.bp.LocalDate;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;

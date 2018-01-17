@@ -4,9 +4,9 @@ import de.kah2.libZodiac.interpretation.Interpreter;
 import de.kah2.libZodiac.planetary.Position;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.threeten.bp.ZoneId;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
+import org.threeten.bp.LocalDate;
 import java.util.ConcurrentModificationException;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;

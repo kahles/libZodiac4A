@@ -2,7 +2,7 @@ package de.kah2.libZodiac;
 
 import org.junit.Test;
 
-import java.time.LocalDate;
+import org.threeten.bp.LocalDate;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;

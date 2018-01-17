@@ -1,6 +1,6 @@
 package de.kah2.libZodiac.example;
 
-import java.time.LocalDate;
+import org.threeten.bp.LocalDate;
 
 import de.kah2.libZodiac.*;
 

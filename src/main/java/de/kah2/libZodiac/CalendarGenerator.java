@@ -6,8 +6,15 @@ import de.kah2.libZodiac.planetary.PlanetaryDayData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.LocalDate;
-import java.util.*;
+import org.threeten.bp.LocalDate;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.ConcurrentModificationException;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
@@ -394,6 +401,9 @@ class CalendarGenerator implements ProgressListener {
     private void startDayCreationThread(final LocalDate date) {
 
         final CompletableFuture<Day> result = CompletableFuture.supplyAsync(() -> {
+
+            android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
+
             CalendarGenerator.this.log.trace(" ++++++++ Starting calculation for " + date);
 
             final Day day = CalendarGenerator.this.createCalculatedDay(date);

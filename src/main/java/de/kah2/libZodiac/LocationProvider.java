@@ -1,6 +1,6 @@
 package de.kah2.libZodiac;
 
-import java.time.ZoneId;
+import org.threeten.bp.ZoneId;
 
 import de.kah2.libZodiac.planetary.Position;
 

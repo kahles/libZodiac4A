@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.LocalDate;
+import org.threeten.bp.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 

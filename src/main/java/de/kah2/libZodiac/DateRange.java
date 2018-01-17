@@ -1,7 +1,7 @@
 package de.kah2.libZodiac;
 
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.temporal.ChronoUnit;
 import java.util.Iterator;
 import java.util.LinkedList;
 

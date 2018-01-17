@@ -1,6 +1,6 @@
 package de.kah2.libZodiac;
 
-import java.time.LocalDate;
+import org.threeten.bp.LocalDate;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;

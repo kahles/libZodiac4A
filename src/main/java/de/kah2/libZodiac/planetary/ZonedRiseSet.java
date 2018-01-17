@@ -1,8 +1,8 @@
 package de.kah2.libZodiac.planetary;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.ZoneId;
+import org.threeten.bp.ZonedDateTime;
 
 import de.kah2.libZodiac.planetary.PlanetaryDayData;
 import net.sourceforge.novaforjava.JulianDay;

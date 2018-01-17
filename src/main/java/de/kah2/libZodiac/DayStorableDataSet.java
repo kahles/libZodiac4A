@@ -1,6 +1,6 @@
 package de.kah2.libZodiac;
 
-import java.time.LocalDate;
+import org.threeten.bp.LocalDate;
 
 import de.kah2.libZodiac.planetary.PlanetaryDayData;
 import de.kah2.libZodiac.planetary.ZonedRiseSet;

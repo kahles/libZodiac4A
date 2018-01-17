@@ -1,8 +1,8 @@
 package de.kah2.libZodiac;
 
-import java.time.Duration;
-import java.time.Instant;
-import java.time.LocalDate;
+import org.threeten.bp.Duration;
+import org.threeten.bp.Instant;
+import org.threeten.bp.LocalDate;
 import de.kah2.libZodiac.Calendar.Scope;
 
 /**
