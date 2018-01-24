@@ -33,6 +33,9 @@ class ProgressManager {
 	void reset() {
 		this.daysToGenerate = 0;
 		this.daysGenerated = 0;
+		this.percentGenerated = 0;
+
+		this.notifyStateChanged(null);
 	}
 
 	/** Estimates in how many directions data must be extended, when Scope is CYCLE. */
