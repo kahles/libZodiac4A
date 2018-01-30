@@ -1,174 +1,58 @@
 package de.kah2.libZodiac.interpretation;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
+import com.sun.istack.internal.NotNull;
 import de.kah2.libZodiac.Day;
 import de.kah2.libZodiac.planetary.PlanetaryDayData;
+import de.kah2.libZodiac.zodiac.ZodiacDayData;
 
 /**
- * This is the base class for all Interpreters, which contains the logic to
- * interpret zodiac data.<br/>
- * To write an own interpreter just extend this class and override
- * {@link #doInterpretations()} - see documentation of this method.<br/>
- * <strong>Note:</strong> To make the logic of adding activities easier,
- * {@link #addBad(String)} (and {@link #addGood(String)}) only adds activities,
- * when they were not already added via {@link #addWorst(String)} (or
- * {@link #addBest(String)}). If an activity is added via
- * {@link #addBest(String)} and was already added via {@link #addGood(String)}
- * it will be removed from the "good-bucket". (Same with
- * {@link #addWorst(String)} and {@link #addBad(String)}).
- * 
- * @author kahles
+ * <p>This is the base class for all Interpreters, which contains the logic to interpret zodiac data.</p>
+ * <p>To write an own interpreter just extend this class and override {@link #getQuality()}.</p>
  */
-// TODO 51 restructure this to improve usability - make this activity-oriented?
-public abstract class Interpreter {
+public abstract class Interpreter extends Translatable {
 
-	private final LinkedHashSet<String> best, good, bad, worst;
+	/** The possible quality a Day can have for a selected interpretation. */
+	public enum Quality {
+		BEST, GOOD, NEUTRAL, BAD, WORST
+	}
 
-	private final Day today;
+	private Day today;
 
-	private boolean calculated = false;
+	private Quality quality;
 
 	/**
-	 * Constructs the interpreter.
-	 * 
-	 * @param dayToInterpret
-	 *            The {@link PlanetaryDayData} object on which the
-	 *            interpretations are based.
+	 * Sets the day to interpret and also resets interpretation data to ensure correctness.
 	 */
-	public Interpreter(final Day dayToInterpret) {
+	public final void setDay(final Day dayToInterpret) {
 		this.today = dayToInterpret;
-		this.best = new LinkedHashSet<>();
-		this.good = new LinkedHashSet<>();
-		this.bad = new LinkedHashSet<>();
-		this.worst = new LinkedHashSet<>();
+		this.quality = null;
 	}
 
 	/**
-	 * Implement this and add interpretation code here.<br/>
-	 * E.g.: <br/>
-	 * <code>
-	 * if ({@link #getToday()}.getZodiacData.getSomeValue == ...)
-	 *		{@link #addBest(String)}
-	 * </code>
+	 * Implement this method to do some interpretation and return the resulting {@link Quality} for this day. Use {@link #getToday()} to
+	 * access the information available about the actual day. There are also shortcuts
 	 */
-	public abstract void doInterpretations();
+	@NotNull
+	protected abstract Quality doInterpretation();
 
-	/**
-	 * Runs {@link #doInterpretations()} if not done so far and if ALL zodiac
-	 * data is calculated including lunar PHASE and DAY-counts.
-	 * TODO 30 improve calculation check?
-	 */
-	public final void run() {
-		if (!this.isCalculated() && this.today.getPlanetaryData().isComplete()) {
-			this.doInterpretations();
-			this.calculated = true;
-		}
-	}
-
-	/**
-	 * @return true, if interpretations are complete.
-	 */
-	public final boolean isCalculated() {
-		return this.calculated;
-	}
-
-	/**
-	 * Implementations of this class should use this to add very good activities
-	 * for the given DAY.
-	 * 
-	 * @param key
-	 *            a string key
-	 */
-	protected final void addBest(final String key) {
-		if (this.good.contains(key)) {
-			this.good.remove(key);
-		}
-		this.best.add(key);
-	}
-
-	/**
-	 * Implementations of this class should use this to add good activities for
-	 * the given DAY.
-	 * 
-	 * @param key
-	 *            a string key
-	 */
-	protected final void addGood(final String key) {
-		if (!this.best.contains(key)) {
-			this.good.add(key);
-		}
-	}
-
-	/**
-	 * Implementations of this class should use this to add bad activities for
-	 * the given DAY.
-	 * 
-	 * @param key
-	 *            a string key
-	 */
-	protected final void addBad(final String key) {
-		if (!this.worst.contains(key)) {
-			this.bad.add(key);
-		}
-	}
-
-	/**
-	 * Implementations of this class should use this to add very bad activities
-	 * for the given DAY.
-	 * 
-	 * @param key
-	 *            a string key
-	 */
-	protected final void addWorst(final String key) {
-		if (this.bad.contains(key)) {
-			this.bad.remove(key);
-		}
-		this.worst.add(key);
-	}
-
-	/**
-	 * @return A copy of the internal list containing the string keys of the
-	 *         best activities for the given DAY.
-	 */
-	@SuppressWarnings("unchecked")
-	public final Set<String> getBest() {
-		return (Set<String>) this.best.clone();
-	}
-
-	/**
-	 * @return A copy of the internal list containing the string keys of the
-	 *         good activities for the given DAY.
-	 */
-	@SuppressWarnings("unchecked")
-	public final Set<String> getGood() {
-		return (Set<String>) this.good.clone();
-	}
-
-	/**
-	 * @return A copy of the internal list containing the string keys of the bad
-	 *         activities for the given DAY.
-	 */
-	@SuppressWarnings("unchecked")
-	public final Set<String> getBad() {
-		return (Set<String>) this.bad.clone();
-	}
-
-	/**
-	 * @return A copy of the internal list containing the string keys of the
-	 *         worst activities for the given DAY.
-	 */
-	@SuppressWarnings("unchecked")
-	public final Set<String> getWorst() {
-		return (Set<String>) this.worst.clone();
-	}
-
-	/**
-	 * @return The {@link PlanetaryDayData} object on which the interpretations
-	 *         are based.
-	 */
-	public final Day getToday() {
+	/** @return The actual {@link Day} to interpret. */
+	protected final Day getToday() {
 		return this.today;
+	}
+
+	/** A shortcut to access {@link ZodiacDayData} of actual Day available through {@link #getToday()}. */
+	protected final ZodiacDayData getZodiac() { return this.today.getZodiacData(); }
+
+	/** A shortcut to access {@link PlanetaryDayData} of actual Day available through {@link #getToday()}. */
+	protected final PlanetaryDayData getPlanetary() { return this.today.getPlanetaryData(); }
+
+	/** Returns the interpreted {@link Quality} of this day. */
+	public final Quality getQuality() {
+
+		if (this.quality == null) {
+			this.quality = this.doInterpretation();
+		}
+
+		return this.quality;
 	}
 }

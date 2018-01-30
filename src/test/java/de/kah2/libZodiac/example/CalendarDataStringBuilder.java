@@ -1,19 +1,16 @@
 package de.kah2.libZodiac.example;
 
-import java.time.LocalDate;
-
 import de.kah2.libZodiac.Calendar;
 import de.kah2.libZodiac.Day;
-import de.kah2.libZodiac.interpretation.InterpretationDayData;
 import de.kah2.libZodiac.interpretation.Interpreter;
 import de.kah2.libZodiac.planetary.PlanetaryDayData;
 import de.kah2.libZodiac.zodiac.ZodiacDayData;
 
+import java.time.LocalDate;
+
 /**
  * This is a simple class for testing purposes to transform
  * {@link Calendar}-data to a {@link String} using a {@link StringBuilder}.
- * 
- * @author kahles
  */
 public class CalendarDataStringBuilder {
 
@@ -40,14 +37,14 @@ public class CalendarDataStringBuilder {
 	public void appendAllDayData(final Day day) {
 		final boolean isToday = day.getDate().isEqual(LocalDate.now());
 		if (isToday) {
-			this.appendLine("********** TODAY **********");
+			this.appendLine("************************** TODAY **************************");
 		}
-		this.appendLine("Date:\t\t\t" + day.getDate().getDayOfWeek() + ", " + day.getDate());
+		this.appendLine("Date:\t\t\t\t\t" + day.getDate().getDayOfWeek() + ", " + day.getDate());
 		this.appendPlanetaryData(day.getPlanetaryData());
 		this.appendZodiacData(day.getZodiacData());
-		this.appendInterpretedDayData(day.getInterpretationData());
+		this.appendInterpretation(day.getInterpreter());
 		if (isToday) {
-			this.appendLine("***************************");
+			this.appendLine("***********************************************************");
 		}
 		this.builder.append("\n");
 	}
@@ -55,15 +52,15 @@ public class CalendarDataStringBuilder {
 	/**
 	 * Adds planetary data to the result.
 	 */
-	public void appendPlanetaryData(final PlanetaryDayData data) {
-		this.appendLine("Moon is visible:\t" + Math.round(data.getLunarVisibility() * 1000) / 10.0 + "%");
-		this.appendLine("Lunar rise/set:\t\t" + data.getLunarRiseSet());
-		this.appendLine("Solar rise/set:\t\t" + data.getSolarRiseSet());
+	private void appendPlanetaryData(final PlanetaryDayData data) {
+		this.appendLine("Moon is visible:\t\t" + Math.round(data.getLunarVisibility() * 1000) / 10.0 + "%");
+		this.appendLine("Lunar rise/set:\t\t\t" + data.getLunarRiseSet());
+		this.appendLine("Solar rise/set:\t\t\t" + data.getSolarRiseSet());
 
 		if (data.getLunarPhase() == null) {
 			this.appendLine("Lunar PHASE couldn't be calculated.");
 		} else {
-			this.appendLine("Lunar PHASE:\t\t" + data.getLunarPhase());
+			this.appendLine("Lunar PHASE:\t\t\t" + data.getLunarPhase());
 		}
 
 		if (data.getDaysSinceLastMaxPhase() == -1) {
@@ -82,34 +79,36 @@ public class CalendarDataStringBuilder {
 	/**
 	 * Adds zodiac data to the result.
 	 */
-	public void appendZodiacData(final ZodiacDayData data) {
-		this.appendLine("Zodiac Sign:\t\t" + data.getSign());
+	private void appendZodiacData(final ZodiacDayData data) {
+		this.appendLine("Zodiac Sign:\t\t\t" + data.getSign());
 		this.appendLine("Direction in Zodiac:\t" + data.getDirection());
-		this.appendLine("Zodiac element:\t\t" + data.getElement());
-		this.appendLine("\tDay category:\t" + data.getElement().getDayCategory());
-		this.appendLine("\tPlant part:\t" + data.getElement().getPlantPart());
-		this.appendLine("\tFood element:\t" + data.getElement().getFoodElement());
+		this.appendLine("Zodiac element:\t\t\t" + data.getElement());
+		this.appendLine("\tDay category:\t\t" + data.getElement().getDayCategory());
+		this.appendLine("\tPlant part:\t\t\t" + data.getElement().getPlantPart());
+		this.appendLine("\tFood element:\t\t" + data.getElement().getFoodElement());
 	}
 
-	/**
-	 * Adds {@link Interpreter}-data to the result.
-	 */
-	public void appendInterpretedDayData(final InterpretationDayData data) {
-		for (final Interpreter interpreter : data.getInterpreters()) {
-			this.appendLine(this.formatInterpreterData(interpreter));
+	private void appendInterpretation(final Interpreter interpreter) {
+
+		if (interpreter == null) {
+
+			this.appendLine("No interpretation was selected.");
+
+		} else {
+
+			// This is how it is intended to get a Description for an interpretation.
+			this.appendLine("Interpretation:\t" + getSampleI18n( interpreter.getKey() )
+					+ interpreter.getQuality());
 		}
 	}
 
-	private String formatInterpreterData(final Interpreter interpreter) {
+	private String getSampleI18n(String key) {
 
-		String result = interpreter.getClass().getSimpleName() + ":";
-
-		result += "\n\tbest:\t\t" + String.join(", ", interpreter.getBest());
-		result += "\n\tgood:\t\t" + String.join(", ", interpreter.getGood());
-		result += "\n\tbad:\t\t" + String.join(", ", interpreter.getBad());
-		result += "\n\tworst:\t\t" + String.join(", ", interpreter.getWorst());
-
-		return result;
+		if ( key == CalendarExampleSimple.VisibilityInterpreter.class.getName() ) {
+			return "Take a nightly walk: ";
+		} else {
+			return key;
+		}
 	}
 
 	private void appendLine(final String line) {

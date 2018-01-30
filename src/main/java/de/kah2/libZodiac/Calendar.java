@@ -8,10 +8,8 @@ import org.slf4j.LoggerFactory;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ConcurrentModificationException;
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 import java.util.TreeSet;
 
 /**
@@ -35,9 +33,7 @@ public class Calendar implements LocationProvider {
 
 	private CalendarGenerator generator = new CalendarGenerator(this);
 
-	// This is a List of active Interpreter classes - these get inserted when
-	// new Day elements are created
-	private final LinkedHashSet<Class<? extends Interpreter>> activeInterpreterClasses = new LinkedHashSet<>();
+	private Class<? extends Interpreter> interpreterClass;
 
 	/**
 	 * Tells the calendar, how much data is needed / how much overhead to
@@ -311,48 +307,6 @@ public class Calendar implements LocationProvider {
 		}
 	}
 
-	/**
-	 * This must be called to run the {@link Interpreter}s of each DAY.
-	 */
-	public void generateInterpretations() {
-		for (final Day day : this.getAllDays()) {
-			day.getInterpretationData().runInterpreters();
-		}
-	}
-
-	/**
-	 * Adds an {@link Interpreter}. Stores the class locally for new Day objects
-	 * not yet created and inserts an instance to already created days.
-	 * {@link #generateInterpretations()} should be called after this.
-	 */
-	public void addInterpreter(final Class<? extends Interpreter> interpreter) {
-		this.activeInterpreterClasses.add(interpreter);
-
-		for (final Day day : this.getAllDays()) {
-			day.getInterpretationData().addInterpreter(interpreter);
-		}
-	}
-
-	/**
-	 * Removes an {@link Interpreter} from the local list and all created Day
-	 * objects. {@link #generateInterpretations()} should be called after this.
-	 */
-	public void removeInterpreter(final Class<? extends Interpreter> interpreter) {
-		this.activeInterpreterClasses.remove(interpreter);
-		for (final Day day : this.getAllDays()) {
-			day.getInterpretationData().removeInterpreter(interpreter);
-		}
-	}
-
-	/**
-	 * @return A <strong>copy</strong> of the actual list of {@link Interpreter}
-	 *         s to ensure consistency.
-	 */
-	@SuppressWarnings("unchecked")
-	public Set<Class<? extends Interpreter>> getActiveInterpreterClasses() {
-		return (Set<Class<? extends Interpreter>>) this.activeInterpreterClasses.clone();
-	}
-
 	@Override
 	public ZoneId getTimeZoneId() {
 		return this.timeZoneId;
@@ -474,5 +428,29 @@ public class Calendar implements LocationProvider {
 	/** Needed for CalendarStub. */
 	CalendarData getDays() {
 		return days;
+	}
+
+	/** Simple getter for actual selected interpretation. */
+	public Class<? extends Interpreter> getInterpreterClass() {
+		return interpreterClass;
+	}
+
+	/**
+	 * This method is intended to activate an interpretation. You should set an interpreter after generating possibly missing data - if
+	 * data of expected range is missing, a {@link RuntimeException} will be thrown.
+	 */
+	public void setInterpreterClass(Class<? extends Interpreter> interpreterClass) {
+
+		this.interpreterClass = interpreterClass;
+
+		List<Day> days = this.getValidDays();
+
+		if (days == null) {
+			throw new RuntimeException("Tried to set interpreter to an invalid calendar - you should generate missing data first!");
+		}
+
+		for (Day day : days) {
+			day.setInterpreterClass(interpreterClass);
+		}
 	}
 }

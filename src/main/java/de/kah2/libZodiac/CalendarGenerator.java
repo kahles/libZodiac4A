@@ -398,10 +398,6 @@ class CalendarGenerator implements ProgressListener {
 
             final Day day = CalendarGenerator.this.createCalculatedDay(date);
 
-            for (final Class<? extends Interpreter> interpreterClass : CalendarGenerator.this.calendar.getActiveInterpreterClasses()) {
-                day.getInterpretationData().addInterpreter(interpreterClass);
-            }
-
             CalendarGenerator.this.log.trace(" -------- Calculation finished for " + date);
 
             return day;

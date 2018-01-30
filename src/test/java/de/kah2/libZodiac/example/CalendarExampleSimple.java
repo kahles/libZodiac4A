@@ -1,15 +1,16 @@
 package de.kah2.libZodiac.example;
 
-import java.time.LocalDate;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import de.kah2.libZodiac.Calendar;
 import de.kah2.libZodiac.DateRange;
 import de.kah2.libZodiac.Day;
 import de.kah2.libZodiac.TestConstantsAndHelpers;
-import de.kah2.libZodiac.interpretation.GardeningInterpreter;
+import de.kah2.libZodiac.interpretation.Interpreter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import static de.kah2.libZodiac.interpretation.Interpreter.Quality.*;
+
+import java.time.LocalDate;
 
 /**
  * This class shows basic usage of this framework.
@@ -56,11 +57,7 @@ public class CalendarExampleSimple {
 		LOG.info("Generating Calendar for DateRange: " + range);
 		TestConstantsAndHelpers.generateAndWaitFor(calendar);
 
-		/* Now we can chose which Interpreters to use */
-		calendar.addInterpreter(GardeningInterpreter.class);
-
-		/* And let them do their work */
-		calendar.generateInterpretations();
+		calendar.setInterpreterClass(VisibilityInterpreter.class);
 
 		final CalendarDataStringBuilder converter = new CalendarDataStringBuilder();
 
@@ -71,6 +68,29 @@ public class CalendarExampleSimple {
 		}
 
 		LOG.info("Result:\n" + converter.toString());
+	}
+
+	/**
+	 * This is a simple example for an {@link Interpreter}.
+	 */
+	public static class VisibilityInterpreter extends Interpreter {
+
+		@Override
+		protected Quality doInterpretation() {
+			final double lunarVisibility = getToday().getPlanetaryData().getLunarVisibility();
+
+			if (lunarVisibility < .1) {
+				return WORST;
+			} else if (lunarVisibility <.3) {
+				return BAD;
+			} else if (lunarVisibility >.9) {
+				return BEST;
+			} else if (lunarVisibility >.7) {
+				return GOOD;
+			} else {
+				return NEUTRAL;
+			}
+		}
 	}
 
 	public static void main(final String[] args) {

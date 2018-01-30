@@ -1,12 +1,9 @@
 package de.kah2.libZodiac;
 
 import de.kah2.libZodiac.Calendar.Scope;
-import de.kah2.libZodiac.interpretation.Interpreter;
-import de.kah2.libZodiac.interpretation.StubInterpreter;
 import org.junit.Test;
 
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -243,7 +240,6 @@ public class CalendarTest {
 		}
 	}
 
-
 	@Test
 	public void testFixRangeExpected() {
 		final DateRange oldRange = new DateRange(SOME_DATE, SOME_DATE.plusDays(3));
@@ -278,51 +274,5 @@ public class CalendarTest {
 				calendar.getRangeExpected().getEnd().isEqual(oldRange.getEnd()));
 	}
 
-	@Test
-	public void testAddAndRemoveInterpreter() {
 
-		DateRange range = new DateRange(SOME_DATE, SOME_DATE.plusDays(2));
-
-		final Calendar calendar = new CalendarStub(range, Scope.DAY);
-        calendar.importDays( CalendarGeneratorStub.stubDayStorableDataSets(range) );
-
-		assertEquals("Interpreters should be empty when Calendar is initialized", 0,
-				calendar.getActiveInterpreterClasses().size());
-
-		// Interpreters should only be stored once
-		calendar.addInterpreter(StubInterpreter.class);
-		calendar.addInterpreter(StubInterpreter.class);
-		int numberOfInterpretersSet = 1;
-		assertEquals("One Interpreter should be set to Calendar", numberOfInterpretersSet,
-				calendar.getActiveInterpreterClasses().size());
-
-		this.checkInterpreterCount("Interpreters should get inserted to all days", numberOfInterpretersSet,
-				calendar.getAllDays() );
-
-		// extend the Calendar:
-
-		// extend it and check interpreters
-		range = new DateRange(range.getStart().minusDays(1), range.getEnd().plusDays(1));
-		calendar.setRangeExpected(range);
-
-		TestConstantsAndHelpers.generateAndWaitFor(calendar);
-
-		this.checkInterpreterCount("Interpreters should also be set to newly generated days", numberOfInterpretersSet,
-				calendar.getAllDays() );
-
-		calendar.removeInterpreter(StubInterpreter.class);
-		numberOfInterpretersSet = 0;
-		assertEquals("Interpreters should get removed from Calendar", numberOfInterpretersSet,
-				calendar.getActiveInterpreterClasses().size());
-
-		this.checkInterpreterCount("Interpreters should get removed from all days", numberOfInterpretersSet,
-				calendar.getAllDays() );
-	}
-
-	private void checkInterpreterCount(final String message, final int expectedCount, final Iterable<Day> days) {
-		for (final Day day : days) {
-			final Collection<Interpreter> interpreters = day.getInterpretationData().getInterpreters();
-			assertEquals(message, expectedCount, interpreters.size());
-		}
-	}
 }
