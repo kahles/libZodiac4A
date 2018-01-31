@@ -20,7 +20,11 @@ repositories {
 dependencies {
 	compile 'org.slf4j:slf4j-api:1.7.25'
     compile 'org.slf4j:slf4j-simple:1.7.25'
-    compile 'net.sourceforge.novaforjava:novaforjava:0.15.0.0'
-    
+
+    // Removed, because actual version is broken
+    //compile 'net.sourceforge.novaforjava:novaforjava:0.15.0.0'
+    // use my fork: https://sourceforge.net/u/skahle/novaforjava/ci/devel/tree/
+    compile fileTree(dir: '../novaforjava/target', include: ['*.jar'])
+
     testCompile 'junit:junit:4.12'
 }
