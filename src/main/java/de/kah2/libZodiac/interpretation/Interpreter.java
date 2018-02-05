@@ -1,6 +1,5 @@
 package de.kah2.libZodiac.interpretation;
 
-import com.sun.istack.internal.NotNull;
 import de.kah2.libZodiac.Day;
 import de.kah2.libZodiac.planetary.PlanetaryDayData;
 import de.kah2.libZodiac.zodiac.ZodiacDayData;
@@ -32,7 +31,6 @@ public abstract class Interpreter extends Translatable {
 	 * Implement this method to do some interpretation and return the resulting {@link Quality} for this day. Use {@link #getToday()} to
 	 * access the information available about the actual day. There are also shortcuts
 	 */
-	@NotNull
 	protected abstract Quality doInterpretation();
 
 	/** @return The actual {@link Day} to interpret. */
@@ -51,6 +49,10 @@ public abstract class Interpreter extends Translatable {
 
 		if (this.quality == null) {
 			this.quality = this.doInterpretation();
+
+			if (this.quality == null) {
+				throw new RuntimeException("Interpreter may not return null.");
+			}
 		}
 
 		return this.quality;

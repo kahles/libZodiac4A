@@ -8,14 +8,10 @@
  * classes.</li>
  * <li>{@link de.kah2.libZodiac.planetary.PlanetaryDayData} calculates and
  * contains the basic data needed for ...</li>
- * <li>... {@link de.kah2.libZodiac.interpretation.InterpretationDayData} which
- * manages a set of {@link de.kah2.libZodiac.interpretation.Interpreter}s to get
- * interpretations for various purposes.</li>
  * <li>{@link de.kah2.libZodiac.zodiac} contains enums and classes to manage
  * planetary and zodiac data</li>
  * <li>{@link de.kah2.libZodiac.interpretation} contains classes needed for
- * interpreting the raw data through
- * {@link de.kah2.libZodiac.interpretation.InterpretationDayData}.</li>
+ * interpreting the raw data.</li>
  * <li>{@link de.kah2.libZodiac.example} contains examples of how to use this
  * framework.
  * </ul>

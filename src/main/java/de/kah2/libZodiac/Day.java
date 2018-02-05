@@ -6,7 +6,6 @@ import de.kah2.libZodiac.zodiac.ZodiacDayData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.Constructor;
 import java.time.LocalDate;
 
 /**
