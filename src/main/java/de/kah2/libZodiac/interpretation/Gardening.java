@@ -32,8 +32,8 @@ public class Gardening extends Translatable {
         }
     }
 
-    /** Cut grass - Rasen mähen */
-    public static class GrassInterpreter extends Interpreter {
+    /** Mow the lawn - Rasen mähen */
+    public static class MowLawnInterpreter extends Interpreter {
 
         @Override
         protected Quality doInterpretation() {
