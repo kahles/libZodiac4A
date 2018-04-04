@@ -1,11 +1,26 @@
 package de.kah2.libZodiac.interpretation;
 
-// TODO optimize imports
-import static de.kah2.libZodiac.zodiac.ZodiacElement.*;
-import static de.kah2.libZodiac.zodiac.ZodiacSign.*;
-import static de.kah2.libZodiac.zodiac.ZodiacDirection.*;
-import static de.kah2.libZodiac.planetary.LunarPhase.*;
-import static de.kah2.libZodiac.interpretation.Interpreter.Quality.*;
+import static de.kah2.libZodiac.interpretation.Interpreter.Quality.BAD;
+import static de.kah2.libZodiac.interpretation.Interpreter.Quality.BEST;
+import static de.kah2.libZodiac.interpretation.Interpreter.Quality.GOOD;
+import static de.kah2.libZodiac.interpretation.Interpreter.Quality.NEUTRAL;
+import static de.kah2.libZodiac.interpretation.Interpreter.Quality.WORST;
+import static de.kah2.libZodiac.planetary.LunarPhase.DECREASING;
+import static de.kah2.libZodiac.planetary.LunarPhase.FULL_MOON;
+import static de.kah2.libZodiac.planetary.LunarPhase.INCREASING;
+import static de.kah2.libZodiac.planetary.LunarPhase.NEW_MOON;
+import static de.kah2.libZodiac.zodiac.ZodiacDirection.DESCENDING;
+import static de.kah2.libZodiac.zodiac.ZodiacElement.AIR;
+import static de.kah2.libZodiac.zodiac.ZodiacElement.EARTH;
+import static de.kah2.libZodiac.zodiac.ZodiacElement.FIRE;
+import static de.kah2.libZodiac.zodiac.ZodiacElement.WATER;
+import static de.kah2.libZodiac.zodiac.ZodiacSign.AQUARIUS;
+import static de.kah2.libZodiac.zodiac.ZodiacSign.CANCER;
+import static de.kah2.libZodiac.zodiac.ZodiacSign.CAPRICORN;
+import static de.kah2.libZodiac.zodiac.ZodiacSign.LEO;
+import static de.kah2.libZodiac.zodiac.ZodiacSign.PISCES;
+import static de.kah2.libZodiac.zodiac.ZodiacSign.SCORPIO;
+import static de.kah2.libZodiac.zodiac.ZodiacSign.VIRGO;
 
 /**
  * <p>This class containes {@link Interpreter}s for basic gardening activities. As source I used the book
