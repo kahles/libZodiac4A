@@ -153,6 +153,15 @@ public class CalendarTest {
 		this.testRemoveOverheadLeavesPhaseIntact(Scope.DAY);
 		this.testRemoveOverheadLeavesPhaseIntact(Scope.PHASE);
 		this.testRemoveOverheadLeavesPhaseIntact(Scope.CYCLE);
+
+		// Test that all gets removed (and nothing crashes) if existing data is completely outside expected data
+		this.testRemoveOverheadRemovesAllIfOutsideExpectedRange(Scope.DAY, false);
+		this.testRemoveOverheadRemovesAllIfOutsideExpectedRange(Scope.PHASE, false);
+		this.testRemoveOverheadRemovesAllIfOutsideExpectedRange(Scope.CYCLE, false);
+
+		this.testRemoveOverheadRemovesAllIfOutsideExpectedRange(Scope.DAY, true);
+		this.testRemoveOverheadRemovesAllIfOutsideExpectedRange(Scope.PHASE, true);
+		this.testRemoveOverheadRemovesAllIfOutsideExpectedRange(Scope.CYCLE, true);
 	}
 
 	private void testRemoveOverheadRemovesNothing(final Calendar.Scope scope) {
@@ -238,6 +247,30 @@ public class CalendarTest {
 						days.getLast().getDate().isEqual( SOME_DATES_NEXT_EXTREME.plusDays(1) ) );
 				break;
 		}
+	}
+
+	private void testRemoveOverheadRemovesAllIfOutsideExpectedRange(Scope scope, boolean alsoDeleteFutureDays) {
+
+		final DateRange oldRange = new DateRange( SOME_DATES_LAST_EXTREME.minusDays(1), SOME_DATES_NEXT_EXTREME.plusDays(1) );
+
+		DateRange expectedRange;
+
+		if (alsoDeleteFutureDays) {
+			// New range somewhere before old range
+			expectedRange = new DateRange( SOME_DATES_LAST_EXTREME.minusDays(5), SOME_DATES_LAST_EXTREME.minusDays(4) );
+		} else {
+			// New range somewhere after old range
+			expectedRange = new DateRange( SOME_DATES_NEXT_EXTREME.plusDays(4), SOME_DATES_NEXT_EXTREME.plusDays(5) );
+		}
+
+		Calendar calendar = new CalendarStub(oldRange, scope);
+
+		calendar.importDays( CalendarGeneratorStub.stubDayStorableDataSets(oldRange) );
+
+		calendar.setRangeExpected(expectedRange);
+		calendar.removeOverhead(alsoDeleteFutureDays);
+
+		assertEquals("Calendar should be empty, when overhead is removed", 0, calendar.getAllDays().size());
 	}
 
 	@Test

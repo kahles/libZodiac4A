@@ -280,6 +280,8 @@ public class Calendar implements LocationProvider {
 
 			backup = current;
 
+			// FIXME possible NPE after import of old data
+
 			if (isDirectionForward) {
 				current = days.higher(current);
 			} else {
