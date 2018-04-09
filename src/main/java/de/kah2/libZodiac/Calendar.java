@@ -250,12 +250,12 @@ public class Calendar implements LocationProvider {
 	 */
 	private DateRange getRangeNeededToKeepCycle(boolean alsoCheckFuture) {
 
-		if (this.days.isEmpty()) {
+		if ( this.days.isEmpty() ) {
 			// we could return anything - there's nothing to delete
 			return this.getRangeExpected();
 		}
 
-		TreeSet<Day> days = this.days.allAsTreeSet();
+		final TreeSet<Day> days = this.days.allAsTreeSet();
 
 		final LocalDate start = findNextLunarExtreme(days, this.getRangeExpected().getStart(), false);
 		final LocalDate end;
@@ -271,7 +271,13 @@ public class Calendar implements LocationProvider {
 
 	private LocalDate findNextLunarExtreme(TreeSet<Day> days, LocalDate start, boolean isDirectionForward) {
 
+		// Get first
 		Day current = days.ceiling( new Day(start) );
+
+		if ( current == null || !current.getDate().isEqual(start) ) {
+			// Requested days isn't contained - we're done
+			return start;
+		}
 
 		// When we reach end of days :o) we need a backup to still have the last date
 		Day backup;
@@ -279,8 +285,6 @@ public class Calendar implements LocationProvider {
 		do {
 
 			backup = current;
-
-			// FIXME possible NPE after import of old data
 
 			if (isDirectionForward) {
 				current = days.higher(current);
