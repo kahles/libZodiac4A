@@ -8,8 +8,15 @@ import org.threeten.bp.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
-import static de.kah2.libZodiac.TestConstantsAndHelpers.*;
-import static org.junit.Assert.*;
+import static de.kah2.libZodiac.TestConstantsAndHelpers.LastStateProgressListener;
+import static de.kah2.libZodiac.TestConstantsAndHelpers.SOME_DATE;
+import static de.kah2.libZodiac.TestConstantsAndHelpers.SOME_DATES_LAST_EXTREME;
+import static de.kah2.libZodiac.TestConstantsAndHelpers.SOME_DATES_NEXT_EXTREME;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 public class CalendarGeneratorTest {
 

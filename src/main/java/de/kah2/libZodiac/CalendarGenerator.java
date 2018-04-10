@@ -1,6 +1,5 @@
 package de.kah2.libZodiac;
 
-import de.kah2.libZodiac.interpretation.Interpreter;
 import de.kah2.libZodiac.planetary.LunarPhase;
 import de.kah2.libZodiac.planetary.PlanetaryDayData;
 import org.slf4j.Logger;
@@ -407,10 +406,6 @@ class CalendarGenerator implements ProgressListener {
             CalendarGenerator.this.log.trace(" ++++++++ Starting calculation for " + date);
 
             final Day day = CalendarGenerator.this.createCalculatedDay(date);
-
-            for (final Class<? extends Interpreter> interpreterClass : CalendarGenerator.this.calendar.getActiveInterpreterClasses()) {
-                day.getInterpretationData().addInterpreter(interpreterClass);
-            }
 
             CalendarGenerator.this.log.trace(" -------- Calculation finished for " + date);
 

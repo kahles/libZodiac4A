@@ -37,10 +37,15 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    compile 'org.slf4j:slf4j-api:1.7.25'
+
+    implementation 'org.slf4j:slf4j-api:1.7.25'
+
     // This breaks the tests - comment this out for testing:
-    compile 'org.slf4j:slf4j-android:1.7.24'
-    compile 'com.jakewharton.threetenabp:threetenabp:1.0.5'
+    implementation 'org.slf4j:slf4j-android:1.7.25'
+
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.0.5'
+
+    // Removed, because actual version is broken
     //compile 'net.sourceforge.novaforjava:novaforjava:0.15.0.0'
     implementation project(':novaforjava')
 }

@@ -1,8 +1,7 @@
 package de.kah2.libZodiac;
 
 import org.threeten.bp.LocalDate;
-import java.util.Collection;
-import java.util.Iterator;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NavigableSet;

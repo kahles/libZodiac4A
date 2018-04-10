@@ -1,14 +1,12 @@
 package de.kah2.libZodiac;
 
-import de.kah2.libZodiac.Calendar.Scope;
-import de.kah2.libZodiac.interpretation.Interpreter;
-import de.kah2.libZodiac.interpretation.StubInterpreter;
 import org.junit.Test;
-
 import org.threeten.bp.LocalDate;
-import java.util.Collection;
+
 import java.util.LinkedList;
 import java.util.List;
+
+import de.kah2.libZodiac.Calendar.Scope;
 
 import static de.kah2.libZodiac.TestConstantsAndHelpers.SOME_DATE;
 import static de.kah2.libZodiac.TestConstantsAndHelpers.SOME_DATES_LAST_EXTREME;
@@ -156,6 +154,15 @@ public class CalendarTest {
 		this.testRemoveOverheadLeavesPhaseIntact(Scope.DAY);
 		this.testRemoveOverheadLeavesPhaseIntact(Scope.PHASE);
 		this.testRemoveOverheadLeavesPhaseIntact(Scope.CYCLE);
+
+		// Test that all gets removed (and nothing crashes) if existing data is completely outside expected data
+		this.testRemoveOverheadRemovesAllIfOutsideExpectedRange(Scope.DAY, false);
+		this.testRemoveOverheadRemovesAllIfOutsideExpectedRange(Scope.PHASE, false);
+		this.testRemoveOverheadRemovesAllIfOutsideExpectedRange(Scope.CYCLE, false);
+
+		this.testRemoveOverheadRemovesAllIfOutsideExpectedRange(Scope.DAY, true);
+		this.testRemoveOverheadRemovesAllIfOutsideExpectedRange(Scope.PHASE, true);
+		this.testRemoveOverheadRemovesAllIfOutsideExpectedRange(Scope.CYCLE, true);
 	}
 
 	private void testRemoveOverheadRemovesNothing(final Calendar.Scope scope) {
@@ -243,6 +250,29 @@ public class CalendarTest {
 		}
 	}
 
+	private void testRemoveOverheadRemovesAllIfOutsideExpectedRange(Scope scope, boolean alsoDeleteFutureDays) {
+
+		final DateRange oldRange = new DateRange( SOME_DATES_LAST_EXTREME.minusDays(1), SOME_DATES_NEXT_EXTREME.plusDays(1) );
+
+		DateRange expectedRange;
+
+		if (alsoDeleteFutureDays) {
+			// New range somewhere before old range
+			expectedRange = new DateRange( SOME_DATES_LAST_EXTREME.minusDays(5), SOME_DATES_LAST_EXTREME.minusDays(4) );
+		} else {
+			// New range somewhere after old range
+			expectedRange = new DateRange( SOME_DATES_NEXT_EXTREME.plusDays(4), SOME_DATES_NEXT_EXTREME.plusDays(5) );
+		}
+
+		Calendar calendar = new CalendarStub(oldRange, scope);
+
+		calendar.importDays( CalendarGeneratorStub.stubDayStorableDataSets(oldRange) );
+
+		calendar.setRangeExpected(expectedRange);
+		calendar.removeOverhead(alsoDeleteFutureDays);
+
+		assertEquals("Calendar should be empty, when overhead is removed", 0, calendar.getAllDays().size());
+	}
 
 	@Test
 	public void testFixRangeExpected() {
@@ -278,51 +308,5 @@ public class CalendarTest {
 				calendar.getRangeExpected().getEnd().isEqual(oldRange.getEnd()));
 	}
 
-	@Test
-	public void testAddAndRemoveInterpreter() {
 
-		DateRange range = new DateRange(SOME_DATE, SOME_DATE.plusDays(2));
-
-		final Calendar calendar = new CalendarStub(range, Scope.DAY);
-        calendar.importDays( CalendarGeneratorStub.stubDayStorableDataSets(range) );
-
-		assertEquals("Interpreters should be empty when Calendar is initialized", 0,
-				calendar.getActiveInterpreterClasses().size());
-
-		// Interpreters should only be stored once
-		calendar.addInterpreter(StubInterpreter.class);
-		calendar.addInterpreter(StubInterpreter.class);
-		int numberOfInterpretersSet = 1;
-		assertEquals("One Interpreter should be set to Calendar", numberOfInterpretersSet,
-				calendar.getActiveInterpreterClasses().size());
-
-		this.checkInterpreterCount("Interpreters should get inserted to all days", numberOfInterpretersSet,
-				calendar.getAllDays() );
-
-		// extend the Calendar:
-
-		// extend it and check interpreters
-		range = new DateRange(range.getStart().minusDays(1), range.getEnd().plusDays(1));
-		calendar.setRangeExpected(range);
-
-		TestConstantsAndHelpers.generateAndWaitFor(calendar);
-
-		this.checkInterpreterCount("Interpreters should also be set to newly generated days", numberOfInterpretersSet,
-				calendar.getAllDays() );
-
-		calendar.removeInterpreter(StubInterpreter.class);
-		numberOfInterpretersSet = 0;
-		assertEquals("Interpreters should get removed from Calendar", numberOfInterpretersSet,
-				calendar.getActiveInterpreterClasses().size());
-
-		this.checkInterpreterCount("Interpreters should get removed from all days", numberOfInterpretersSet,
-				calendar.getAllDays() );
-	}
-
-	private void checkInterpreterCount(final String message, final int expectedCount, final Iterable<Day> days) {
-		for (final Day day : days) {
-			final Collection<Interpreter> interpreters = day.getInterpretationData().getInterpreters();
-			assertEquals(message, expectedCount, interpreters.size());
-		}
-	}
 }

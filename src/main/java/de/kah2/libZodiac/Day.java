@@ -1,10 +1,13 @@
 package de.kah2.libZodiac;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.threeten.bp.LocalDate;
 
-import de.kah2.libZodiac.interpretation.InterpretationDayData;
+import de.kah2.libZodiac.interpretation.Interpreter;
 import de.kah2.libZodiac.planetary.PlanetaryDayData;
 import de.kah2.libZodiac.zodiac.ZodiacDayData;
+
 
 /**
  * This class is the "glue" between elements of this framework: <br />
@@ -15,18 +18,20 @@ import de.kah2.libZodiac.zodiac.ZodiacDayData;
  */
 public class Day implements Comparable<Day>{
 
+	private final Logger log = LoggerFactory.getLogger(this.getClass());
+
 	private final LocalDate date;
 
 	private final PlanetaryDayData planetaryData;
 	private final ZodiacDayData zodiacData;
-	private final InterpretationDayData interpretationData;
+
+	private Interpreter interpreter;
 
 	/** This constructor is used to create dummy objects for {@link CalendarData#getMissingDates(DateRange)} */
 	Day(final LocalDate date) {
 		this.date = date;
 		this.planetaryData = null;
 		this.zodiacData = null;
-		this.interpretationData = null;
 	}
 
 	/**
@@ -37,7 +42,6 @@ public class Day implements Comparable<Day>{
 		this.date = date;
 		this.planetaryData = planetaryData;
 		this.zodiacData = new ZodiacDayData(this.planetaryData);
-		this.interpretationData = new InterpretationDayData(this);
 	}
 
 	/**
@@ -82,18 +86,30 @@ public class Day implements Comparable<Day>{
 	}
 
 	/**
-	 * @return {@link InterpretationDayData} containing Interpretations of
-	 *         {@link PlanetaryDayData}.
-	 */
-	public InterpretationDayData getInterpretationData() {
-		return this.interpretationData;
-	}
-
-	/**
 	 * @return the date of the day
 	 */
 	public LocalDate getDate() {
 		return this.date;
+	}
+
+	void setInterpreterClass(Class<? extends Interpreter> interpreterClass) {
+
+		try {
+
+			this.interpreter = interpreterClass.newInstance();
+			this.interpreter.setDay(this);
+
+		} catch (final Exception e) {
+
+			this.log.error("Couldn't set interpreter: " + interpreterClass.getName(), e);
+		}
+	}
+
+	/**
+	 * @return The active {@link Interpreter} subclass or null, if none was set.
+	 */
+	public Interpreter getInterpreter() {
+		return this.interpreter;
 	}
 
 	/**

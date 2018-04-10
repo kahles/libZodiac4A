@@ -1,11 +1,10 @@
 /**
- * This package contains classes for adding interpretations. The main class is
- * the abstract class {@link de.kah2.libZodiac.interpretation.Interpreter} which
- * is a container for interpretations. Interpretation classes must extend this
- * class so that they can get passed to
- * {@link de.kah2.libZodiac.interpretation.InterpretationDayData}, which
- * instantiates, executes and manages them.
- * 
- * @author kahles
+ * This package contains classes for interpreting lunar data.
+ *
+ * <ul>
+ *     <li>{@link de.kah2.libZodiac.interpretation.Interpreter} is an abstract class containing basic interpretation functionality.</li>
+ *     <li>{@link de.kah2.libZodiac.interpretation.Translatable} just capsules functionality to get translation keys from class names.</li>
+ *     <li>{@link de.kah2.libZodiac.interpretation.Gardening} is a collection of interpreters for gardening actions.</li>
+ * </ul>
  */
 package de.kah2.libZodiac.interpretation;
