@@ -1,10 +1,8 @@
 package de.kah2.libZodiac;
 
+import org.slf4j.LoggerFactory;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.ZoneId;
-
-import org.slf4j.LoggerFactory;
-import org.slf4j.impl.SimpleLogger;
 
 import de.kah2.libZodiac.planetary.Position;
 
@@ -37,22 +35,20 @@ public class TestConstantsAndHelpers {
 
 	private final static int sleepStepMs = 100;
 
+
 	/**
-	 * Enables and configures {@link SimpleLogger} for level DEBUG.
+	 * No functionality at android
 	 */
 	public static void enableLogging() {
 		TestConstantsAndHelpers.enableLogging("debug");
 	}
 
 	/**
-	 * Enables and configures {@link SimpleLogger}.
+	 * No functionality at android
 	 */
 	public static void enableLogging(final String level) {
-		System.setProperty(org.slf4j.impl.SimpleLogger.DEFAULT_LOG_LEVEL_KEY, level);
-		System.setProperty(org.slf4j.impl.SimpleLogger.SHOW_THREAD_NAME_KEY, "true");
-		System.setProperty(org.slf4j.impl.SimpleLogger.SHOW_DATE_TIME_KEY, "true");
-		System.setProperty(org.slf4j.impl.SimpleLogger.DATE_TIME_FORMAT_KEY, "HH:mm:ss:SSS");
-		System.setProperty(org.slf4j.impl.SimpleLogger.SHOW_SHORT_LOG_NAME_KEY, "true");
+		LoggerFactory.getLogger(TestConstantsAndHelpers.class)
+				.warn("enableLogging() has no functionality on android");
 	}
 
 	/** Simple method to generate a {@link de.kah2.libZodiac.Calendar} and wait for results. */
