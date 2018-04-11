@@ -2,6 +2,8 @@ package de.kah2.libZodiac;
 
 import de.kah2.libZodiac.planetary.LunarPhase;
 import de.kah2.libZodiac.planetary.PlanetaryDayData;
+import java9.util.concurrent.CompletableFuture;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +17,6 @@ import java.util.ListIterator;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;

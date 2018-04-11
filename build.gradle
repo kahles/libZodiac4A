@@ -43,7 +43,9 @@ dependencies {
     // This breaks the tests - comment this out for testing:
     implementation 'org.slf4j:slf4j-android:1.7.25'
 
+    // Android backports
     implementation 'com.jakewharton.threetenabp:threetenabp:1.0.5'
+    implementation 'net.sourceforge.streamsupport:android-retrofuture:1.6.1'
 
     // Removed, because actual version is broken
     //compile 'net.sourceforge.novaforjava:novaforjava:0.15.0.0'
