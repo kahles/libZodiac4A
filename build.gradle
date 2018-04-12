@@ -38,9 +38,6 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:26.1.0'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
     implementation 'org.slf4j:slf4j-api:1.7.25'
 
@@ -54,4 +51,12 @@ dependencies {
     // Removed, because actual version is broken
     //compile 'net.sourceforge.novaforjava:novaforjava:0.15.0.0'
     implementation project(':novaforjava')
+
+    // Testing
+    testImplementation 'junit:junit:4.12'
+    testImplementation('org.threeten:threetenbp:1.3.3') {
+        exclude group: 'com.jakewharton.threetenabp', module: 'threetenabp'
+    }
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 }
