@@ -86,7 +86,7 @@ public class Gardening {
     }
 
     /** weed / dig - Jäten / umgraben */
-    public class WeedDigInterpreter extends Interpreter {
+    public static class WeedDigInterpreter extends Interpreter {
 
         @Override
         protected Quality doInterpretation() {
@@ -114,7 +114,7 @@ public class Gardening {
     }
 
     /** make cuttings / transplant - Stecklinge schneiden / Pflanzen umsetzen */
-    public class CuttingInterpreter extends Interpreter {
+    public static class CuttingInterpreter extends Interpreter {
 
         @Override
         protected Quality doInterpretation() {
@@ -136,7 +136,7 @@ public class Gardening {
     }
 
     /** Graft - Veredeln */
-    public class GraftInterpreter extends Interpreter {
+    public static class GraftInterpreter extends Interpreter {
 
         @Override
         protected Quality doInterpretation() {
@@ -155,7 +155,7 @@ public class Gardening {
     }
 
     /** Cut fruit trees - Obstbäume schneiden */
-    public class CutFruitTreeInterpreter extends Interpreter {
+    public static class CutFruitTreeInterpreter extends Interpreter {
 
         @Override
         protected Quality doInterpretation() {
@@ -175,7 +175,7 @@ public class Gardening {
 
 
 	/** Combat subterrestrial pests - Unterirdische Schädlinge bekämpfen"; */
-    public class SubterrestrialPestsInterpreter extends Interpreter {
+    public static class SubterrestrialPestsInterpreter extends Interpreter {
 
         @Override
         protected Quality doInterpretation() {
@@ -189,7 +189,7 @@ public class Gardening {
     }
 
 	/** Combat overterrestrial pests - Oberirdische Schädlinge bekämpfen */
-    public class OverterrestrialPestsInterpreter extends Interpreter {
+    public static class OverterrestrialPestsInterpreter extends Interpreter {
 
         @Override
         protected Quality doInterpretation() {
@@ -211,7 +211,7 @@ public class Gardening {
     }
 
 	/** Combat slugs - Schnecken bekämpfen */
-	public class CombatSlugsInterpreter extends Interpreter {
+	public static class CombatSlugsInterpreter extends Interpreter {
 
         @Override
         protected Quality doInterpretation() {
