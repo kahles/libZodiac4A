@@ -29,7 +29,7 @@ import static de.kah2.libZodiac.zodiac.ZodiacSign.VIRGO;
  * <p>This is a rewrite of old and very bad code - no guarantee for correctness. =>
  * TODO Check book if this is still right</p>
  */
-public class Gardening extends Translatable {
+public class Gardening {
 
     /** Water plants - gießen */
     public static class WaterInterpreter extends Interpreter {

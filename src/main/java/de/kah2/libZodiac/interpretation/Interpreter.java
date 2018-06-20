@@ -8,7 +8,7 @@ import de.kah2.libZodiac.zodiac.ZodiacDayData;
  * <p>This is the base class for all Interpreters, which contains the logic to interpret zodiac data.</p>
  * <p>To write an own interpreter just extend this class and override {@link #getQuality()}.</p>
  */
-public abstract class Interpreter extends Translatable {
+public abstract class Interpreter {
 
 	/** The possible quality a Day can have for a selected interpretation. */
 	public enum Quality {
