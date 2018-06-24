@@ -444,6 +444,7 @@ public class Calendar implements LocationProvider {
 	/**
 	 * This method is intended to activate an interpretation. You should set an interpreter after generating possibly missing data - if
 	 * data of expected range is missing, a {@link RuntimeException} will be thrown.
+	 * @param interpreterClass a class extending {@link Interpreter} or null to unset
 	 */
 	public void setInterpreterClass(Class<? extends Interpreter> interpreterClass) {
 

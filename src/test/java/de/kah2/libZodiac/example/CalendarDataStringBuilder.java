@@ -97,17 +97,8 @@ public class CalendarDataStringBuilder {
 		} else {
 
 			// This is how it is intended to get a Description for an interpretation.
-			this.appendLine("Interpretation:\t" + getSampleI18n( interpreter.getKey() )
+			this.appendLine("Interpretation:\t" + Interpreter.class.getSimpleName()
 					+ interpreter.getQuality());
-		}
-	}
-
-	private String getSampleI18n(String key) {
-
-		if ( key == CalendarExampleSimple.VisibilityInterpreter.class.getName() ) {
-			return "Take a nightly walk: ";
-		} else {
-			return key;
 		}
 	}
 
