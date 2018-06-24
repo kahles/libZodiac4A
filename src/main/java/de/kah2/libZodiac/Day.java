@@ -91,16 +91,28 @@ public class Day implements Comparable<Day>{
 		return this.date;
 	}
 
+	/**
+	 * @param interpreterClass A subclass of {@link Interpreter} to instantiate or <code>null</code>
+	 *                         to unset interpreter.
+	 */
 	void setInterpreterClass(Class<? extends Interpreter> interpreterClass) {
 
-		try {
+		if (interpreterClass == null) {
 
-			this.interpreter = interpreterClass.newInstance();
-			this.interpreter.setDay(this);
+			// unset interpreter
+			this.interpreter = null;
 
-		} catch (final Exception e) {
+		} else {
 
-			this.log.error("Couldn't set interpreter: " + interpreterClass.getName(), e);
+			try {
+
+				this.interpreter = interpreterClass.newInstance();
+				this.interpreter.setDay(this);
+
+			} catch (final Exception e) {
+
+				this.log.error("Couldn't set interpreter: " + interpreterClass.getName(), e);
+			}
 		}
 	}
 
