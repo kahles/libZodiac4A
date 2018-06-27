@@ -2,20 +2,44 @@ package de.kah2.libZodiac.zodiac;
 
 /**
  * This class represents the lunar direction within the zodiac circle.
- * 
+ *
+ * TODO allow different interpretations of zodiac directions?
+ * + https://www.astro.com/astrowiki/de/Maria_Thun#Aufsteigender_und_absteigender_Mond
+ * + https://www.astro.com/astrowiki/de/Siderischer_Tierkreis
+ *
  * @author kahles
  */
 public enum ZodiacDirection {
 
 	ASCENDING, DESCENDING;
 
-	public static ZodiacDirection of(final double lunarLongitude) {
-		// Moon is descending from second half of cancer to first half of
-		// capricorn.
-		if (lunarLongitude >= 105 && lunarLongitude < 285) {
-			return DESCENDING;
-		} else {
-			return ASCENDING;
+	public static ZodiacDirection of(final ZodiacSign zodiacSign) {
+
+		ZodiacDirection direction = null;
+
+		switch (zodiacSign) {
+
+			// Moon is ascending from capricorn to taurus
+			case CAPRICORN:
+			case AQUARIUS:
+			case PISCES:
+			case ARIES:
+			case TAURUS:
+			case GEMINI:
+				direction = ASCENDING;
+				break;
+
+			// Moon is descending from cancer to scorpio
+			case CANCER:
+			case LEO:
+			case VIRGO:
+			case LIBRA:
+			case SCORPIO:
+			case SAGITTARIUS:
+				direction = DESCENDING;
+				break;
 		}
+
+		return direction;
 	}
 }

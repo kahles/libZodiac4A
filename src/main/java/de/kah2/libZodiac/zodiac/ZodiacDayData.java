@@ -19,7 +19,7 @@ public class ZodiacDayData {
 	public ZodiacDayData(final PlanetaryDayData srcData) {
 		this.sign = ZodiacSign.of(srcData.getLunarLongitude());
 		this.element = ZodiacElement.of(this.sign);
-		this.direction = ZodiacDirection.of(srcData.getLunarLongitude());
+		this.direction = ZodiacDirection.of(this.sign);
 	}
 
 	/**
