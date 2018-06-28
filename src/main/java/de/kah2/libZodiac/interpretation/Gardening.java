@@ -25,13 +25,11 @@ import static de.kah2.libZodiac.zodiac.ZodiacSign.VIRGO;
 /**
  * <p>This class containes {@link Interpreter}s for basic gardening activities. As source I used the book
  * "Vom richtigen Zeitpunkt" / "The Power of Timing" (Johanna Paungger, Thomas Poppe).</p>
- *
- * <p>This is a rewrite of old and very bad code - no guarantee for correctness. =>
- * TODO Check book if this is still right</p>
  */
 public class Gardening {
 
     /** Water plants - gießen */
+    // TODO Check book if this is correct
     public static class WaterInterpreter extends Interpreter {
 
         @Override
@@ -48,6 +46,7 @@ public class Gardening {
     }
 
     /** Mow the lawn - Rasen mähen */
+    // TODO Check book if this is correct
     public static class MowLawnInterpreter extends Interpreter {
 
         @Override
@@ -68,6 +67,7 @@ public class Gardening {
     }
 
     /** Trim sick plants - Kranke Pflanzen beschneiden */
+    // TODO Check book if this is correct
     public static class TrimSickInterpreter extends Interpreter {
 
         @Override
@@ -86,6 +86,7 @@ public class Gardening {
     }
 
     /** weed / dig - Jäten / umgraben */
+    // TODO Check book if this is correct
     public static class WeedDigInterpreter extends Interpreter {
 
         @Override
@@ -114,6 +115,7 @@ public class Gardening {
     }
 
     /** make cuttings / transplant - Stecklinge schneiden / Pflanzen umsetzen */
+    // TODO Check book if this is correct
     public static class CuttingInterpreter extends Interpreter {
 
         @Override
@@ -136,6 +138,7 @@ public class Gardening {
     }
 
     /** Graft - Veredeln */
+    // TODO Check book if this is correct
     public static class GraftInterpreter extends Interpreter {
 
         @Override
@@ -155,6 +158,7 @@ public class Gardening {
     }
 
     /** Cut fruit trees - Obstbäume schneiden */
+    // TODO Check book if this is correct
     public static class CutFruitTreeInterpreter extends Interpreter {
 
         @Override
@@ -175,6 +179,7 @@ public class Gardening {
 
 
 	/** Combat subterrestrial pests - Unterirdische Schädlinge bekämpfen"; */
+    // TODO Check book if this is correct
     public static class SubterrestrialPestsInterpreter extends Interpreter {
 
         @Override
@@ -189,6 +194,7 @@ public class Gardening {
     }
 
 	/** Combat overterrestrial pests - Oberirdische Schädlinge bekämpfen */
+    // TODO Check book if this is correct
     public static class OverterrestrialPestsInterpreter extends Interpreter {
 
         @Override
@@ -211,6 +217,7 @@ public class Gardening {
     }
 
 	/** Combat slugs - Schnecken bekämpfen */
+    // TODO Check book if this is correct
 	public static class CombatSlugsInterpreter extends Interpreter {
 
         @Override
@@ -218,6 +225,23 @@ public class Gardening {
 
             if (getPlanetary().getLunarPhase() == INCREASING && getZodiac().getSign() == SCORPIO) {
                     return GOOD;
+            }
+
+            return NEUTRAL;
+        }
+    }
+
+    /** Sow/plant - Säen/pflanzen */
+    public static class SowPlantInterpreter extends Interpreter {
+
+        @Override
+        protected Quality doInterpretation() {
+
+            if (getZodiac().getDirection() == DESCENDING) {
+
+                this.setCategory( getZodiac().getElement().getPlantPart() );
+
+                return GOOD;
             }
 
             return NEUTRAL;

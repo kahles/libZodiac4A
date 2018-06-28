@@ -17,7 +17,10 @@ public abstract class Interpreter {
 
 	private Day today;
 
+	private boolean isNotInterpreted = true;
+
 	private Quality quality;
+	private Enum<?> category;
 
 	/**
 	 * Sets the day to interpret and also resets interpretation data to ensure correctness.
@@ -28,8 +31,11 @@ public abstract class Interpreter {
 	}
 
 	/**
-	 * Implement this method to do some interpretation and return the resulting {@link Quality} for this day. Use {@link #getToday()} to
-	 * access the information available about the actual day. There are also shortcuts
+	 * <p>Implement this method to do some interpretation and return the resulting {@link Quality} for this day. Use {@link #getToday()} to
+	 * access the information available about the actual day. There are also shortcuts {@link #getPlanetary()} and {@link #getZodiac()} for
+	 * actual data.</p>
+	 * <p>By calling {@link #setCategory(Enum)} it is possible to add additional information. For an example, see
+	 * {@link de.kah2.libZodiac.interpretation.Gardening.SowPlantInterpreter}.</p>
 	 */
 	protected abstract Quality doInterpretation();
 
@@ -44,17 +50,39 @@ public abstract class Interpreter {
 	/** A shortcut to access {@link PlanetaryDayData} of actual Day available through {@link #getToday()}. */
 	protected final PlanetaryDayData getPlanetary() { return this.today.getPlanetaryData(); }
 
+	/**
+	 * Allows to set an additional category for interpreted quality, like e.g. a {@link de.kah2.libZodiac.zodiac.ZodiacElement.PlantPart}.
+	 */
+	protected final void setCategory(Enum<?> category) {
+		this.category = category;
+	}
+
+	private void interpretIfNecessary() {
+
+		if (this.isNotInterpreted) {
+
+			this.quality = this.doInterpretation();
+			this.isNotInterpreted = false;
+		}
+	}
+
 	/** Returns the interpreted {@link Quality} of this day. */
 	public final Quality getQuality() {
 
-		if (this.quality == null) {
-			this.quality = this.doInterpretation();
+		this.interpretIfNecessary();
 
-			if (this.quality == null) {
-				throw new RuntimeException("Interpreter may not return null.");
-			}
+		if (this.quality == null) {
+			throw new RuntimeException("Interpreter may not return null.");
 		}
 
 		return this.quality;
+	}
+
+	/** May return additional information for interpreted quality or <code>null</code>, if none is set. */
+	public final Enum<?> getCategory() {
+
+		this.interpretIfNecessary();
+
+		return this.category;
 	}
 }
