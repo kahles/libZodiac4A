@@ -4,6 +4,7 @@ import de.kah2.libZodiac.Calendar;
 import de.kah2.libZodiac.DateRange;
 import de.kah2.libZodiac.Day;
 import de.kah2.libZodiac.TestConstantsAndHelpers;
+import de.kah2.libZodiac.interpretation.Gardening;
 import de.kah2.libZodiac.interpretation.Interpreter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +30,7 @@ public class CalendarExampleSimple {
 	/**
 	 * Runs the example.
 	 */
-	public static void run() {
+	public static void run(Class <? extends Interpreter> interpreterClass, int days) {
 		/* First step: create a Calendar */
 
 		// This is the way to calculate all data for today and the next two
@@ -38,7 +39,7 @@ public class CalendarExampleSimple {
 		// moon), all days since last and until next lunar extreme get
 		// calculated.
 		final LocalDate today = LocalDate.now();
-		final DateRange range = new DateRange(today, today.plusDays(2));
+		final DateRange range = new DateRange(today, today.plusDays(days));
 		final Calendar calendar = new Calendar(TestConstantsAndHelpers.POSITION_MUNICH, range);
 
 		// If we don't need to know how far away next/previous lunar extreme is,
@@ -57,7 +58,7 @@ public class CalendarExampleSimple {
 		LOG.info("Generating Calendar for DateRange: " + range);
 		TestConstantsAndHelpers.generateAndWaitFor(calendar);
 
-		calendar.setInterpreterClass(VisibilityInterpreter.class);
+		calendar.setInterpreterClass(interpreterClass);
 
 		final CalendarDataStringBuilder converter = new CalendarDataStringBuilder();
 
@@ -70,30 +71,7 @@ public class CalendarExampleSimple {
 		LOG.info("Result:\n" + converter.toString());
 	}
 
-	/**
-	 * This is a simple example for an {@link Interpreter}.
-	 */
-	public static class VisibilityInterpreter extends Interpreter {
-
-		@Override
-		protected Quality doInterpretation() {
-			final double lunarVisibility = getToday().getPlanetaryData().getLunarVisibility();
-
-			if (lunarVisibility < .1) {
-				return WORST;
-			} else if (lunarVisibility <.3) {
-				return BAD;
-			} else if (lunarVisibility >.9) {
-				return BEST;
-			} else if (lunarVisibility >.7) {
-				return GOOD;
-			} else {
-				return NEUTRAL;
-			}
-		}
-	}
-
 	public static void main(final String[] args) {
-		run();
+		run( Gardening.SowPlantInterpreter.class, 2 );
 	}
 }

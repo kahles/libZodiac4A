@@ -96,9 +96,15 @@ public class CalendarDataStringBuilder {
 
 		} else {
 
+			String annotation = "";
+
+			if ( interpreter.getCategory() != null ) {
+				annotation = " - " + interpreter.getCategory().toString();
+			}
+
 			// This is how it is intended to get a Description for an interpretation.
-			this.appendLine("Interpretation:\t" + Interpreter.class.getSimpleName()
-					+ interpreter.getQuality());
+			this.appendLine("Interpretation:\t\t\t" + interpreter.getClass().getSimpleName() + ": "
+					+ interpreter.getQuality() + annotation);
 		}
 	}
 
