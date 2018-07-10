@@ -13,6 +13,7 @@ import static de.kah2.libZodiac.zodiac.ZodiacDirection.DESCENDING;
 import static de.kah2.libZodiac.zodiac.ZodiacElement.AIR;
 import static de.kah2.libZodiac.zodiac.ZodiacElement.EARTH;
 import static de.kah2.libZodiac.zodiac.ZodiacElement.FIRE;
+import static de.kah2.libZodiac.zodiac.ZodiacElement.PlantPart.ROOT;
 import static de.kah2.libZodiac.zodiac.ZodiacElement.WATER;
 import static de.kah2.libZodiac.zodiac.ZodiacSign.AQUARIUS;
 import static de.kah2.libZodiac.zodiac.ZodiacSign.CANCER;
@@ -231,20 +232,63 @@ public class Gardening {
         }
     }
 
-    /** Sow/plant - Säen/pflanzen */
+    /**
+     * Sow/plant - Säen/pflanzen
+     * Source: 116, 138
+     */
     public static class SowPlantInterpreter extends Interpreter {
+
+        public enum Plants {
+
+            FRUIT_PLANTS, FLOWERS, LEAFY_VEGETABLES, ROOT_VEGETABLES, GRASS, POTATOES, SALAD;
+        }
 
         @Override
         protected Quality doInterpretation() {
 
-            if (getZodiac().getDirection() == DESCENDING) {
-
-                this.addAnnotation( getZodiac().getElement().getPlantPart() );
-
-                return GOOD;
+            if ( getPlanetary().getLunarPhase() == INCREASING &&
+                    ( getZodiac().getSign() == VIRGO || getZodiac().getSign() == LEO ) ) {
+                addAnnotation( Plants.GRASS );
             }
 
-            return NEUTRAL;
+            if (getPlanetary().getLunarPhase() == INCREASING || getZodiac().getDirection() == DESCENDING) {
+
+                switch ( getZodiac().getElement().getPlantPart() ) {
+
+                    case FRUIT: addAnnotation( Plants.FRUIT_PLANTS ); break;
+
+                    case LEAF: addAnnotation( Plants.LEAFY_VEGETABLES ); break;
+
+                    case FLOWER: addAnnotation( Plants.FLOWERS ); break;
+                }
+            }
+
+            if (getPlanetary().getLunarPhase() == DECREASING) {
+
+                switch ( getZodiac().getElement().getPlantPart() ) {
+
+                    case LEAF: addAnnotation( Plants.SALAD ); break;
+
+                    case ROOT:
+                        if ( getPlanetary().getDaysSinceLastMaxPhase() < 7 ) {
+                            addAnnotation( Plants.POTATOES );
+                        }
+                        break;
+                }
+            }
+
+            if (getPlanetary().getLunarPhase() == DECREASING || getZodiac().getDirection() == DESCENDING) {
+
+                if ( getZodiac().getElement().getPlantPart() == ROOT ) {
+                    addAnnotation( Plants.ROOT_VEGETABLES );
+                }
+            }
+
+            if (getAnnotationCount() > 0) {
+                return BEST;
+            } else {
+                return NEUTRAL;
+            }
         }
     }
 }
