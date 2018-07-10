@@ -8,6 +8,7 @@ import static de.kah2.libZodiac.interpretation.Interpreter.Quality.GOOD;
 import static de.kah2.libZodiac.interpretation.Interpreter.Quality.NEUTRAL;
 import static de.kah2.libZodiac.interpretation.Interpreter.Quality.WORST;
 import static de.kah2.libZodiac.planetary.LunarPhase.DECREASING;
+import static de.kah2.libZodiac.planetary.LunarPhase.FULL_MOON;
 import static de.kah2.libZodiac.planetary.LunarPhase.INCREASING;
 import static de.kah2.libZodiac.planetary.LunarPhase.NEW_MOON;
 import static de.kah2.libZodiac.zodiac.ZodiacDirection.ASCENDING;
@@ -182,7 +183,7 @@ public class Gardening {
         @Override
         protected Quality doInterpretation() {
 
-            if ( getPlanetary().getLunarPhase() == INCREASING ) {
+            if ( getPlanetary().getLunarPhase() == INCREASING || getPlanetary().getLunarPhase() == FULL_MOON ) {
 
                 if ( getZodiac().getElement().getPlantPart() == FRUIT && getPlanetary().getDaysUntilNextMaxPhase() < 8) {
                     return BEST;
@@ -191,11 +192,15 @@ public class Gardening {
                 }
             }
 
-            if ( getZodiac().getDirection() == ASCENDING && getZodiac().getElement().getPlantPart() == FRUIT) {
-                return GOOD;
+            if ( getZodiac().getDirection() == ASCENDING ) {
+
+                if (getZodiac().getElement().getPlantPart() == FRUIT) {
+                    return BEST;
+                } else {
+                    return GOOD;
+                }
             }
 
-            // TODO check if this can be done in a better way:
             if ( (getPlanetary().getLunarPhase() == DECREASING || getPlanetary().getLunarPhase() == NEW_MOON)
                     && getZodiac().getDirection() == DESCENDING ) {
                 return WORST;
