@@ -14,7 +14,7 @@ import java.time.LocalDate;
 
 /**
  * This class shows basic usage of this framework.
- * 
+ *
  * @author kahles
  */
 public class CalendarExampleSimple {

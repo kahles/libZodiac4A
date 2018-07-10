@@ -63,13 +63,13 @@ public class CalendarDataStringBuilder {
 			this.appendLine("Lunar PHASE:\t\t\t" + data.getLunarPhase());
 		}
 
-		if (data.getDaysSinceLastMaxPhase() == -1) {
+		if (data.getDaysSinceLastMaxPhase() == PlanetaryDayData.DAY_COUNT_NOT_CALCULATED) {
 			this.appendLine("Day count since last extreme isn't available.");
 		} else {
 			this.appendLine("Days since full/new:\t" + data.getDaysSinceLastMaxPhase());
 		}
 
-		if (data.getDaysUntilNextMaxPhase() == -1) {
+		if (data.getDaysUntilNextMaxPhase() == PlanetaryDayData.DAY_COUNT_NOT_CALCULATED) {
 			this.appendLine("Day count until next extreme isn't available.");
 		} else {
 			this.appendLine("Days until full/new:\t" + data.getDaysUntilNextMaxPhase());
