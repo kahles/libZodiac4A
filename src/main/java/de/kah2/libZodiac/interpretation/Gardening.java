@@ -100,23 +100,21 @@ public class Gardening {
         }
     }
 
-    /** make cuttings / transplant - Stecklinge schneiden / Pflanzen umsetzen */
-    // TODO Check book if this is correct
-    public static class CuttingInterpreter extends Interpreter {
+    /**
+     *  Make cuttings / transplant - Stecklinge schneiden / Pflanzen umsetzen
+     *  Source: 123
+     */
+    public static class CuttingTransplantInterpreter extends Interpreter {
 
         @Override
         protected Quality doInterpretation() {
 
-            if (getPlanetary().getLunarPhase() == INCREASING) {
+            if (getPlanetary().getLunarPhase() == INCREASING || getZodiac().getDirection() == DESCENDING) {
                 if (getZodiac().getSign() == VIRGO) {
                     return BEST;
                 } else {
                     return GOOD;
                 }
-            }
-
-            if (getZodiac().getDirection() == DESCENDING) {
-                return GOOD;
             }
 
             return NEUTRAL;
