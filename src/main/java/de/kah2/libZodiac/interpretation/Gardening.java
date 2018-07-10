@@ -15,6 +15,7 @@ import static de.kah2.libZodiac.zodiac.ZodiacDirection.ASCENDING;
 import static de.kah2.libZodiac.zodiac.ZodiacDirection.DESCENDING;
 import static de.kah2.libZodiac.zodiac.ZodiacElement.AIR;
 import static de.kah2.libZodiac.zodiac.ZodiacElement.FIRE;
+import static de.kah2.libZodiac.zodiac.ZodiacElement.PlantPart.FLOWER;
 import static de.kah2.libZodiac.zodiac.ZodiacElement.PlantPart.FRUIT;
 import static de.kah2.libZodiac.zodiac.ZodiacElement.PlantPart.LEAF;
 import static de.kah2.libZodiac.zodiac.ZodiacElement.PlantPart.ROOT;
@@ -35,23 +36,6 @@ import static de.kah2.libZodiac.zodiac.ZodiacSign.VIRGO;
  */
 public class Gardening {
 
-    /** Water plants - gießen */
-    // TODO Check book if this is correct
-    public static class WaterInterpreter extends Interpreter {
-
-        @Override
-        protected Quality doInterpretation() {
-
-            if (getZodiac().getElement() == WATER) {
-                return GOOD;
-            } else if (getZodiac().getElement() == AIR) {
-                return BAD;
-            }
-
-            return NEUTRAL;
-        }
-    }
-
     /** Mow the lawn - Rasen mähen */
     // TODO Check book if this is correct
     public static class MowLawnInterpreter extends Interpreter {
@@ -67,6 +51,25 @@ public class Gardening {
                 }
             } else if (getZodiac().getSign() == SCORPIO || getZodiac().getSign() == PISCES) {
                 return GOOD;
+            }
+
+            return NEUTRAL;
+        }
+    }
+
+    /**
+     * Water plants - gießen
+     * Source: 120
+     */
+    public static class WaterInterpreter extends Interpreter {
+
+        @Override
+        protected Quality doInterpretation() {
+
+            if (getZodiac().getElement().getPlantPart() == LEAF) {
+                return BEST;
+            } else if (getZodiac().getElement().getPlantPart() == FLOWER) {
+                return WORST;
             }
 
             return NEUTRAL;
