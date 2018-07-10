@@ -239,7 +239,7 @@ public class Gardening {
 
             if (getZodiac().getDirection() == DESCENDING) {
 
-                this.setCategory( getZodiac().getElement().getPlantPart() );
+                this.addAnnotation( getZodiac().getElement().getPlantPart() );
 
                 return GOOD;
             }

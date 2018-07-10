@@ -107,7 +107,7 @@ public class Day implements Comparable<Day>{
 			try {
 
 				this.interpreter = interpreterClass.newInstance();
-				this.interpreter.setDay(this);
+				this.interpreter.setDayAndInterpret(this);
 
 			} catch (final Exception e) {
 

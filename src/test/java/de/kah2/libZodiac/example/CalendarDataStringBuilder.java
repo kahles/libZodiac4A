@@ -7,6 +7,8 @@ import de.kah2.libZodiac.planetary.PlanetaryDayData;
 import de.kah2.libZodiac.zodiac.ZodiacDayData;
 
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.HashSet;
 
 /**
  * This is a simple class for testing purposes to transform
@@ -96,15 +98,17 @@ public class CalendarDataStringBuilder {
 
 		} else {
 
-			String annotation = "";
+			final HashSet<String> annotations = interpreter.getAnnotations();
 
-			if ( interpreter.getCategory() != null ) {
-				annotation = " - " + interpreter.getCategory().toString();
+			String annotationString = "";
+
+			if ( ! annotations.isEmpty() ) {
+				annotationString = " - " + String.join(",", annotations);
 			}
 
 			// This is how it is intended to get a Description for an interpretation.
 			this.appendLine("Interpretation:\t\t\t" + interpreter.getClass().getSimpleName() + ": "
-					+ interpreter.getQuality() + annotation);
+					+ interpreter.getQuality() + annotationString);
 		}
 	}
 
