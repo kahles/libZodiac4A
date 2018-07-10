@@ -1,5 +1,7 @@
 package de.kah2.libZodiac.interpretation;
 
+import java.time.Month;
+
 import static de.kah2.libZodiac.interpretation.Interpreter.Quality.BAD;
 import static de.kah2.libZodiac.interpretation.Interpreter.Quality.BEST;
 import static de.kah2.libZodiac.interpretation.Interpreter.Quality.GOOD;
@@ -71,32 +73,40 @@ public class Gardening {
         }
     }
 
-    /** weed / dig - Jäten / umgraben */
-    // TODO Check book if this is correct
+    /**
+     * Weed and dig - Jäten und umgraben
+     * Source: 132
+     */
     public static class WeedDigInterpreter extends Interpreter {
 
+        public enum Annotations { DIG, WEED_TILL_NOON;}
         @Override
         protected Quality doInterpretation() {
 
-            if (getPlanetary().getLunarPhase() == INCREASING) {
-
-                    if (getZodiac().getSign() == LEO ) {
-                        return WORST;
-                    } else {
-                        return BAD;
-                    }
+            if ( getToday().getDate().getMonth() == Month.JUNE && getToday().getDate().getDayOfMonth() == 18 ) {
+                addAnnotation(Annotations.WEED_TILL_NOON);
+                return BEST;
             }
 
-            if (getPlanetary().getLunarPhase() == DECREASING) {
+            if (getPlanetary().getLunarPhase() == INCREASING) {
+
+                if (getZodiac().getSign() == LEO ) {
+
+                    addAnnotation( Annotations.DIG );
+                    return WORST;
+
+                } else {
+
+                    return BAD;
+                }
+            } else /*  DECREASING */ {
 
                 if (getZodiac().getSign() == CAPRICORN) {
                     return BEST;
-                } else if (getZodiac().getSign() == AQUARIUS) {
+                } else {
                     return GOOD;
                 }
             }
-
-            return NEUTRAL;
         }
     }
 
