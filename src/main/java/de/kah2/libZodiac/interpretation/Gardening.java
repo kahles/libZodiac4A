@@ -18,8 +18,10 @@ import static de.kah2.libZodiac.zodiac.ZodiacElement.WATER;
 import static de.kah2.libZodiac.zodiac.ZodiacSign.AQUARIUS;
 import static de.kah2.libZodiac.zodiac.ZodiacSign.CANCER;
 import static de.kah2.libZodiac.zodiac.ZodiacSign.CAPRICORN;
+import static de.kah2.libZodiac.zodiac.ZodiacSign.GEMINI;
 import static de.kah2.libZodiac.zodiac.ZodiacSign.LEO;
 import static de.kah2.libZodiac.zodiac.ZodiacSign.PISCES;
+import static de.kah2.libZodiac.zodiac.ZodiacSign.SAGITTARIUS;
 import static de.kah2.libZodiac.zodiac.ZodiacSign.SCORPIO;
 import static de.kah2.libZodiac.zodiac.ZodiacSign.VIRGO;
 
@@ -177,55 +179,41 @@ public class Gardening {
         }
     }
 
+    /**
+     * Combat pests - Schädlinge bekämpfen
+     * Source: 124
+     */
+    public static class CombatPestsInterpreter extends Interpreter {
 
-
-	/** Combat subterrestrial pests - Unterirdische Schädlinge bekämpfen"; */
-    // TODO Check book if this is correct
-    public static class SubterrestrialPestsInterpreter extends Interpreter {
-
-        @Override
-        protected Quality doInterpretation() {
-
-            if (getPlanetary().getLunarPhase() == DECREASING && getZodiac().getElement() == EARTH) {
-                return GOOD;
-            }
-
-            return NEUTRAL;
-        }
-    }
-
-	/** Combat overterrestrial pests - Oberirdische Schädlinge bekämpfen */
-    // TODO Check book if this is correct
-    public static class OverterrestrialPestsInterpreter extends Interpreter {
+        public enum PestType { OVERTERRESTRIAL, SUBTERRESTRIAL, SLUGS };
 
         @Override
         protected Quality doInterpretation() {
-            if (getPlanetary().getLunarPhase() == INCREASING) {
 
-                switch (getZodiac().getSign()) {
+            if ( getPlanetary().getLunarPhase() == DECREASING ) {
 
-                    case CANCER: return BEST;
+                // (TAURUS, VIRGO or CAPRICORN)
+                if ( getZodiac().getElement().getPlantPart() == ROOT ) {
 
-                    case GEMINI: return GOOD;
-
-                    case SAGITTARIUS: return GOOD;
-
+                    addAnnotation( PestType.SUBTERRESTRIAL );
+                    return BEST;
                 }
-            }
-            
-            return NEUTRAL;
-        }
-    }
 
-	/** Combat slugs - Schnecken bekämpfen */
-    // TODO Check book if this is correct
-	public static class CombatSlugsInterpreter extends Interpreter {
+                if ( getZodiac().getSign() == CANCER ) {
 
-        @Override
-        protected Quality doInterpretation() {
+                    addAnnotation(PestType.OVERTERRESTRIAL);
+                    return BEST;
+                }
 
-            if (getPlanetary().getLunarPhase() == INCREASING && getZodiac().getSign() == SCORPIO) {
+                if ( getZodiac().getSign() == GEMINI || getZodiac().getSign() == SAGITTARIUS) {
+
+                    addAnnotation(PestType.OVERTERRESTRIAL);
                     return GOOD;
+                }
+            } else if ( getPlanetary().getLunarPhase() == INCREASING && getZodiac().getSign() == SCORPIO) {
+
+                addAnnotation( PestType.SLUGS );
+                return BEST;
             }
 
             return NEUTRAL;
