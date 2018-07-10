@@ -9,6 +9,7 @@ import static de.kah2.libZodiac.planetary.LunarPhase.DECREASING;
 import static de.kah2.libZodiac.planetary.LunarPhase.FULL_MOON;
 import static de.kah2.libZodiac.planetary.LunarPhase.INCREASING;
 import static de.kah2.libZodiac.planetary.LunarPhase.NEW_MOON;
+import static de.kah2.libZodiac.zodiac.ZodiacDirection.ASCENDING;
 import static de.kah2.libZodiac.zodiac.ZodiacDirection.DESCENDING;
 import static de.kah2.libZodiac.zodiac.ZodiacElement.AIR;
 import static de.kah2.libZodiac.zodiac.ZodiacElement.FIRE;
@@ -122,20 +123,32 @@ public class Gardening {
         }
     }
 
-    /** Graft - Veredeln */
-    // TODO Check book if this is correct
+    /**
+     * Graft - Veredeln
+     * Source: 135
+     */
     public static class GraftInterpreter extends Interpreter {
 
         @Override
         protected Quality doInterpretation() {
 
-            if (getZodiac().getElement() == FIRE) {
+            if ( getPlanetary().getLunarPhase() == INCREASING ) {
 
-                if (getPlanetary().getLunarPhase() == INCREASING && getPlanetary().getDaysUntilNextMaxPhase() < 8) {
-                    return GOOD;
-                } else if (getPlanetary().getLunarPhase() == FULL_MOON) {
+                if ( getZodiac().getElement().getPlantPart() == FRUIT && getPlanetary().getDaysUntilNextMaxPhase() < 8) {
                     return BEST;
+                } else {
+                    return GOOD;
                 }
+            }
+
+            if ( getZodiac().getDirection() == ASCENDING && getZodiac().getElement().getPlantPart() == FRUIT) {
+                return GOOD;
+            }
+
+            // TODO check if this can be done in a better way:
+            if ( (getPlanetary().getLunarPhase() == DECREASING || getPlanetary().getLunarPhase() == NEW_MOON)
+                    && getZodiac().getDirection() == DESCENDING ) {
+                return WORST;
             }
 
             return NEUTRAL;
