@@ -11,8 +11,9 @@ import static de.kah2.libZodiac.planetary.LunarPhase.INCREASING;
 import static de.kah2.libZodiac.planetary.LunarPhase.NEW_MOON;
 import static de.kah2.libZodiac.zodiac.ZodiacDirection.DESCENDING;
 import static de.kah2.libZodiac.zodiac.ZodiacElement.AIR;
-import static de.kah2.libZodiac.zodiac.ZodiacElement.EARTH;
 import static de.kah2.libZodiac.zodiac.ZodiacElement.FIRE;
+import static de.kah2.libZodiac.zodiac.ZodiacElement.PlantPart.FRUIT;
+import static de.kah2.libZodiac.zodiac.ZodiacElement.PlantPart.LEAF;
 import static de.kah2.libZodiac.zodiac.ZodiacElement.PlantPart.ROOT;
 import static de.kah2.libZodiac.zodiac.ZodiacElement.WATER;
 import static de.kah2.libZodiac.zodiac.ZodiacSign.AQUARIUS;
@@ -63,25 +64,6 @@ public class Gardening {
                 }
             } else if (getZodiac().getSign() == SCORPIO || getZodiac().getSign() == PISCES) {
                 return GOOD;
-            }
-
-            return NEUTRAL;
-        }
-    }
-
-    /** Trim sick plants - Kranke Pflanzen beschneiden */
-    // TODO Check book if this is correct
-    public static class TrimSickInterpreter extends Interpreter {
-
-        @Override
-        protected Quality doInterpretation() {
-
-            if (getPlanetary().getDaysUntilNextMaxPhase() < 3) {
-                if (getPlanetary().getLunarPhase() == DECREASING) {
-                    return GOOD;
-                } else if (getPlanetary().getLunarPhase() == NEW_MOON) {
-                    return BEST;
-                }
             }
 
             return NEUTRAL;
@@ -160,25 +142,50 @@ public class Gardening {
         }
     }
 
-    /** Cut fruit trees - Obstbäume schneiden */
-    // TODO Check book if this is correct
-    public static class CutFruitTreeInterpreter extends Interpreter {
+    /**
+     * Trim plants - Pflanzen beschneiden
+     * Source: 134
+     */
+    public static class TrimInterpreter extends Interpreter {
+
+        public enum Category { FRUIT_TREES, SICK_PLANTS }
 
         @Override
         protected Quality doInterpretation() {
 
-            if (getZodiac().getElement() == FIRE) {
+            if ( getPlanetary().getLunarPhase() == INCREASING && getZodiac().getElement().getPlantPart() == LEAF ) {
+                return WORST;
+            }
 
-                if (getPlanetary().getLunarPhase() == DECREASING
-                        || getZodiac().getDirection() == DESCENDING) {
+            if ( getPlanetary().getDaysUntilNextMaxPhase() < 4 ) {
+
+                if ( getPlanetary().getLunarPhase() == DECREASING ) {
+
+                    addAnnotation( Category.SICK_PLANTS );
                     return GOOD;
+
+                } else if ( getPlanetary().getLunarPhase() == NEW_MOON ) {
+
+                    addAnnotation( Category.SICK_PLANTS );
+                    return BEST;
                 }
             }
 
-            return NEUTRAL;
+            if (getPlanetary().getLunarPhase() == DECREASING
+                    || getZodiac().getDirection() == DESCENDING) {
+
+                if (getZodiac().getElement().getPlantPart() == FRUIT) {
+                    addAnnotation( Category.FRUIT_TREES );
+                    return BEST;
+                }
+
+                return GOOD;
+            }
+
+            return BAD;
         }
     }
-
+    
     /**
      * Combat pests - Schädlinge bekämpfen
      * Source: 124
