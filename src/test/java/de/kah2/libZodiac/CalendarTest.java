@@ -72,17 +72,29 @@ public class CalendarTest {
 
 		LinkedList<Day> validDays = calendar.getValidDays();
 
-		assertTrue("Should start at last extreme",
-				validDays.getFirst().getDate().isEqual(SOME_DATES_LAST_EXTREME) );
+		assertTrue("Should start at last extreme", validDays.getFirst().getDate().isEqual(SOME_DATES_LAST_EXTREME) );
 
-		assertNotNull("First should have lunar phase",
-				validDays.getFirst().getPlanetaryData().getLunarPhase() );
+		assertNotNull("First should have lunar phase", validDays.getFirst().getPlanetaryData().getLunarPhase() );
 
-		assertTrue("Should end at next extreme",
-				validDays.getLast().getDate().isEqual(SOME_DATES_NEXT_EXTREME) );
+		assertTrue("First should be lunar extreme", validDays.getFirst().getPlanetaryData().getLunarPhase().isLunarExtreme());
 
-		assertNotNull("Last should have lunar phase",
-				validDays.getLast().getPlanetaryData().getLunarPhase() );
+		assertEquals("First should have daysSinceLast",
+				0, validDays.getFirst().getPlanetaryData().getDaysSinceLastMaxPhase());
+
+		assertEquals("First should have daysUntilNext",
+				0, validDays.getFirst().getPlanetaryData().getDaysUntilNextMaxPhase());
+
+		assertTrue("Should end at next extreme", validDays.getLast().getDate().isEqual(SOME_DATES_NEXT_EXTREME) );
+
+		assertNotNull("Last should have lunar phase", validDays.getLast().getPlanetaryData().getLunarPhase() );
+
+		assertTrue("Last should be lunar extreme", validDays.getLast().getPlanetaryData().getLunarPhase().isLunarExtreme());
+
+		assertEquals("Last should have daysSinceLast",
+				0, validDays.getLast().getPlanetaryData().getDaysSinceLastMaxPhase());
+
+		assertEquals("Last should have daysUntilNext",
+				0, validDays.getLast().getPlanetaryData().getDaysUntilNextMaxPhase());
 
 		// test what happens, when more valid days exist
 		final LinkedList<DayStorableDataSet> largerThanCycle = new LinkedList<>();
