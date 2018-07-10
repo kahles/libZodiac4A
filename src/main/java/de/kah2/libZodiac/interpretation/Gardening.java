@@ -36,8 +36,12 @@ import static de.kah2.libZodiac.zodiac.ZodiacSign.VIRGO;
  */
 public class Gardening {
 
-    /** Mow the lawn - Rasen mähen */
-    // TODO Check book if this is correct
+    // TODO Fertilize
+
+    /**
+     * Mow the lawn - Rasen mähen
+     * Source: 151, 155, 159
+     */
     public static class MowLawnInterpreter extends Interpreter {
 
         @Override
@@ -259,7 +263,7 @@ public class Gardening {
 
         public enum Plants {
 
-            FRUIT_PLANTS, FLOWERS, LEAFY_VEGETABLES, ROOT_VEGETABLES, GRASS, POTATOES, SALAD;
+            FRUIT_PLANTS, FLOWERS, LEAFY_VEGETABLES, ROOT_VEGETABLES, LAWN, POTATOES, SALAD;
         }
 
         @Override
@@ -267,7 +271,7 @@ public class Gardening {
 
             if ( getPlanetary().getLunarPhase() == INCREASING &&
                     ( getZodiac().getSign() == VIRGO || getZodiac().getSign() == LEO ) ) {
-                addAnnotation( Plants.GRASS );
+                addAnnotation( Plants.LAWN );
             }
 
             if (getPlanetary().getLunarPhase() == INCREASING || getZodiac().getDirection() == DESCENDING) {
