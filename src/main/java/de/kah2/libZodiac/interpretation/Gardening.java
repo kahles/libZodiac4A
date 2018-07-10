@@ -8,19 +8,15 @@ import static de.kah2.libZodiac.interpretation.Interpreter.Quality.GOOD;
 import static de.kah2.libZodiac.interpretation.Interpreter.Quality.NEUTRAL;
 import static de.kah2.libZodiac.interpretation.Interpreter.Quality.WORST;
 import static de.kah2.libZodiac.planetary.LunarPhase.DECREASING;
-import static de.kah2.libZodiac.planetary.LunarPhase.FULL_MOON;
 import static de.kah2.libZodiac.planetary.LunarPhase.INCREASING;
 import static de.kah2.libZodiac.planetary.LunarPhase.NEW_MOON;
 import static de.kah2.libZodiac.zodiac.ZodiacDirection.ASCENDING;
 import static de.kah2.libZodiac.zodiac.ZodiacDirection.DESCENDING;
-import static de.kah2.libZodiac.zodiac.ZodiacElement.AIR;
-import static de.kah2.libZodiac.zodiac.ZodiacElement.FIRE;
 import static de.kah2.libZodiac.zodiac.ZodiacElement.PlantPart.FLOWER;
 import static de.kah2.libZodiac.zodiac.ZodiacElement.PlantPart.FRUIT;
 import static de.kah2.libZodiac.zodiac.ZodiacElement.PlantPart.LEAF;
 import static de.kah2.libZodiac.zodiac.ZodiacElement.PlantPart.ROOT;
-import static de.kah2.libZodiac.zodiac.ZodiacElement.WATER;
-import static de.kah2.libZodiac.zodiac.ZodiacSign.AQUARIUS;
+import static de.kah2.libZodiac.zodiac.ZodiacSign.ARIES;
 import static de.kah2.libZodiac.zodiac.ZodiacSign.CANCER;
 import static de.kah2.libZodiac.zodiac.ZodiacSign.CAPRICORN;
 import static de.kah2.libZodiac.zodiac.ZodiacSign.GEMINI;
@@ -36,7 +32,46 @@ import static de.kah2.libZodiac.zodiac.ZodiacSign.VIRGO;
  */
 public class Gardening {
 
-    // TODO Fertilize
+    public enum Plants {
+        FRUIT_PLANTS, FLOWERS, LEAFY_VEGETABLES, ROOT_VEGETABLES, LAWN, POTATOES, SALAD
+    }
+
+    /**
+     * Fertilize / Düngen
+     * Source: 142
+     */
+    public static class FertilizeInterpreter extends Interpreter{
+
+        @Override
+        protected Quality doInterpretation() {
+
+            if (getZodiac().getSign() == LEO) {
+
+                return WORST;
+            }
+
+            if (getPlanetary().getLunarPhase() == NEW_MOON || getPlanetary().getLunarPhase() == INCREASING) {
+
+                return BAD;
+
+            } else {
+
+                if ( getZodiac().getSign() == ARIES || getZodiac().getSign() == SAGITTARIUS ) {
+
+                    addAnnotation(Plants.FRUIT_PLANTS);
+                    return BEST;
+                }
+
+                if ( getZodiac().getElement().getPlantPart() == LEAF ) {
+
+                    addAnnotation(Plants.FLOWERS);
+                    return BEST;
+                }
+
+                return GOOD;
+            }
+        }
+    }
 
     /**
      * Mow the lawn - Rasen mähen
@@ -62,7 +97,7 @@ public class Gardening {
     }
 
     /**
-     * Water plants - gießen
+     * Water plants - Gießen
      * Source: 120
      */
     public static class WaterInterpreter extends Interpreter {
@@ -86,7 +121,7 @@ public class Gardening {
      */
     public static class WeedDigInterpreter extends Interpreter {
 
-        public enum Annotations { DIG, WEED_TILL_NOON;}
+        public enum Annotations { DIG, WEED_TILL_NOON }
         @Override
         protected Quality doInterpretation() {
 
@@ -220,7 +255,7 @@ public class Gardening {
      */
     public static class CombatPestsInterpreter extends Interpreter {
 
-        public enum PestType { OVERTERRESTRIAL, SUBTERRESTRIAL, SLUGS };
+        public enum PestType { OVERTERRESTRIAL, SUBTERRESTRIAL, SLUGS }
 
         @Override
         protected Quality doInterpretation() {
@@ -260,11 +295,6 @@ public class Gardening {
      * Source: 116, 138
      */
     public static class SowPlantInterpreter extends Interpreter {
-
-        public enum Plants {
-
-            FRUIT_PLANTS, FLOWERS, LEAFY_VEGETABLES, ROOT_VEGETABLES, LAWN, POTATOES, SALAD;
-        }
 
         @Override
         protected Quality doInterpretation() {
