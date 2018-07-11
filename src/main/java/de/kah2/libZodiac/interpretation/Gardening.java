@@ -38,6 +38,53 @@ public class Gardening {
     }
 
     /**
+     * Harvest / Ernten
+     * Source: 146
+     */
+    public static class HarvestInterpreter extends Interpreter {
+
+        public enum Usage { TO_DRY, TO_CONSERVE, CONSUME_IMMEDIATELY }
+
+        @Override
+        protected Quality doInterpretation() {
+
+            if ( getPlanetary().getLunarPhase() == DECREASING ) {
+                addAnnotation( Usage.TO_DRY );
+            }
+
+            switch (getZodiac().getSign()) {
+
+                case ARIES:
+                    addAnnotation( Usage.TO_CONSERVE );
+                    return BEST;
+
+                case PISCES:
+                case CANCER:
+                    addAnnotation( Usage.CONSUME_IMMEDIATELY );
+                    return BAD;
+
+                case VIRGO:
+                    addAnnotation( Usage.CONSUME_IMMEDIATELY );
+                    return WORST;
+            }
+
+            if (getZodiac().getDirection() == ASCENDING) {
+
+                addAnnotation( Usage.TO_CONSERVE );
+                return GOOD;
+            }
+
+            if ( getPlanetary().getLunarPhase() == INCREASING ) {
+
+                addAnnotation( Usage.CONSUME_IMMEDIATELY );
+                return BAD;
+            }
+
+            return NEUTRAL;
+        }
+    }
+
+    /**
      * Fertilize / Düngen
      * Source: 142
      */
