@@ -9,8 +9,6 @@ import de.kah2.libZodiac.interpretation.Interpreter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static de.kah2.libZodiac.interpretation.Interpreter.Quality.*;
-
 import java.time.LocalDate;
 
 /**

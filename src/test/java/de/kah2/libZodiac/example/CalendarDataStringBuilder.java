@@ -7,7 +7,6 @@ import de.kah2.libZodiac.planetary.PlanetaryDayData;
 import de.kah2.libZodiac.zodiac.ZodiacDayData;
 
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.HashSet;
 
 /**

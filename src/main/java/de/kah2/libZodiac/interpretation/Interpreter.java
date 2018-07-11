@@ -3,11 +3,8 @@ package de.kah2.libZodiac.interpretation;
 import de.kah2.libZodiac.Day;
 import de.kah2.libZodiac.planetary.PlanetaryDayData;
 import de.kah2.libZodiac.zodiac.ZodiacDayData;
-import org.slf4j.LoggerFactory;
 
-import java.util.EnumSet;
 import java.util.HashSet;
-import java.util.Iterator;
 
 /**
  * <p>This is the base class for all Interpreters, which contains the logic to interpret zodiac data.</p>
