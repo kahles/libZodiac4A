@@ -8,7 +8,41 @@ package de.kah2.libZodiac.zodiac;
  */
 public enum ZodiacSign {
 
-	ARIES, TAURUS, GEMINI, CANCER, LEO, VIRGO, LIBRA, SCORPIO, SAGITTARIUS, CAPRICORN, AQUARIUS, PISCES;
+	/** Ger. Widder */
+	ARIES,
+
+	/** Ger. Stier */
+	TAURUS,
+
+	/** Ger. Zwillinge */
+	GEMINI,
+
+	/** Ger. Krebs */
+	CANCER,
+
+	/** Ger. Löwe */
+	LEO,
+
+	/** Ger. Jungfrau */
+	VIRGO,
+
+	/** Ger. Waage */
+	LIBRA,
+
+	/** Ger. Skorpion */
+	SCORPIO,
+
+	/** Ger. Schütze */
+	SAGITTARIUS,
+
+	/** Ger. Steinbock */
+	CAPRICORN,
+
+	/** Ger. Wassermann */
+	AQUARIUS,
+
+	/** Ger. Fische */
+	PISCES;
 
 	public static ZodiacSign of(final double lunarLongitude) throws IllegalArgumentException {
 
