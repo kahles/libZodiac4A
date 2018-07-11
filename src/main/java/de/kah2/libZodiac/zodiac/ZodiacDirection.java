@@ -3,7 +3,7 @@ package de.kah2.libZodiac.zodiac;
 /**
  * This class represents the lunar direction within the zodiac circle.
  *
- * TODO allow different interpretations of zodiac directions?
+ * TODO_later allow different interpretations of zodiac directions?
  * + https://www.astro.com/astrowiki/de/Maria_Thun#Aufsteigender_und_absteigender_Mond
  * + https://www.astro.com/astrowiki/de/Siderischer_Tierkreis
  *

@@ -436,7 +436,7 @@ class CalendarGenerator implements ProgressListener {
 
         LinkedList<Day> days = this.days.allAsList();
 
-        int counter = -1;
+        int counter = PlanetaryDayData.DAY_COUNT_NOT_CALCULATED;
 
         ListIterator<Day> iterator = days.listIterator();
 
@@ -449,7 +449,7 @@ class CalendarGenerator implements ProgressListener {
             day.getPlanetaryData().setDaysSinceLastMaxPhase(counter);
         }
 
-        counter = -1;
+        counter = PlanetaryDayData.DAY_COUNT_NOT_CALCULATED;
         iterator = days.listIterator( days.size() );
 
         while (iterator.hasPrevious()) {
@@ -469,7 +469,7 @@ class CalendarGenerator implements ProgressListener {
                 "Looking for extreme: " + day.getDate() + " - " + day.getPlanetaryData().getLunarPhase() +
                         "(count: " + counter + ")");
 
-        if (counter >= 0) {
+        if (counter < PlanetaryDayData.DAY_COUNT_NOT_CALCULATED) {
             counter ++;
         }
 

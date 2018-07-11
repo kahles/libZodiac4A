@@ -1,5 +1,6 @@
 package de.kah2.libZodiac;
 
+import de.kah2.libZodiac.planetary.PlanetaryDayData;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -301,7 +302,7 @@ public class CalendarGeneratorTest {
         while ( actualDay.getPlanetaryData().getLunarPhase() == null
                 || !actualDay.getPlanetaryData().getLunarPhase().isLunarExtreme() ) {
 
-            assertEquals(actualDay.getDate() + " shouldn't have daysSinceLast", -1,
+            assertEquals(actualDay.getDate() + " shouldn't have daysSinceLast", PlanetaryDayData.DAY_COUNT_NOT_CALCULATED,
                     actualDay.getPlanetaryData().getDaysSinceLastMaxPhase());
 
             actualDay = days.pollFirst();
@@ -331,7 +332,7 @@ public class CalendarGeneratorTest {
         while ( actualDay.getPlanetaryData().getLunarPhase() == null
                 || !actualDay.getPlanetaryData().getLunarPhase().isLunarExtreme() ) {
 
-            assertEquals(actualDay.getDate() + " shouldn't have daysUntilNext", -1,
+            assertEquals(actualDay.getDate() + " shouldn't have daysUntilNext", PlanetaryDayData.DAY_COUNT_NOT_CALCULATED,
                     actualDay.getPlanetaryData().getDaysUntilNextMaxPhase());
 
             actualDay = days.pollLast();

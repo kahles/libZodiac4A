@@ -43,7 +43,13 @@ import net.sourceforge.novaforjava.solarsystem.Solar;
  */
 public class PlanetaryDayData {
 
-	public final static ZoneId TIME_ZONE_ID_LIBNOVA = ZoneId.of("UTC");
+	/**
+	 * Since checks are normally like <code>if (daysSince/Until < ...)</code>, we use {@link Integer#MAX_VALUE} to prevent wrong
+	 * interpretations.
+	 */
+	public static final int DAY_COUNT_NOT_CALCULATED = Integer.MAX_VALUE;
+
+	final static ZoneId TIME_ZONE_ID_LIBNOVA = ZoneId.of("UTC");
 
 	/**
 	 * These values are only needed for calculation of the other values. => They
@@ -56,8 +62,9 @@ public class PlanetaryDayData {
 
 	private double lunarLongitude;
 	private LunarPhase lunarPhase = null;
-	private int daysSinceLastMaxPhase = -1;
-	private int daysUntilNextMaxPhase = -1;
+
+	private int daysSinceLastMaxPhase = DAY_COUNT_NOT_CALCULATED;
+	private int daysUntilNextMaxPhase = DAY_COUNT_NOT_CALCULATED;
 
 	PlanetaryDayData() {
 	}
@@ -85,10 +92,10 @@ public class PlanetaryDayData {
 		data.calculateJulianDateAtDayStart(date, zoneId);
 		data.calculateJulianDateAtNoon(date, zoneId);
 
-		data.calculateLunarLongitude();
-		data.calculateLunarVisibility();
-		data.calculateLunarRiseSetFor(observerPosition, zoneId);
 		data.calculateSolarRiseSetFor(observerPosition, zoneId);
+		data.calculateLunarRiseSetFor(observerPosition, zoneId);
+		data.calculateLunarVisibility();
+		data.calculateLunarLongitude();
 
 		return data;
 	}
@@ -103,7 +110,7 @@ public class PlanetaryDayData {
 		this.julianDateAtNoon = localDateToJulianDate(noon, zoneId);
 	}
 
-	static double localDateToJulianDate(final LocalDateTime date, final ZoneId zoneId) {
+	private static double localDateToJulianDate(final LocalDateTime date, final ZoneId zoneId) {
 
 		final ZonedDateTime localZonedDateTime = ZonedDateTime.of(date, zoneId);
 		final Instant utcDate = localZonedDateTime.withZoneSameInstant(PlanetaryDayData.TIME_ZONE_ID_LIBNOVA)
@@ -213,8 +220,9 @@ public class PlanetaryDayData {
 	}
 
 	/**
-	 * @return Days since last full or new moon or -1 if it isn't calculated so
+	 * @return Days since last full or new moon or {@link #DAY_COUNT_NOT_CALCULATED}/{@link Integer#MAX_VALUE} if it isn't calculated so
 	 *         far.
+	 * @see #DAY_COUNT_NOT_CALCULATED !
 	 */
 	public final int getDaysSinceLastMaxPhase() {
 		return this.daysSinceLastMaxPhase;
@@ -231,8 +239,9 @@ public class PlanetaryDayData {
 	}
 
 	/**
-	 * @return Days until next full or new moon or -1 if it isn't calculated so
+	 * @return Days until next full or new moon or {@link #DAY_COUNT_NOT_CALCULATED}/{@link Integer#MAX_VALUE} if it isn't calculated so
 	 *         far.
+	 * @see #DAY_COUNT_NOT_CALCULATED !
 	 */
 	public final int getDaysUntilNextMaxPhase() {
 		return this.daysUntilNextMaxPhase;
@@ -254,26 +263,26 @@ public class PlanetaryDayData {
 	 */
 	public boolean isComplete() {
 		return this.lunarPhase != null && this.getDaysSinceLastMaxPhase() != -1
-				&& this.getDaysUntilNextMaxPhase() != -1;
+				&& this.getDaysUntilNextMaxPhase() != DAY_COUNT_NOT_CALCULATED;
 	}
 
 	/** For importing data and testing */
-	public void setLunarLongitude(final double lunarLongitude) {
+	void setLunarLongitude(final double lunarLongitude) {
 		this.lunarLongitude = lunarLongitude;
 	}
 
 	/** For importing data and testing */
-	protected void setLunarVisibility(final double lunarVisibility) {
+	void setLunarVisibility(final double lunarVisibility) {
 		this.lunarVisibility = lunarVisibility;
 	}
 
 	/** For importing data and testing */
-	protected void setLunarRiseSet(final ZonedRiseSet lunarRiseSet) {
+	void setLunarRiseSet(final ZonedRiseSet lunarRiseSet) {
 		this.lunarRiseSet = lunarRiseSet;
 	}
 
 	/** For importing data and testing */
-	protected void setSolarRiseSet(final ZonedRiseSet solarRiseSet) {
+	void setSolarRiseSet(final ZonedRiseSet solarRiseSet) {
 		this.solarRiseSet = solarRiseSet;
 	}
 }

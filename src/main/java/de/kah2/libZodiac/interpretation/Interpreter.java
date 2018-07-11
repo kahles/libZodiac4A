@@ -4,6 +4,8 @@ import de.kah2.libZodiac.Day;
 import de.kah2.libZodiac.planetary.PlanetaryDayData;
 import de.kah2.libZodiac.zodiac.ZodiacDayData;
 
+import java.util.HashSet;
+
 /**
  * <p>This is the base class for all Interpreters, which contains the logic to interpret zodiac data.</p>
  * <p>To write an own interpreter just extend this class and override {@link #getQuality()}.</p>
@@ -17,24 +19,29 @@ public abstract class Interpreter {
 
 	private Day today;
 
-	private boolean isNotInterpreted = true;
+	private Quality quality = null;
 
-	private Quality quality;
-	private Enum<?> category;
+	private HashSet<String> annotations = new HashSet<>();
 
 	/**
-	 * Sets the day to interpret and also resets interpretation data to ensure correctness.
+	 * Sets the day to interpret and runs interpretation.
 	 */
-	public final void setDay(final Day dayToInterpret) {
+	public final void setDayAndInterpret(final Day dayToInterpret) {
+
 		this.today = dayToInterpret;
-		this.quality = null;
+
+		this.quality = this.doInterpretation();
+
+		if (this.quality == null) {
+			throw new RuntimeException("Interpreter may not return null.");
+		}
 	}
 
 	/**
 	 * <p>Implement this method to do some interpretation and return the resulting {@link Quality} for this day. Use {@link #getToday()} to
 	 * access the information available about the actual day. There are also shortcuts {@link #getPlanetary()} and {@link #getZodiac()} for
 	 * actual data.</p>
-	 * <p>By calling {@link #setCategory(Enum)} it is possible to add additional information. For an example, see
+	 * <p>By calling {@link #addAnnotation(Enum)} it is possible to add additional information. For an example, see
 	 * {@link de.kah2.libZodiac.interpretation.Gardening.SowPlantInterpreter}.</p>
 	 */
 	protected abstract Quality doInterpretation();
@@ -50,39 +57,26 @@ public abstract class Interpreter {
 	/** A shortcut to access {@link PlanetaryDayData} of actual Day available through {@link #getToday()}. */
 	protected final PlanetaryDayData getPlanetary() { return this.today.getPlanetaryData(); }
 
-	/**
-	 * Allows to set an additional category for interpreted quality, like e.g. a {@link de.kah2.libZodiac.zodiac.ZodiacElement.PlantPart}.
-	 */
-	protected final void setCategory(Enum<?> category) {
-		this.category = category;
-	}
-
-	private void interpretIfNecessary() {
-
-		if (this.isNotInterpreted) {
-
-			this.quality = this.doInterpretation();
-			this.isNotInterpreted = false;
-		}
-	}
-
 	/** Returns the interpreted {@link Quality} of this day. */
 	public final Quality getQuality() {
-
-		this.interpretIfNecessary();
-
-		if (this.quality == null) {
-			throw new RuntimeException("Interpreter may not return null.");
-		}
-
 		return this.quality;
 	}
 
-	/** May return additional information for interpreted quality or <code>null</code>, if none is set. */
-	public final Enum<?> getCategory() {
+	/**
+	 * Adds an annotation for interpreted quality, like e.g. a {@link de.kah2.libZodiac.zodiac.ZodiacElement.PlantPart}.
+	 */
+	protected final void addAnnotation(Enum<?> annotation) {
+		this.annotations.add( annotation.toString() );
+	}
 
-		this.interpretIfNecessary();
+	protected final int getAnnotationCount() { return annotations.size(); }
 
-		return this.category;
+	/**
+	 * <p>Annotations are interpreted (additional) information besides {@link Quality}</p>
+	 * <p><strong>Doesn't run interpreter</strong> because it may be called during {@link #doInterpretation()}.</p>
+	 */
+	public final HashSet<String> getAnnotations() {
+		return new HashSet<>( this.annotations );
+
 	}
 }

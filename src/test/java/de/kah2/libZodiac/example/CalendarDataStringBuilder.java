@@ -2,6 +2,8 @@ package de.kah2.libZodiac.example;
 
 import org.threeten.bp.LocalDate;
 
+import java.util.HashSet;
+
 import de.kah2.libZodiac.Calendar;
 import de.kah2.libZodiac.Day;
 import de.kah2.libZodiac.interpretation.Interpreter;
@@ -63,13 +65,13 @@ public class CalendarDataStringBuilder {
 			this.appendLine("Lunar PHASE:\t\t\t" + data.getLunarPhase());
 		}
 
-		if (data.getDaysSinceLastMaxPhase() == -1) {
+		if (data.getDaysSinceLastMaxPhase() == PlanetaryDayData.DAY_COUNT_NOT_CALCULATED) {
 			this.appendLine("Day count since last extreme isn't available.");
 		} else {
 			this.appendLine("Days since full/new:\t" + data.getDaysSinceLastMaxPhase());
 		}
 
-		if (data.getDaysUntilNextMaxPhase() == -1) {
+		if (data.getDaysUntilNextMaxPhase() == PlanetaryDayData.DAY_COUNT_NOT_CALCULATED) {
 			this.appendLine("Day count until next extreme isn't available.");
 		} else {
 			this.appendLine("Days until full/new:\t" + data.getDaysUntilNextMaxPhase());
@@ -96,9 +98,17 @@ public class CalendarDataStringBuilder {
 
 		} else {
 
+			final HashSet<String> annotations = interpreter.getAnnotations();
+
+			String annotationString = "";
+
+			if ( ! annotations.isEmpty() ) {
+				annotationString = " - " + String.join(",", annotations);
+			}
+
 			// This is how it is intended to get a Description for an interpretation.
-			this.appendLine("Interpretation:\t" + Interpreter.class.getSimpleName()
-					+ interpreter.getQuality());
+			this.appendLine("Interpretation:\t\t\t" + interpreter.getClass().getSimpleName() + ": "
+					+ interpreter.getQuality() + annotationString);
 		}
 	}
 
