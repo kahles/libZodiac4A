@@ -22,7 +22,6 @@ import static de.kah2.libZodiac.zodiac.ZodiacSign.CANCER;
 import static de.kah2.libZodiac.zodiac.ZodiacSign.CAPRICORN;
 import static de.kah2.libZodiac.zodiac.ZodiacSign.GEMINI;
 import static de.kah2.libZodiac.zodiac.ZodiacSign.LEO;
-import static de.kah2.libZodiac.zodiac.ZodiacSign.PISCES;
 import static de.kah2.libZodiac.zodiac.ZodiacSign.SAGITTARIUS;
 import static de.kah2.libZodiac.zodiac.ZodiacSign.SCORPIO;
 import static de.kah2.libZodiac.zodiac.ZodiacSign.VIRGO;
@@ -163,17 +162,17 @@ public class Gardening {
     }
 
     /**
-     * Weed and dig - Jäten und umgraben
+     * Weed control - Unkrautbekämpfung
      * Source: 132
      */
-    public static class WeedDigInterpreter extends Interpreter {
+    public static class WeedControlInterpreter extends Interpreter {
 
-        public enum Annotations { DIG, WEED_TILL_NOON }
+        public enum Annotations { DIG, WEED, WEED_BEFORE_NOON}
         @Override
         protected Quality doInterpretation() {
 
             if ( getToday().getDate().getMonth() == Month.JUNE && getToday().getDate().getDayOfMonth() == 18 ) {
-                addAnnotation(Annotations.WEED_TILL_NOON);
+                addAnnotation(Annotations.WEED_BEFORE_NOON);
                 return BEST;
             }
 
@@ -189,6 +188,8 @@ public class Gardening {
                     return BAD;
                 }
             } else /*  DECREASING */ {
+
+                addAnnotation( Annotations.WEED );
 
                 if (getZodiac().getSign() == CAPRICORN) {
                     return BEST;
