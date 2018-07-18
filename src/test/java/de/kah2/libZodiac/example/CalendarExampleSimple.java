@@ -70,6 +70,6 @@ public class CalendarExampleSimple {
 	}
 
 	public static void main(final String[] args) {
-		run( Gardening.SowPlantInterpreter.class, 2 );
+		run( Gardening.TrimInterpreter.class, 2 );
 	}
 }
