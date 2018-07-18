@@ -14,7 +14,20 @@ public abstract class Interpreter {
 
 	/** The possible quality a Day can have for a selected interpretation. */
 	public enum Quality {
-		BEST, GOOD, NEUTRAL, BAD, WORST
+
+		WORST,
+		BAD,
+		NEUTRAL,
+		GOOD,
+		BEST;
+
+		public boolean isBetterThan(Quality other) {
+			return this.compareTo(other) > 0;
+		}
+
+		public boolean isWorseThan(Quality other) {
+			return this.compareTo(other) < 0;
+		}
 	}
 
 	private Day today;
@@ -77,6 +90,5 @@ public abstract class Interpreter {
 	 */
 	public final HashSet<String> getAnnotations() {
 		return new HashSet<>( this.annotations );
-
 	}
 }
