@@ -91,13 +91,11 @@ public class DateRange implements Iterable<LocalDate> {
 		};
 	}
 
+	/**
+	 * @return Number of days contained in a range.
+	 */
 	public int size() {
 		return (int) ChronoUnit.DAYS.between(this.getStart(), this.getEnd()) + 1;
-	}
-
-	@Override
-	protected DateRange clone() {
-	    return new DateRange(this.getStart(), this.getEnd());
 	}
 
 	@Override
