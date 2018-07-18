@@ -28,16 +28,14 @@ public class CalendarExampleSimple {
 	/**
 	 * Runs the example.
 	 */
-	public static void run(Class <? extends Interpreter> interpreterClass, int days) {
+	public static void run(Class <? extends Interpreter> interpreterClass, LocalDate startDate, int days) {
 		/* First step: create a Calendar */
 
-		// This is the way to calculate all data for today and the next two
-		// days:
+		// This is the way to calculate all data for a specific range:
 		// In order to know how far it is until next lunar extreme (full and new
 		// moon), all days since last and until next lunar extreme get
 		// calculated.
-		final LocalDate today = LocalDate.now();
-		final DateRange range = new DateRange(today, today.plusDays(days));
+		final DateRange range = new DateRange(startDate, startDate.plusDays(days));
 		final Calendar calendar = new Calendar(TestConstantsAndHelpers.POSITION_MUNICH, range);
 
 		// If we don't need to know how far away next/previous lunar extreme is,
@@ -70,6 +68,6 @@ public class CalendarExampleSimple {
 	}
 
 	public static void main(final String[] args) {
-		run( Gardening.TrimInterpreter.class, 2 );
+		run( Gardening.TrimInterpreter.class, LocalDate.now(), 2 );
 	}
 }
