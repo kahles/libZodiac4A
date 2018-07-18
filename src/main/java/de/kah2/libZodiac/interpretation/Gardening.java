@@ -22,7 +22,6 @@ import static de.kah2.libZodiac.zodiac.ZodiacSign.CANCER;
 import static de.kah2.libZodiac.zodiac.ZodiacSign.CAPRICORN;
 import static de.kah2.libZodiac.zodiac.ZodiacSign.GEMINI;
 import static de.kah2.libZodiac.zodiac.ZodiacSign.LEO;
-import static de.kah2.libZodiac.zodiac.ZodiacSign.PISCES;
 import static de.kah2.libZodiac.zodiac.ZodiacSign.SAGITTARIUS;
 import static de.kah2.libZodiac.zodiac.ZodiacSign.SCORPIO;
 import static de.kah2.libZodiac.zodiac.ZodiacSign.VIRGO;
