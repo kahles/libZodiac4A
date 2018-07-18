@@ -22,6 +22,7 @@ import static de.kah2.libZodiac.zodiac.ZodiacSign.CANCER;
 import static de.kah2.libZodiac.zodiac.ZodiacSign.CAPRICORN;
 import static de.kah2.libZodiac.zodiac.ZodiacSign.GEMINI;
 import static de.kah2.libZodiac.zodiac.ZodiacSign.LEO;
+import static de.kah2.libZodiac.zodiac.ZodiacSign.PISCES;
 import static de.kah2.libZodiac.zodiac.ZodiacSign.SAGITTARIUS;
 import static de.kah2.libZodiac.zodiac.ZodiacSign.SCORPIO;
 import static de.kah2.libZodiac.zodiac.ZodiacSign.VIRGO;
@@ -47,39 +48,57 @@ public class Gardening {
         @Override
         protected Quality doInterpretation() {
 
-            if ( getPlanetary().getLunarPhase() == DECREASING ) {
-                addAnnotation( Usage.TO_DRY );
-            }
+            // Step 1: Set Quality
+
+            Quality quality = NEUTRAL;
 
             switch (getZodiac().getSign()) {
 
                 case ARIES:
-                    addAnnotation( Usage.TO_CONSERVE );
-                    return BEST;
+
+                    quality = BEST;
+                    break;
 
                 case PISCES:
                 case CANCER:
-                    addAnnotation( Usage.CONSUME_IMMEDIATELY );
-                    return BAD;
+
+                    quality = BAD;
+                    break;
 
                 case VIRGO:
-                    addAnnotation( Usage.CONSUME_IMMEDIATELY );
-                    return WORST;
+
+                    quality = WORST;
+                    break;
+
+                default:
+
+                    if (getZodiac().getDirection() == ASCENDING) {
+
+                        quality = GOOD;
+
+                    } else if ( getPlanetary().getLunarPhase() == INCREASING ) {
+
+                        quality = BAD;
+                    }
+                    break;
             }
 
-            if (getZodiac().getDirection() == ASCENDING) {
+            // Step 2: Add annotations depending on quality
+
+            if ( quality.isBetterThan(NEUTRAL) ) {
 
                 addAnnotation( Usage.TO_CONSERVE );
-                return GOOD;
-            }
 
-            if ( getPlanetary().getLunarPhase() == INCREASING ) {
+                if ( getPlanetary().getLunarPhase() == DECREASING ) {
+                    addAnnotation( Usage.TO_DRY );
+                }
+
+            } else if ( quality.isWorseThan(NEUTRAL) ) {
 
                 addAnnotation( Usage.CONSUME_IMMEDIATELY );
-                return BAD;
             }
 
-            return NEUTRAL;
+            return quality;
         }
     }
 
