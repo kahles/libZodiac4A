@@ -130,14 +130,13 @@ public class Gardening {
         @Override
         protected Quality doInterpretation() {
 
-            if (getZodiac().getSign() == CANCER) {
-                if (getPlanetary().getLunarPhase() == INCREASING) {
+            if ( getZodiac().getElement().getPlantPart() == LEAF ) {
+
+                if ( getZodiac().getSign() == CANCER && getPlanetary().getLunarPhase() == INCREASING ) {
                     return BEST;
                 } else {
                     return GOOD;
                 }
-            } else if (getZodiac().getSign() == SCORPIO || getZodiac().getSign() == PISCES) {
-                return GOOD;
             }
 
             return NEUTRAL;
