@@ -23,8 +23,8 @@ import static org.junit.Assert.assertTrue;
 public class CalendarGeneratorTest {
 
     static {
-        // Uncomment to have detailed output
-        TestConstantsAndHelpers.enableLogging("trace");
+//        Uncomment to have detailed output
+//        TestConstantsAndHelpers.enableLogging("trace");
     }
 
     @Test

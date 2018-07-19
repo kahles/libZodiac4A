@@ -40,6 +40,10 @@ class CalendarGenerator implements ProgressListener {
 
     private boolean isSubmittingJobs = false;
 
+    // true during calculation to allow main thread to wait for calculation jobs
+    private boolean mainThreadMustWait = false;
+    private final static int THREAD_WAIT_INTERVALL_MS = 500;
+
     // Needed for extension:
     private SortedSet<Day> extensionCache;
     private boolean isExtendingBackwards;
@@ -89,6 +93,8 @@ class CalendarGenerator implements ProgressListener {
         DateRange rangeNeeded = this.getRangeNeededToCalculate();
 
         this.generateDaysNeeded(rangeNeeded);
+
+        this.waitForCalculationToFinish();
     }
 
     /**
@@ -119,11 +125,35 @@ class CalendarGenerator implements ProgressListener {
         this.onCalculationProgress(-1);
     }
 
+    private void waitForCalculationToFinish() {
+
+        // after generating days, #doStateChange() sets this to false, so we are able to continue here on main thread
+        this.mainThreadMustWait = true;
+
+        while (this.mainThreadMustWait) {
+            try {
+
+                log.trace("waitForCalculationToFinish: waiting " + THREAD_WAIT_INTERVALL_MS + "ms");
+                Thread.sleep(THREAD_WAIT_INTERVALL_MS);
+
+            } catch (InterruptedException e) {
+
+                log.error("Error during sleep:", e);
+            }
+        }
+
+        log.trace("waitForCalculationToFinish: continuing on main thread ...");
+        this.startCounting();
+    }
+
     /** This is not needed, because states are set by this class */
     @Override
     public void onStateChanged(State state) { log.trace("onStateChanged: State changed to " + state); }
 
-    /** Checks if a calculation step is finished and calls #doStateChange - argument is ignored */
+    /**
+     * Checks if a calculation step is finished and calls #doStateChange - argument is ignored. Must be synchronized,
+     * only one thread at a time is able to update progress and possibly trigger a state change.
+     */
     @Override
     public synchronized void onCalculationProgress(float percent) {
 
@@ -141,8 +171,6 @@ class CalendarGenerator implements ProgressListener {
                 }
             }
         }
-
-        // TODO wait for jobs to complete, to be able to continue on main-thread?
     }
 
     private boolean areAllCalculationsDone() {
@@ -190,7 +218,8 @@ class CalendarGenerator implements ProgressListener {
 
             case EXTENDING_FUTURE:
 
-                this.startCounting();
+                // we're finished generating days - continue on main thread (see #waitForCalculationToFinish):
+                this.mainThreadMustWait = false;
 
                 break;
 
