@@ -120,7 +120,7 @@ class CalendarGenerator implements ProgressListener {
 
     /** This is not needed, because states are set by this class */
     @Override
-    public void onStateChanged(State state) {}
+    public void onStateChanged(State state) { log.debug("onStateChanged: State changed to " + state); }
 
     /** Checks if a calculation step is finished and calls #doStateChange - argument is ignored */
     @Override
@@ -384,7 +384,13 @@ class CalendarGenerator implements ProgressListener {
 
     /** FINAL STEP: Notify {@link ProgressManager} */
     private void onFinished() {
+
+        // FIXME this gets called two times 😣
+
+        log.debug("onFinished: updating interpreters and notifying listeners");
+
         this.progressManager.notifyStateChanged(State.FINISHED);
+        this.calendar.updateInterpreters();
     }
 
     /**
@@ -469,7 +475,7 @@ class CalendarGenerator implements ProgressListener {
         return counter;
     }
 
-    /** Walks through all days and updates lunar phases. List will be modified!*/
+    /** Walks through all days and updates lunar phases. List will be modified! */
     private void updateLunarPhases(LinkedList<Day> days) {
 
         this.log.trace("######## updateLunarPhases() ########");

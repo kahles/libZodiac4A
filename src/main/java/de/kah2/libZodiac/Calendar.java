@@ -450,14 +450,19 @@ public class Calendar implements LocationProvider {
 
 		this.interpreterClass = interpreterClass;
 
-		List<Day> days = this.getValidDays();
+		this.updateInterpreters();
+	}
 
-		if (days == null) {
-			throw new RuntimeException("Tried to set interpreter to an invalid calendar - you should generate missing data first!");
-		}
+	void updateInterpreters() {
 
-		for (Day day : days) {
-			day.setInterpreterClass(interpreterClass);
+		final List<Day> days = this.getValidDays();
+
+		if ( days != null && this.interpreterClass != null) {
+
+			for (Day day : days) {
+				day.setInterpreterClass(this.interpreterClass);
+
+			}
 		}
 	}
 }
