@@ -13,6 +13,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 /**
  * This class contains logic for calculation of planetary data.
@@ -120,11 +121,11 @@ class CalendarGenerator implements ProgressListener {
 
     /** This is not needed, because states are set by this class */
     @Override
-    public void onStateChanged(State state) { log.debug("onStateChanged: State changed to " + state); }
+    public void onStateChanged(State state) { log.trace("onStateChanged: State changed to " + state); }
 
     /** Checks if a calculation step is finished and calls #doStateChange - argument is ignored */
     @Override
-    public void onCalculationProgress(float percent) {
+    public synchronized void onCalculationProgress(float percent) {
 
         if ( !(this.executor == null || this.executor.isShutdown()) ) { // => it's possible we're calculating
 
@@ -137,10 +138,11 @@ class CalendarGenerator implements ProgressListener {
                 } else { // if executor is set and status isn't GENERATING, status is EXTENDING_PAST or EXTENDING_FUTURE
 
                     this.onExtensionBundleFinished();
-
                 }
             }
         }
+
+        // TODO wait for jobs to complete, to be able to continue on main-thread?
     }
 
     private boolean areAllCalculationsDone() {
@@ -385,9 +387,7 @@ class CalendarGenerator implements ProgressListener {
     /** FINAL STEP: Notify {@link ProgressManager} */
     private void onFinished() {
 
-        // FIXME this gets called two times 😣
-
-        log.debug("onFinished: updating interpreters and notifying listeners");
+        log.trace("onFinished: updating interpreters and notifying listeners");
 
         this.progressManager.notifyStateChanged(State.FINISHED);
         this.calendar.updateInterpreters();
@@ -406,7 +406,10 @@ class CalendarGenerator implements ProgressListener {
             CalendarGenerator.this.log.trace(" -------- Calculation finished for " + date);
 
             return day;
-        }, this.executor);
+        }, this.executor).exceptionally(throwable -> {
+            log.error( throwable.getMessage() );
+            return null;
+        });
 
         result.thenAccept( day -> CalendarGenerator.this.getProgressManager().notifyDayCreated());
 
