@@ -3,6 +3,7 @@ package de.kah2.libZodiac;
 import java.time.LocalDate;
 import java.time.ZoneId;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.impl.SimpleLogger;
 
@@ -35,14 +36,7 @@ public class TestConstantsAndHelpers {
 		}
 	};
 
-	private final static int sleepStepMs = 100;
-
-	/**
-	 * Enables and configures {@link SimpleLogger} for level DEBUG.
-	 */
-	public static void enableLogging() {
-		TestConstantsAndHelpers.enableLogging("debug");
-	}
+	private final static int sleepStepMs = 1000;
 
 	/**
 	 * Enables and configures {@link SimpleLogger}.
@@ -57,6 +51,9 @@ public class TestConstantsAndHelpers {
 
 	/** Simple method to generate a {@link de.kah2.libZodiac.Calendar} and wait for results. */
 	public static void generateAndWaitFor(CalendarGenerator generator) {
+
+		final Logger log = LoggerFactory.getLogger("TestConstantsAndHelpers#generateAndWaitFor");
+
 		final LastStateProgressListener listener = new LastStateProgressListener();
 
 		generator.getProgressManager().addProgressListener(listener);
@@ -65,6 +62,7 @@ public class TestConstantsAndHelpers {
 
 		while (listener.getLastState() != ProgressListener.State.FINISHED) {
 			try {
+				log.trace("waiting " + sleepStepMs + "ms for state change to FINISHED");
 				Thread.sleep(sleepStepMs);
 			}
 			catch (InterruptedException e) {

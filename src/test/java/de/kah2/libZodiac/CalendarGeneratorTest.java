@@ -23,7 +23,7 @@ import static org.junit.Assert.assertTrue;
 public class CalendarGeneratorTest {
 
     static {
-//        Uncomment to have detailed output
+//        Uncomment to have detailed output:
 //        TestConstantsAndHelpers.enableLogging("trace");
     }
 
@@ -227,6 +227,7 @@ public class CalendarGeneratorTest {
 
     @Test
     public void testGenerateAfterImportRecognizesCycle() {
+
         final DateRange range = new DateRange(SOME_DATE, SOME_DATE);
 
         final LinkedList<DayStorableDataSet> daysToImport = CalendarGeneratorStub.stubDayStorableDataSets(
