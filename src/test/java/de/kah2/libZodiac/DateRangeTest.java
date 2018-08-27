@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.Month;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -62,5 +63,12 @@ public class DateRangeTest {
 		assertFalse(b.contains(a));
 	}
 
+	@Test
+	public void testSize() {
 
+		assertEquals("DateRange of one day should have size 1",
+				1, new DateRange(SOME_DATE, SOME_DATE).size() );
+		assertEquals("DateRange of three days should have size 3",
+				3, new DateRange(SOME_DATE, SOME_DATE.plusDays(2)).size() );
+	}
 }

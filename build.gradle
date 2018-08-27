@@ -1,5 +1,5 @@
 plugins {
-    id "com.gladed.androidgitversion" version "0.3.3"
+    id "com.gladed.androidgitversion" version "0.4.4"
 }
 
 apply plugin: 'com.android.library'
@@ -50,6 +50,7 @@ dependencies {
 
     // Removed, because actual version is broken
     //compile 'net.sourceforge.novaforjava:novaforjava:0.15.0.0'
+    // use my fork: https://sourceforge.net/u/skahle/novaforjava/ci/devel/tree/
     implementation project(':novaforjava')
 
     // Testing
@@ -57,6 +58,9 @@ dependencies {
     testImplementation('org.threeten:threetenbp:1.3.3') {
         exclude group: 'com.jakewharton.threetenabp', module: 'threetenabp'
     }
+    /*
+    Not needed at the moment
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+     */
 }

@@ -1,13 +1,9 @@
 package de.kah2.libZodiac;
 
-import de.kah2.libZodiac.planetary.LunarPhase;
-import de.kah2.libZodiac.planetary.PlanetaryDayData;
-import java9.util.concurrent.CompletableFuture;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.threeten.bp.LocalDate;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.ConcurrentModificationException;
@@ -21,6 +17,10 @@ import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+
+import de.kah2.libZodiac.planetary.LunarPhase;
+import de.kah2.libZodiac.planetary.PlanetaryDayData;
+import java9.util.concurrent.CompletableFuture;
 
 /**
  * This class contains logic for calculation of planetary data.
@@ -47,9 +47,13 @@ class CalendarGenerator implements ProgressListener {
 
     private boolean isSubmittingJobs = false;
 
+    // true during calculation to allow main thread to wait for calculation jobs
+    private boolean mainThreadMustWait = false;
+    private final static int THREAD_WAIT_INTERVALL_MS = 500;
+
     // Needed for extension:
     private SortedSet<Day> extensionCache;
-    private boolean isExtendingBackwards;
+    private boolean isExtendingPast;
 
     CalendarGenerator(Calendar calendar) {
         this.calendar = calendar;
@@ -95,19 +99,23 @@ class CalendarGenerator implements ProgressListener {
 
         DateRange rangeNeeded = this.getRangeNeededToCalculate();
 
-        this.generateDaysNeeded(rangeNeeded);
+        this.enableWaiting();
+
+        this.generateDaysNeededInExpectedRange(rangeNeeded);
+
+        this.waitForWorkerThreads();
     }
 
     /**
      * Generates the days not already present within given range
      * and updates the {@link Calendar}.
      */
-    private void generateDaysNeeded(DateRange range) {
+    private void generateDaysNeededInExpectedRange(DateRange range) {
 
         Collection<LocalDate> missingDates = this.days.getMissingDates( range );
 
         if (missingDates.size() == 0) {
-            this.doStateChange();
+            this.continueOnMainThread();
             return;
         }
 
@@ -126,13 +134,52 @@ class CalendarGenerator implements ProgressListener {
         this.onCalculationProgress(-1);
     }
 
+    /**
+     * Used for {@link #waitForWorkerThreads()} to wait until {@link #continueOnMainThread()} is called.
+     */
+    private void enableWaiting() {
+        this.mainThreadMustWait = true;
+    }
+
+    /**
+     * Used by main thread to wait for worker threads. Called by {@link #startGeneration()} and {@link #startExtending(boolean)}.
+     * After {@link #enableWaiting()} was called, this method waits for {@link #continueOnMainThread()} to be called.
+     */
+    private void waitForWorkerThreads() {
+
+        while (this.mainThreadMustWait) {
+            try {
+
+                log.trace("waiting " + THREAD_WAIT_INTERVALL_MS + "ms");
+                Thread.sleep(THREAD_WAIT_INTERVALL_MS);
+
+            } catch (InterruptedException e) {
+
+                log.error("Error during sleep:", e);
+            }
+        }
+
+        log.trace("waitForWorkerThreads: continuing on main thread ...");
+
+        this.doStateChange();
+    }
+
+    /** Notifies main thread to continue at {@link #waitForWorkerThreads()}. */
+    private void continueOnMainThread() {
+        log.trace("setting mainThreadMustWait to false");
+        this.mainThreadMustWait = false;
+    }
+
     /** This is not needed, because states are set by this class */
     @Override
-    public void onStateChanged(State state) {}
+    public void onStateChanged(State state) { log.trace("onStateChanged: State changed to " + state); }
 
-    /** Checks if a calculation step is finished and calls #doStateChange - argument is ignored */
+    /**
+     * Checks if a calculation step is finished and calls #doStateChange - argument is ignored. Must be synchronized,
+     * only one thread at a time is able to update progress and possibly trigger a state change.
+     */
     @Override
-    public void onCalculationProgress(float percent) {
+    public synchronized void onCalculationProgress(float percent) {
 
         if ( !(this.executor == null || this.executor.isShutdown()) ) { // => it's possible we're calculating
 
@@ -140,12 +187,12 @@ class CalendarGenerator implements ProgressListener {
 
                 if (this.progressManager.getState() == State.GENERATING) {
 
-                    this.doStateChange();
+                    // Finished generating expected range - continue on main thread
+                    this.continueOnMainThread();
 
                 } else { // if executor is set and status isn't GENERATING, status is EXTENDING_PAST or EXTENDING_FUTURE
 
                     this.onExtensionBundleFinished();
-
                 }
             }
         }
@@ -171,6 +218,8 @@ class CalendarGenerator implements ProgressListener {
 
     /**
      * Checks past state and decides which state should follow.
+     * Should only be run on main thread - in threads use {@link #continueOnMainThread()}, which triggers
+     * {@link #waitForWorkerThreads()} to continue and call this.
      */
     private void doStateChange() {
 
@@ -181,7 +230,9 @@ class CalendarGenerator implements ProgressListener {
                 this.onGenerationFinished();
 
                 if (this.calendar.getScope() == Calendar.Scope.CYCLE) {
+
                     this.startExtending(true);
+
                 } else {
                     this.onFinished();
                 }
@@ -236,11 +287,11 @@ class CalendarGenerator implements ProgressListener {
 
 
     /** STEP 2a: Prepare extending */
-    void startExtending(boolean isExtendingBackwards) {
+    void startExtending(boolean extendPast) {
 
         this.log.trace("######## startExtending() ########");
 
-        this.isExtendingBackwards = isExtendingBackwards;
+        this.isExtendingPast = extendPast;
 
         // We generate portions of days to be able to use multi-threading, save them to this cache and after each
         // portion is completed, we check if we found an extreme.
@@ -250,7 +301,7 @@ class CalendarGenerator implements ProgressListener {
 
         // Move complete "overhead" to cache to check for extremes outside of expected range - to avoid extending if
         // it's not needed
-        if (isExtendingBackwards) {
+        if (extendPast) {
 
             this.progressManager.notifyStateChanged(State.EXTENDING_PAST);
 
@@ -270,12 +321,20 @@ class CalendarGenerator implements ProgressListener {
 
         if (this.isLunarExtremeInExtensionCache()) { // We already have an extreme - nothing to do
 
+            log.trace("Lunar extreme found in extensionCache - triggering state change");
+            // We're on main thread and trigger the state change directly
             this.doStateChange();
 
         } else {
 
             this.executor = this.createExecutor();
+
+            this.enableWaiting();
+
             this.extend();
+
+            // above we started worker threads so we have to wait for them here to finish
+            this.waitForWorkerThreads();
         }
     }
 
@@ -286,7 +345,7 @@ class CalendarGenerator implements ProgressListener {
 
         this.isSubmittingJobs = true;
 
-        if (isExtendingBackwards) {
+        if (isExtendingPast) {
 
             for (int i = 1; i <= this.getMaxThreadCount(); i++) {
                 this.startDayCreationThread(this.extensionCache.first().getDate().minusDays(i));
@@ -348,7 +407,7 @@ class CalendarGenerator implements ProgressListener {
 
         this.saveExtensionCache();
 
-        this.doStateChange();
+        this.continueOnMainThread();
     }
 
     /**
@@ -392,7 +451,11 @@ class CalendarGenerator implements ProgressListener {
 
     /** FINAL STEP: Notify {@link ProgressManager} */
     private void onFinished() {
+
+        log.trace("onFinished: updating interpreters and notifying listeners");
+
         this.progressManager.notifyStateChanged(State.FINISHED);
+        this.calendar.updateInterpreters();
     }
 
     /**
@@ -411,7 +474,10 @@ class CalendarGenerator implements ProgressListener {
             CalendarGenerator.this.log.trace(" -------- Calculation finished for " + date);
 
             return day;
-        }, this.executor);
+        }, this.executor).exceptionally(throwable -> {
+            log.error( throwable.getMessage() );
+            return null;
+        });
 
         result.thenAccept( day -> CalendarGenerator.this.getProgressManager().notifyDayCreated());
 
@@ -461,6 +527,7 @@ class CalendarGenerator implements ProgressListener {
             day.getPlanetaryData().setDaysUntilNextMaxPhase(counter);
         }
 
+        // We're on main thread and call this directly
         this.doStateChange();
     }
 
@@ -480,7 +547,7 @@ class CalendarGenerator implements ProgressListener {
         return counter;
     }
 
-    /** Walks through all days and updates lunar phases. List will be modified!*/
+    /** Walks through all days and updates lunar phases. List will be modified! */
     private void updateLunarPhases(LinkedList<Day> days) {
 
         this.log.trace("######## updateLunarPhases() ########");
@@ -499,7 +566,7 @@ class CalendarGenerator implements ProgressListener {
 
             current.getPlanetaryData().setLunarPhase( LunarPhase.of(previous, current, next) );
 
-            this.log.trace("      (" + previous.getDate() + ", " + current.getDate() + ", " + next.getDate() + ") => "
+            this.log.debug("      (" + previous.getDate() + ", " + current.getDate() + ", " + next.getDate() + ") => "
                     + current.getPlanetaryData().getLunarPhase());
 
             previous = current;

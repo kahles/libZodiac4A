@@ -14,14 +14,28 @@ public abstract class Interpreter {
 
 	/** The possible quality a Day can have for a selected interpretation. */
 	public enum Quality {
-		BEST, GOOD, NEUTRAL, BAD, WORST
+
+		WORST,
+		BAD,
+		NEUTRAL,
+		GOOD,
+		BEST;
+
+		public boolean isBetterThan(Quality other) {
+			return this.compareTo(other) > 0;
+		}
+
+		public boolean isWorseThan(Quality other) {
+			return this.compareTo(other) < 0;
+		}
 	}
 
 	private Day today;
 
 	private Quality quality = null;
 
-	private HashSet<String> annotations = new HashSet<>();
+	// Since it seems unnecessarily complicated to store different Enum values in a Set, we keep them as strings.
+	private final HashSet<String> annotations = new HashSet<>();
 
 	/**
 	 * Sets the day to interpret and runs interpretation.
@@ -63,20 +77,22 @@ public abstract class Interpreter {
 	}
 
 	/**
-	 * Adds an annotation for interpreted quality, like e.g. a {@link de.kah2.libZodiac.zodiac.ZodiacElement.PlantPart}.
+	 * Adds an annotation for interpreted quality, like e.g. a {@link de.kah2.libZodiac.interpretation.Gardening.Plants}.
+	 * To guarantee a consistent set of annotations and make it easier to translate them, they should be managed in {@link Enum}s.
 	 */
 	protected final void addAnnotation(Enum<?> annotation) {
 		this.annotations.add( annotation.toString() );
 	}
 
+	/**
+	 * @return Number of active annotations
+	 */
 	protected final int getAnnotationCount() { return annotations.size(); }
 
 	/**
-	 * <p>Annotations are interpreted (additional) information besides {@link Quality}</p>
-	 * <p><strong>Doesn't run interpreter</strong> because it may be called during {@link #doInterpretation()}.</p>
+	 * <p>Annotations are interpreted (additional) information besides {@link Quality}</p>.
 	 */
 	public final HashSet<String> getAnnotations() {
 		return new HashSet<>( this.annotations );
-
 	}
 }

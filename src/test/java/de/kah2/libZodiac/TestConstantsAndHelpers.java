@@ -1,5 +1,6 @@
 package de.kah2.libZodiac;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.ZoneId;
@@ -33,15 +34,7 @@ public class TestConstantsAndHelpers {
 		}
 	};
 
-	private final static int sleepStepMs = 100;
-
-
-	/**
-	 * No functionality at android
-	 */
-	public static void enableLogging() {
-		TestConstantsAndHelpers.enableLogging("debug");
-	}
+	private final static int sleepStepMs = 1000;
 
 	/**
 	 * No functionality at android
@@ -53,6 +46,9 @@ public class TestConstantsAndHelpers {
 
 	/** Simple method to generate a {@link de.kah2.libZodiac.Calendar} and wait for results. */
 	public static void generateAndWaitFor(CalendarGenerator generator) {
+
+		final Logger log = LoggerFactory.getLogger("TestConstantsAndHelpers#generateAndWaitFor");
+
 		final LastStateProgressListener listener = new LastStateProgressListener();
 
 		generator.getProgressManager().addProgressListener(listener);
@@ -61,6 +57,7 @@ public class TestConstantsAndHelpers {
 
 		while (listener.getLastState() != ProgressListener.State.FINISHED) {
 			try {
+				log.trace("waiting " + sleepStepMs + "ms for state change to FINISHED");
 				Thread.sleep(sleepStepMs);
 			}
 			catch (InterruptedException e) {
