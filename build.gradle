@@ -45,8 +45,8 @@ dependencies {
     implementation 'org.slf4j:slf4j-android:1.7.25'
 
     // Android backports
-    implementation 'com.jakewharton.threetenabp:threetenabp:1.0.5'
-    implementation 'net.sourceforge.streamsupport:android-retrofuture:1.6.1'
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.1.0'
+    implementation 'net.sourceforge.streamsupport:android-retrofuture:1.6.3'
 
     // Removed, because actual version is broken
     //compile 'net.sourceforge.novaforjava:novaforjava:0.15.0.0'
