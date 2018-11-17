@@ -451,10 +451,9 @@ class CalendarGenerator implements ProgressListener {
     /** FINAL STEP: Notify {@link ProgressManager} */
     private void onFinished() {
 
-        log.trace("onFinished: updating interpreters and notifying listeners");
+        log.trace("onFinished: notifying listeners");
 
         this.progressManager.notifyStateChanged(State.FINISHED);
-        this.calendar.updateInterpreters();
     }
 
     /**

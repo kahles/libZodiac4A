@@ -24,8 +24,6 @@ public class Day implements Comparable<Day>{
 	private final PlanetaryDayData planetaryData;
 	private final ZodiacDayData zodiacData;
 
-	private Interpreter interpreter;
-
 	/** This constructor is used to create dummy objects for {@link CalendarData#getMissingDates(DateRange)} */
 	Day(final LocalDate date) {
 		this.date = date;
@@ -89,38 +87,6 @@ public class Day implements Comparable<Day>{
 	 */
 	public LocalDate getDate() {
 		return this.date;
-	}
-
-	/**
-	 * @param interpreterClass A subclass of {@link Interpreter} to instantiate or <code>null</code>
-	 *                         to unset interpreter.
-	 */
-	void setInterpreterClass(Class<? extends Interpreter> interpreterClass) {
-
-		if (interpreterClass == null) {
-
-			// unset interpreter
-			this.interpreter = null;
-
-		} else {
-
-			try {
-
-				this.interpreter = interpreterClass.newInstance();
-				this.interpreter.setDayAndInterpret(this);
-
-			} catch (final Exception e) {
-
-				this.log.error("Couldn't set interpreter: " + interpreterClass.getName(), e);
-			}
-		}
-	}
-
-	/**
-	 * @return The active {@link Interpreter} subclass or null, if none was set.
-	 */
-	public Interpreter getInterpreter() {
-		return this.interpreter;
 	}
 
 	/**

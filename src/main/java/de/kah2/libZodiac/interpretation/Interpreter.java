@@ -9,6 +9,8 @@ import java.util.HashSet;
 /**
  * <p>This is the base class for all Interpreters, which contains the logic to interpret zodiac data.</p>
  * <p>To write an own interpreter just extend this class and override {@link #getQuality()}.</p>
+ * <p>To get an interpretation, just create the desired Interpreter-Object and pass a calculated {@link Day}-instance to
+ * {@link #setDayAndInterpret(Day)}.</p>
  */
 public abstract class Interpreter {
 
@@ -35,7 +37,8 @@ public abstract class Interpreter {
 	private Quality quality = null;
 
 	// Since it seems unnecessarily complicated to store different Enum values in a Set, we keep them as strings.
-	private final HashSet<String> annotations = new HashSet<>();
+	// TODO EnumSet not applicable?
+	private HashSet<String> annotations;
 
 	/**
 	 * Sets the day to interpret and runs interpretation.
@@ -44,10 +47,11 @@ public abstract class Interpreter {
 
 		this.today = dayToInterpret;
 
+		this.annotations = new HashSet<>();
 		this.quality = this.doInterpretation();
 
 		if (this.quality == null) {
-			throw new RuntimeException("Interpreter may not return null.");
+			throw new RuntimeException("Bad interpreter - interpreter must not return null.");
 		}
 	}
 

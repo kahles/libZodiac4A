@@ -398,47 +398,6 @@ public class CalendarGeneratorTest {
                 rangeShouldBe.isEqual( generator.getRangeNeededToCalculate() ) );
     }
 
-    @Test
-    public void testInterpretersAreSet() {
-
-        DateRange expectedRange = new DateRange( SOME_DATE, SOME_DATE.plusDays(1) );
-
-        Calendar calendar = new CalendarStub( expectedRange, Calendar.Scope.CYCLE );
-
-        // generate range from SOME_DATES_LAST_EXTREME to SOME_DATES_NEXT_EXTREME
-        TestConstantsAndHelpers.generateAndWaitFor( calendar );
-
-        // set Interpreter
-        calendar.setInterpreterClass( StubInterpreter.class );
-
-        this.testIfAllDaysHaveInterpreter( calendar.getValidDays(), StubInterpreter.class );
-
-        // extend range
-        expectedRange = new DateRange( expectedRange.getStart(), SOME_DATES_NEXT_EXTREME.plusDays(3) );
-        calendar.setRangeExpected(expectedRange);
-
-        // generate range from SOME_DATES_NEXT_EXTREME to next extreme
-        TestConstantsAndHelpers.generateAndWaitFor( calendar );
-
-        this.testIfAllDaysHaveInterpreter( calendar.getValidDays(), StubInterpreter.class );
-    }
-
-    public static class StubInterpreter extends Interpreter {
-
-        @Override
-        protected Quality doInterpretation() {
-            return Quality.NEUTRAL;
-        }
-    }
-
-    private void testIfAllDaysHaveInterpreter(Iterable<Day> days, Class<? extends Interpreter> interpreterClass) {
-
-        for (Day day : days) {
-            assertNotNull( day.getDate() + " Interpreter should not be null", day.getInterpreter() );
-            assertEquals( day.getDate() + " Wrong interpreter is set", interpreterClass, day.getInterpreter().getClass() );
-        }
-    }
-
 //	private void print(Day day) {
 //		LocalDate date = day.getDate();
 //	 	int sinceLast = day.getPlanetaryData().getDaysSinceLastMaxPhase();
