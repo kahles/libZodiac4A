@@ -1,13 +1,9 @@
 package de.kah2.libZodiac.example;
 
 import de.kah2.libZodiac.Calendar;
-import de.kah2.libZodiac.Day;
 import de.kah2.libZodiac.interpretation.Interpreter;
 import de.kah2.libZodiac.planetary.PlanetaryDayData;
 import de.kah2.libZodiac.zodiac.ZodiacDayData;
-
-import java.time.LocalDate;
-import java.util.HashSet;
 
 /**
  * This is a simple class for testing purposes to transform
@@ -73,11 +69,11 @@ public class CalendarDataStringBuilder {
 
 	public void appendInterpretation(Interpreter interpreter) {
 
-		final HashSet<String> annotations = interpreter.getAnnotations();
+		final String[] annotations = interpreter.getAnnotationsAsStringArray();
 
 		String annotationString = "";
 
-		if ( ! annotations.isEmpty() ) {
+		if ( annotations.length > 0 ) {
 			annotationString = " - " + String.join(",", annotations);
 		}
 

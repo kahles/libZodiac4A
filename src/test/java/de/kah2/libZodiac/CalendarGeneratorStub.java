@@ -15,7 +15,7 @@ import static de.kah2.libZodiac.TestConstantsAndHelpers.LOCATION_PROVIDER;
  * 
  * @author kahles
  */
-class CalendarGeneratorStub extends CalendarGenerator {
+public class CalendarGeneratorStub extends CalendarGenerator {
 
 	CalendarGeneratorStub(Calendar calendar) {
 		super(calendar);
@@ -34,7 +34,7 @@ class CalendarGeneratorStub extends CalendarGenerator {
 	/**
 	 * This creates a day and stubs calculation of {@link PlanetaryDayData}.
 	 */
-	static Day stubDay(final LocationProvider locationProvider, final LocalDate date) {
+	private static Day stubDay(final LocationProvider locationProvider, final LocalDate date) {
 
 		return new Day(date, PlanetaryDayDataStub.calculateFor(date, locationProvider));
 	}
@@ -42,7 +42,7 @@ class CalendarGeneratorStub extends CalendarGenerator {
 	/**
 	 * This creates a day and stubs calculation of {@link PlanetaryDayData}. Uses a default {@link LocationProvider}.
 	 */
-	static Day stubDay(final LocalDate date) {
+	public static Day stubDay(final LocalDate date) {
 		return stubDay(LOCATION_PROVIDER, date);
 	}
 

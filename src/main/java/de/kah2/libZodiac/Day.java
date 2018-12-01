@@ -1,6 +1,5 @@
 package de.kah2.libZodiac;
 
-import de.kah2.libZodiac.interpretation.Interpreter;
 import de.kah2.libZodiac.planetary.PlanetaryDayData;
 import de.kah2.libZodiac.zodiac.ZodiacDayData;
 import org.slf4j.Logger;
