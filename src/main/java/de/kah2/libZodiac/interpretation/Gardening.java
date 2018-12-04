@@ -40,7 +40,7 @@ public class Gardening {
      * Harvest / Ernten
      * Source: 146
      */
-    public static class HarvestInterpreter extends Interpreter {
+    public static class HarvestInterpreter extends Interpreter<HarvestInterpreter.Usage> {
 
         public enum Usage { TO_DRY, TO_CONSERVE, CONSUME_IMMEDIATELY }
 
@@ -86,7 +86,7 @@ public class Gardening {
 
             if ( quality.isBetterThan(NEUTRAL) ) {
 
-                addAnnotation( Usage.TO_CONSERVE );
+                addAnnotation(Usage.TO_CONSERVE);
 
                 if ( getPlanetary().getLunarPhase() == DECREASING ) {
                     addAnnotation( Usage.TO_DRY );
@@ -105,7 +105,7 @@ public class Gardening {
      * Fertilize / Düngen
      * Source: 142
      */
-    public static class FertilizeInterpreter extends Interpreter{
+    public static class FertilizeInterpreter extends Interpreter<Plants>{
 
         @Override
         protected Quality doInterpretation() {
@@ -183,14 +183,14 @@ public class Gardening {
      * Weed control - Unkrautbekämpfung
      * Source: 132
      */
-    public static class WeedControlInterpreter extends Interpreter {
+    public static class WeedControlInterpreter extends Interpreter<WeedControlInterpreter.Actions> {
 
-        public enum Annotations { DIG, WEED, WEED_BEFORE_NOON}
+        public enum Actions { DIG, WEED, WEED_BEFORE_NOON}
         @Override
         protected Quality doInterpretation() {
 
             if ( getToday().getDate().getMonth() == Month.JUNE && getToday().getDate().getDayOfMonth() == 18 ) {
-                addAnnotation(Annotations.WEED_BEFORE_NOON);
+                addAnnotation(Actions.WEED_BEFORE_NOON);
                 return BEST;
             }
 
@@ -198,7 +198,7 @@ public class Gardening {
 
                 if (getZodiac().getSign() == LEO ) {
 
-                    addAnnotation( Annotations.DIG );
+                    addAnnotation( Actions.DIG );
                     return WORST;
 
                 } else {
@@ -207,7 +207,7 @@ public class Gardening {
                 }
             } else /*  DECREASING */ {
 
-                addAnnotation( Annotations.WEED );
+                addAnnotation( Actions.WEED );
 
                 if (getZodiac().getSign() == CAPRICORN) {
                     return BEST;
@@ -279,9 +279,9 @@ public class Gardening {
      * Trim plants - Pflanzen beschneiden
      * Source: 134
      */
-    public static class TrimInterpreter extends Interpreter {
+    public static class TrimInterpreter extends Interpreter<TrimInterpreter.PlantCategory> {
 
-        public enum Category { FRUIT_TREES, SICK_PLANTS }
+        public enum PlantCategory { FRUIT_TREES, SICK_PLANTS }
 
         @Override
         protected Quality doInterpretation() {
@@ -294,12 +294,12 @@ public class Gardening {
 
                 if ( getPlanetary().getLunarPhase() == DECREASING ) {
 
-                    addAnnotation( Category.SICK_PLANTS );
+                    addAnnotation( PlantCategory.SICK_PLANTS );
                     return GOOD;
 
                 } else if ( getPlanetary().getLunarPhase() == NEW_MOON ) {
 
-                    addAnnotation( Category.SICK_PLANTS );
+                    addAnnotation( PlantCategory.SICK_PLANTS );
                     return BEST;
                 }
             }
@@ -308,7 +308,7 @@ public class Gardening {
                     || getZodiac().getDirection() == DESCENDING) {
 
                 if (getZodiac().getElement().getPlantPart() == FRUIT) {
-                    addAnnotation( Category.FRUIT_TREES );
+                    addAnnotation( PlantCategory.FRUIT_TREES );
                     return BEST;
                 }
 
@@ -323,7 +323,7 @@ public class Gardening {
      * Combat pests - Schädlinge bekämpfen
      * Source: 124
      */
-    public static class CombatPestsInterpreter extends Interpreter {
+    public static class CombatPestsInterpreter extends Interpreter<CombatPestsInterpreter.PestType> {
 
         public enum PestType { OVERTERRESTRIAL, SUBTERRESTRIAL, SLUGS }
 
@@ -364,7 +364,7 @@ public class Gardening {
      * Sow/plant - Säen/pflanzen
      * Source: 116, 138
      */
-    public static class SowPlantInterpreter extends Interpreter {
+    public static class SowPlantInterpreter extends Interpreter<Plants> {
 
         @Override
         protected Quality doInterpretation() {

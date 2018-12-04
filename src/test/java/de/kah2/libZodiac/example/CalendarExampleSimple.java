@@ -29,7 +29,7 @@ public class CalendarExampleSimple {
 	/**
 	 * Runs the example.
 	 */
-	public static void run(Class <? extends Interpreter> interpreterClass, LocalDate startDate, int days) {
+	public static void run(Class <? extends Interpreter> interpreterClass, LocalDate startDate, int days) throws IllegalAccessException, InstantiationException {
 		/* First step: create a Calendar */
 
 		// This is the way to calculate all data for a specific range:
@@ -55,20 +55,39 @@ public class CalendarExampleSimple {
 		LOG.info("Generating Calendar for DateRange: " + range);
 		TestConstantsAndHelpers.generateAndWaitFor(calendar);
 
-		calendar.setInterpreterClass(interpreterClass);
+		final CalendarDataStringBuilder builder = new CalendarDataStringBuilder();
 
-		final CalendarDataStringBuilder converter = new CalendarDataStringBuilder();
-
-		converter.appendCalendarData(calendar);
+		builder.appendCalendarData(calendar);
 
 		for ( final Day day : calendar.getValidDays() ) {
-			converter.appendAllDayData(day);
+
+			final boolean isToday = day.getDate().isEqual(LocalDate.now());
+			if (isToday) {
+				builder.appendLine("************************** TODAY **************************");
+			}
+			builder.appendLine("Date:\t\t\t\t\t" + day.getDate().getDayOfWeek() + ", " + day.getDate());
+			builder.appendPlanetaryData(day.getPlanetaryData());
+			builder.appendZodiacData(day.getZodiacData());
+
+			final Interpreter interpreter = interpreterClass.newInstance();
+			interpreter.setDayAndInterpret(day);
+			builder.appendInterpretation(interpreter);
+
+			if (isToday) {
+				builder.appendLine("***********************************************************");
+			}
 		}
 
-		LOG.info("Result:\n" + converter.toString());
+		LOG.info("Result:\n" + builder.toString());
 	}
 
 	public static void main(final String[] args) {
-		run( Gardening.TrimInterpreter.class, LocalDate.now(), 2 );
+		try {
+			run( Gardening.TrimInterpreter.class, LocalDate.now(), 2 );
+		}
+		catch (Exception e) {
+			// This shouldn't happen
+			e.printStackTrace();
+		}
 	}
 }

@@ -435,34 +435,4 @@ public class Calendar implements LocationProvider {
 	CalendarData getDays() {
 		return days;
 	}
-
-	/** Simple getter for actual selected interpretation. */
-	public Class<? extends Interpreter> getInterpreterClass() {
-		return interpreterClass;
-	}
-
-	/**
-	 * This method is intended to activate an interpretation. You should set an interpreter after generating possibly missing data - if
-	 * data of expected range is missing, a {@link RuntimeException} will be thrown.
-	 * @param interpreterClass a class extending {@link Interpreter} or null to unset
-	 */
-	public void setInterpreterClass(Class<? extends Interpreter> interpreterClass) {
-
-		this.interpreterClass = interpreterClass;
-
-		this.updateInterpreters();
-	}
-
-	void updateInterpreters() {
-
-		final List<Day> days = this.getValidDays();
-
-		if ( days != null && this.interpreterClass != null) {
-
-			for (Day day : days) {
-				day.setInterpreterClass(this.interpreterClass);
-
-			}
-		}
-	}
 }

@@ -5,7 +5,6 @@ import org.threeten.bp.LocalDate;
 import java.util.HashSet;
 
 import de.kah2.libZodiac.Calendar;
-import de.kah2.libZodiac.Day;
 import de.kah2.libZodiac.interpretation.Interpreter;
 import de.kah2.libZodiac.planetary.PlanetaryDayData;
 import de.kah2.libZodiac.zodiac.ZodiacDayData;
@@ -34,27 +33,9 @@ public class CalendarDataStringBuilder {
 	}
 
 	/**
-	 * Adds all available data for a given day to the result.
-	 */
-	public void appendAllDayData(final Day day) {
-		final boolean isToday = day.getDate().isEqual(LocalDate.now());
-		if (isToday) {
-			this.appendLine("************************** TODAY **************************");
-		}
-		this.appendLine("Date:\t\t\t\t\t" + day.getDate().getDayOfWeek() + ", " + day.getDate());
-		this.appendPlanetaryData(day.getPlanetaryData());
-		this.appendZodiacData(day.getZodiacData());
-		this.appendInterpretation(day.getInterpreter());
-		if (isToday) {
-			this.appendLine("***********************************************************");
-		}
-		this.builder.append("\n");
-	}
-
-	/**
 	 * Adds planetary data to the result.
 	 */
-	private void appendPlanetaryData(final PlanetaryDayData data) {
+	public void appendPlanetaryData(final PlanetaryDayData data) {
 		this.appendLine("Moon is visible:\t\t" + Math.round(data.getLunarVisibility() * 1000) / 10.0 + "%");
 		this.appendLine("Lunar rise/set:\t\t\t" + data.getLunarRiseSet());
 		this.appendLine("Solar rise/set:\t\t\t" + data.getSolarRiseSet());
@@ -81,7 +62,7 @@ public class CalendarDataStringBuilder {
 	/**
 	 * Adds zodiac data to the result.
 	 */
-	private void appendZodiacData(final ZodiacDayData data) {
+	public void appendZodiacData(final ZodiacDayData data) {
 		this.appendLine("Zodiac Sign:\t\t\t" + data.getSign());
 		this.appendLine("Direction in Zodiac:\t" + data.getDirection());
 		this.appendLine("Zodiac element:\t\t\t" + data.getElement());
@@ -90,29 +71,22 @@ public class CalendarDataStringBuilder {
 		this.appendLine("\tFood element:\t\t" + data.getElement().getFoodElement());
 	}
 
-	private void appendInterpretation(final Interpreter interpreter) {
+	public void appendInterpretation(Interpreter interpreter) {
 
-		if (interpreter == null) {
+		final String[] annotations = interpreter.getAnnotationsAsStringArray();
 
-			this.appendLine("No interpretation was selected.");
+		String annotationString = "";
 
-		} else {
-
-			final HashSet<String> annotations = interpreter.getAnnotations();
-
-			String annotationString = "";
-
-			if ( ! annotations.isEmpty() ) {
-				annotationString = " - " + String.join(",", annotations);
-			}
-
-			// This is how it is intended to get a Description for an interpretation.
-			this.appendLine("Interpretation:\t\t\t" + interpreter.getClass().getSimpleName() + ": "
-					+ interpreter.getQuality() + annotationString);
+		if ( annotations.length > 0 ) {
+			annotationString = " - " + String.join(",", annotations);
 		}
+
+		// This is how it is intended to get a Description for an interpretation.
+		this.appendLine("Interpretation:\t\t\t" + interpreter.getClass().getSimpleName() + ": "
+				+ interpreter.getQuality() + annotationString);
 	}
 
-	private void appendLine(final String line) {
+	public void appendLine(final String line) {
 		this.builder.append(line).append("\n");
 	}
 

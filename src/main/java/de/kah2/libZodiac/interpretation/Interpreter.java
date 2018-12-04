@@ -4,13 +4,15 @@ import de.kah2.libZodiac.Day;
 import de.kah2.libZodiac.planetary.PlanetaryDayData;
 import de.kah2.libZodiac.zodiac.ZodiacDayData;
 
-import java.util.HashSet;
+import java.util.EnumSet;
 
 /**
  * <p>This is the base class for all Interpreters, which contains the logic to interpret zodiac data.</p>
  * <p>To write an own interpreter just extend this class and override {@link #getQuality()}.</p>
+ * <p>To get an interpretation, just create the desired Interpreter-Object and pass a calculated {@link Day}-instance to
+ * {@link #setDayAndInterpret(Day)}.</p>
  */
-public abstract class Interpreter {
+public abstract class Interpreter<T extends Enum<T>> {
 
 	/** The possible quality a Day can have for a selected interpretation. */
 	public enum Quality {
@@ -34,8 +36,7 @@ public abstract class Interpreter {
 
 	private Quality quality = null;
 
-	// Since it seems unnecessarily complicated to store different Enum values in a Set, we keep them as strings.
-	private final HashSet<String> annotations = new HashSet<>();
+	private EnumSet<T> annotations;
 
 	/**
 	 * Sets the day to interpret and runs interpretation.
@@ -47,7 +48,7 @@ public abstract class Interpreter {
 		this.quality = this.doInterpretation();
 
 		if (this.quality == null) {
-			throw new RuntimeException("Interpreter may not return null.");
+			throw new RuntimeException("Bad interpreter - interpreter must not return null.");
 		}
 	}
 
@@ -77,22 +78,63 @@ public abstract class Interpreter {
 	}
 
 	/**
-	 * Adds an annotation for interpreted quality, like e.g. a {@link de.kah2.libZodiac.interpretation.Gardening.Plants}.
-	 * To guarantee a consistent set of annotations and make it easier to translate them, they should be managed in {@link Enum}s.
+	 * Adds an annotation for interpreted quality, like e.g. {@link de.kah2.libZodiac.interpretation.Gardening.Plants}.
 	 */
-	protected final void addAnnotation(Enum<?> annotation) {
-		this.annotations.add( annotation.toString() );
+	protected final void addAnnotation(T annotation) {
+
+		// Since we first know the contained type when we get an object of this type, we initialize the EnumSet here.
+		if (this.annotations == null) {
+			this.annotations = EnumSet.of(annotation);
+		} else {
+			this.annotations.add(annotation);
+		}
 	}
 
 	/**
-	 * @return Number of active annotations
+	 * @return Number of annotations set
 	 */
-	protected final int getAnnotationCount() { return annotations.size(); }
+	protected final int getAnnotationCount() {
+
+		if (this.annotations == null)
+			return 0;
+		else
+			return annotations.size();
+	}
 
 	/**
-	 * <p>Annotations are interpreted (additional) information besides {@link Quality}</p>.
+	 * @return a copy of the selected annotations to avoid modification from outside
 	 */
-	public final HashSet<String> getAnnotations() {
-		return new HashSet<>( this.annotations );
+	public final EnumSet<T> getAnnotations(Class<T> enumClass) {
+
+		if (annotations == null) {
+			return EnumSet.noneOf(enumClass);
+		}
+
+		return EnumSet.copyOf( this.annotations );
+	}
+
+	/**
+	 * @return the annotations as Strings
+	 */
+	public final String[] getAnnotationsAsStringArray() {
+
+		if (annotations == null) {
+			return new String[0];
+		}
+
+		final String[] result = new String[this.annotations.size()];
+
+		int index=0;
+		for (Object o : this.annotations) {
+			result[index] = o.toString();
+			index++;
+		}
+
+		return result;
+	}
+
+	/** Only for testing purposes */
+	final EnumSet<T> getContainedAnnotations() {
+		return this.annotations;
 	}
 }
