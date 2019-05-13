@@ -75,6 +75,8 @@ public class CalendarExampleSimple {
 			if (isToday) {
 				builder.appendLine("***********************************************************");
 			}
+
+			builder.appendLine("");
 		}
 
 		LOG.info("Result:\n" + builder.toString());

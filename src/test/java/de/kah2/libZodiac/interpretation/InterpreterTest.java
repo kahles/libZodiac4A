@@ -3,12 +3,13 @@ package de.kah2.libZodiac.interpretation;
 import de.kah2.libZodiac.CalendarGeneratorStub;
 import de.kah2.libZodiac.Day;
 import de.kah2.libZodiac.TestConstantsAndHelpers;
-import de.kah2.libZodiac.interpretation.Interpreter;
 import org.junit.Test;
 
 import java.util.EnumSet;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class InterpreterTest {
 
