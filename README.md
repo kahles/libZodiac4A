@@ -15,7 +15,7 @@ A [gradle](https://gradle.org) build script is included to manage dependencies a
 Astronomical calculations are done with the help of [libnova](http://libnova.sourceforge.net/) by Liam Girdwood. Because the library is written in C, the
 portation [novaforjava v0.15.0.0](http://novaforjava.sourceforge.net/) by Richard van Nieuwenhoven is used.
 ##### NOTE:
-Since novaforjava actually has a bug that leads to wrong lunar visibility values when calculating data using multiple threads and my patch is not integrated in the original version yet, I made a [fork of novaforjava](https://sourceforge.net/u/skahle/novaforjava/ci/multi-thread-bug/tree/).
+Since novaforjava actually has a bug that leads to wrong lunar visibility values when calculating data using multiple threads and my patch is not integrated in the original version yet, I made a [fork of novaforjava](https://sourceforge.net/u/skahle/novaforjava).
 
 #### JUnit 4.12
 I'm trying to provide a reasonable test coverage using [JUnit](http://junit.org).
@@ -35,5 +35,8 @@ For logging I decided to use [slf4j](http://www.slf4j.org/), because it has many
 ### License
 This project is licensed under the GNU General Public License v3. See [LICENSE](LICENSE) for details.
 
+### Warranty
+Although I implemented this software to the best of my knowledge, I am not able to guarantee the completion, correctness and accuracy of the algorithms.
+
 ### Contact
-Feel free to contact me if you have wishes, proposals or if want to contribute.
+Feel free to contact me if you have wishes, proposals, bug reports or if you want to contribute.
