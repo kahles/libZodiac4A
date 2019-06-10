@@ -1,13 +1,12 @@
 package de.kah2.libZodiac.planetary;
 
+import de.kah2.nova4jmt.JulianDay;
+import de.kah2.nova4jmt.api.LnDate;
+import de.kah2.nova4jmt.api.LnRstTime;
+
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-
-import de.kah2.libZodiac.planetary.PlanetaryDayData;
-import net.sourceforge.novaforjava.JulianDay;
-import net.sourceforge.novaforjava.api.LnDate;
-import net.sourceforge.novaforjava.api.LnRstTime;
 
 /**
  * This class contains rise- and set-times including time zone transformations
