@@ -26,16 +26,16 @@ import de.kah2.nova4jmt.solarsystem.Solar;
  * </p>
  * <ul>
  * <li>{@link Position} lunarPosition, double lunarVisibility,
- * {@link ZonedRiseSet} lunarRiseSet and {@link ZonedRiseSet} solarRiseSet:<br/>
+ * {@link ZonedRiseSet} lunarRiseSet and {@link ZonedRiseSet} solarRiseSet:<br>
  * This is the basic data calculated in this class, they are calculated by
  * #calculate() and afterwards #isCalculated returns true.</li>
  * <li>{@link LunarPhase} lunarPhase, int daysSinceLastMaxPhase, int
- * daysUntilNextMaxPhase:<br/>
- * These values depend on the "neighbor"-days:<br/>
+ * daysUntilNextMaxPhase:<br>
+ * These values depend on the "neighbor"-days:<br>
  * lunar phase is automatically calculated when the neighbors second missing
- * neighbor is set at Day#setNext/Previous<br/>
+ * neighbor is set at Day#setNext/Previous<br>
  * the DAY counters are set by Calendar, when a lunar (half-)CYCLE is
- * initialized.<br/>
+ * initialized.<br>
  * If these three values are calculated {@link #isComplete()} returns true.</li>
  * </ul>
  *
@@ -44,7 +44,7 @@ import de.kah2.nova4jmt.solarsystem.Solar;
 public class PlanetaryDayData {
 
 	/**
-	 * Since checks are normally like <code>if (daysSince/Until < ...)</code>, we use {@link Integer#MAX_VALUE} to prevent wrong
+	 * Since checks are normally like <code>if (daysSince/Until &lt; ...)</code>, we use {@link Integer#MAX_VALUE} to prevent wrong
 	 * interpretations.
 	 */
 	public static final int DAY_COUNT_NOT_CALCULATED = Integer.MAX_VALUE;

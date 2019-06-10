@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import java.time.LocalDate;
 
 /**
- * This class is the "glue" between elements of this framework: <br />
+ * This class is the "glue" between elements of this framework: <br>
  * It knows its neighbours and keeps the objects containing the actual data and
  * knows about its neighbours.
  *

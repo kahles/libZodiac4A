@@ -18,8 +18,7 @@ import java.util.TreeSet;
  *     <li>Logic of generating the real data is kept in {@link CalendarGenerator}.</li>
  *     <li>Data is contained and managed in {@link CalendarData}, but public access is only through {@link Calendar}.</li>
  * </ul>
- * 
- * @see de.kah2.libZodiac.example
+ * see de.kah2.libZodiac.example
  * @author kahles
  */
 public class Calendar implements LocationProvider {
