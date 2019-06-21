@@ -1,6 +1,6 @@
 package de.kah2.libZodiac.planetary;
 
-import de.kah2.nova4jmt.api.LnLnlatPosn;
+import de.kah2.zodiac.nova4jmt.api.LnLnlatPosn;
 
 /**
  * This simple class is used to encapsulate geographic or ecliptic positions

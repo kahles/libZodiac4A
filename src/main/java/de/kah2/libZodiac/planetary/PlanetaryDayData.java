@@ -10,12 +10,12 @@ import java.time.ZonedDateTime;
 import de.kah2.libZodiac.Calendar;
 import de.kah2.libZodiac.DayStorableDataSet;
 import de.kah2.libZodiac.LocationProvider;
-import de.kah2.nova4jmt.JulianDay;
-import de.kah2.nova4jmt.api.LnDate;
-import de.kah2.nova4jmt.api.LnLnlatPosn;
-import de.kah2.nova4jmt.api.LnRstTime;
-import de.kah2.nova4jmt.solarsystem.Lunar;
-import de.kah2.nova4jmt.solarsystem.Solar;
+import de.kah2.zodiac.nova4jmt.JulianDay;
+import de.kah2.zodiac.nova4jmt.api.LnDate;
+import de.kah2.zodiac.nova4jmt.api.LnLnlatPosn;
+import de.kah2.zodiac.nova4jmt.api.LnRstTime;
+import de.kah2.zodiac.nova4jmt.solarsystem.Lunar;
+import de.kah2.zodiac.nova4jmt.solarsystem.Solar;
 
 /**
  * <p>

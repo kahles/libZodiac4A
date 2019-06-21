@@ -14,17 +14,29 @@ jar {
 }
 
 repositories {
-    jcenter()
+    mavenCentral()
+    maven {
+        url 'https://oss.sonatype.org/content/repositories/snapshots/'
+    }
 }
 
 dependencies {
+    
 	compile 'org.slf4j:slf4j-api:1.7.25'
     compile 'org.slf4j:slf4j-simple:1.7.25'
 
-    // Removed, because actual version is broken
-    //compile 'net.sourceforge.novaforjava:novaforjava:0.15.0.0'
-    // use my fork: https://sourceforge.net/u/skahle/novaforjava/ci/devel/tree/
-    compile files('../nova4java/target/nova4jmt-0.15.0.1-SNAPSHOT.jar')
+    
+    // Removed, because actual version doesn't work for multi-threaded use
+    // compile 'net.sourceforge.novaforjava:novaforjava:0.15.0.0'
 
+    // my fixed fork: https://github.com/kahles/nova4jmt
+
+    // local use
+    // compile files('../nova4java/target/nova4jmt-0.15.0.1-SNAPSHOT.jar')
+
+    // maven central snapshot
+    compile 'de.kah2.zodiac:nova4jmt:0.15.0.1-SNAPSHOT'
+    
+    
     testCompile 'junit:junit:4.12'
 }

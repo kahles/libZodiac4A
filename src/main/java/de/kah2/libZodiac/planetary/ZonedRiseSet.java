@@ -1,8 +1,8 @@
 package de.kah2.libZodiac.planetary;
 
-import de.kah2.nova4jmt.JulianDay;
-import de.kah2.nova4jmt.api.LnDate;
-import de.kah2.nova4jmt.api.LnRstTime;
+import de.kah2.zodiac.nova4jmt.JulianDay;
+import de.kah2.zodiac.nova4jmt.api.LnDate;
+import de.kah2.zodiac.nova4jmt.api.LnRstTime;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
