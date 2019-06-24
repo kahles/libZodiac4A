@@ -1,30 +1,40 @@
-plugins {
-    id "com.gladed.androidgitversion" version "0.4.5"
-}
-
-apply plugin: 'java'
-apply plugin: 'com.gladed.androidgitversion'
-
-version = androidGitVersion.name()
-jar {
-    manifest {
-        attributes 'Implementation-Title': 'libZodiac',
-                   'Implementation-Version': version
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
     }
 }
+
+// TODO for staging: https://github.com/Codearte/gradle-nexus-staging-plugin
+
+plugins {
+    id 'com.gladed.androidgitversion' version '0.4.5'
+    id 'java'
+    id 'java-library'
+}
+
+apply plugin: 'com.bmuschko.nexus'
+
+group = "de.kah2.zodiac"
+version = androidGitVersion.name() + "-SNAPSHOT"
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
+    /* For snapshots:
     maven {
-        url 'https://oss.sonatype.org/content/repositories/snapshots/'
-    }
+        url =  'https://oss.sonatype.org/content/repositories/snapshots/'
+    }*/
 }
 
 dependencies {
     
 	compile 'org.slf4j:slf4j-api:1.7.25'
     compile 'org.slf4j:slf4j-simple:1.7.25'
-
     
     // Removed, because actual version doesn't work for multi-threaded use
     // compile 'net.sourceforge.novaforjava:novaforjava:0.15.0.0'
@@ -34,9 +44,44 @@ dependencies {
     // local use
     // compile files('../nova4java/target/nova4jmt-0.15.0.1-SNAPSHOT.jar')
 
-    // maven central snapshot
-    compile 'de.kah2.zodiac:nova4jmt:0.15.0.1-SNAPSHOT'
+    // maven central snapshot (uncomment also above in repositories)
+    //compile 'de.kah2.zodiac:nova4jmt:0.15.0.1-SNAPSHOT'
     
-    
+    // maven central releases
+    compile 'de.kah2.zodiac:nova4jmt:0.15.0.1'
+
     testCompile 'junit:junit:4.12'
 }
+
+modifyPom {
+    project {
+        name = 'libZodiac'
+        description = 'framework providing functionality for building a lunar calendar'
+        url = 'https://github.com/kahles/libZodiac'
+
+        scm {
+            url = 'https://github.com/kahles/libZodiac/tree/master'
+            connection = 'scm:git:git://github.com/kahles/libZodiac.git'
+            developerConnection = 'scm:git:ssh://github.com/kahles/libZodiac.git'
+        }
+
+        licenses {
+            license {
+                name = 'GNU LESSER GENERAL PUBLIC LICENSE (LGPL) version 3'
+                url = 'http://www.gnu.org/licenses/lgpl-3.0-standalone.html'
+            }
+        }
+
+        developers {
+            developer {
+                id = 'kahles'
+                name = 'Stephan Kahle'
+                email = 'st-mvn@kah2.de'
+                timezone = '+1'
+            }
+        }
+    }
+}
+
+// always run tests before building jar
+jar.dependsOn(test)
