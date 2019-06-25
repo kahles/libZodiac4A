@@ -7,12 +7,11 @@ buildscript {
     }
 }
 
-// TODO for staging: https://github.com/Codearte/gradle-nexus-staging-plugin
-
 plugins {
-    id 'com.gladed.androidgitversion' version '0.4.5'
+    id 'com.gladed.androidgitversion' version '0.4.9'
     id 'java'
     id 'java-library'
+    id 'io.codearte.nexus-staging' version '0.21.0'
 }
 
 apply plugin: 'com.bmuschko.nexus'
@@ -28,13 +27,13 @@ repositories {
     /* For snapshots:
     maven {
         url =  'https://oss.sonatype.org/content/repositories/snapshots/'
-    }*/
+    } */
 }
 
 dependencies {
     
-	compile 'org.slf4j:slf4j-api:1.7.25'
-    compile 'org.slf4j:slf4j-simple:1.7.25'
+	compile 'org.slf4j:slf4j-api:1.7.26'
+    compile 'org.slf4j:slf4j-simple:1.7.26'
     
     // Removed, because actual version doesn't work for multi-threaded use
     // compile 'net.sourceforge.novaforjava:novaforjava:0.15.0.0'
@@ -46,7 +45,7 @@ dependencies {
 
     // maven central snapshot (uncomment also above in repositories)
     //compile 'de.kah2.zodiac:nova4jmt:0.15.0.1-SNAPSHOT'
-    
+
     // maven central releases
     compile 'de.kah2.zodiac:nova4jmt:0.15.0.1'
 
