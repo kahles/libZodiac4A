@@ -32,8 +32,8 @@ repositories {
 
 dependencies {
     
-	compile 'org.slf4j:slf4j-api:1.7.26'
-    compile 'org.slf4j:slf4j-simple:1.7.26'
+	implementation 'org.slf4j:slf4j-api:1.7.26'
+    implementation 'org.slf4j:slf4j-simple:1.7.26'
     
     // Removed, because actual version doesn't work for multi-threaded use
     // compile 'net.sourceforge.novaforjava:novaforjava:0.15.0.0'
@@ -47,9 +47,9 @@ dependencies {
     //compile 'de.kah2.zodiac:nova4jmt:0.15.0.1-SNAPSHOT'
 
     // maven central releases
-    compile 'de.kah2.zodiac:nova4jmt:0.15.0.1'
+    implementation 'de.kah2.zodiac:nova4jmt:0.15.0.1'
 
-    testCompile 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.12'
 }
 
 modifyPom {
