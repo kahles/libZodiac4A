@@ -1,9 +1,70 @@
-plugins {
-    id "com.gladed.androidgitversion" version "0.4.5"
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
+    }
 }
 
-apply plugin: 'com.android.library'
-apply plugin: "com.gladed.androidgitversion"
+plugins {
+    id 'com.gladed.androidgitversion' version '0.4.9'
+    id 'com.android.library'
+    // TODO needed? move to root? --> id 'io.codearte.nexus-staging' version '0.21.0'
+}
+
+apply plugin: 'com.bmuschko.nexus'
+
+group = "de.kah2.zodiac"
+version = androidGitVersion.name()
+
+repositories {
+    mavenCentral()
+    /* For snapshots:
+    maven {
+        url =  'https://oss.sonatype.org/content/repositories/snapshots/'
+    } */
+}
+
+dependencies {
+
+    implementation 'org.slf4j:slf4j-api:1.7.26'
+    implementation 'org.slf4j:slf4j-android:1.7.26'
+
+    // Removed, because actual version doesn't work for multi-threaded use
+    // compile 'net.sourceforge.novaforjava:novaforjava:0.15.0.0'
+
+    // my fixed fork: https://github.com/kahles/nova4jmt
+
+    // local use
+    // compile files('../nova4java/target/nova4jmt-0.15.0.1-SNAPSHOT.jar')
+
+    // maven central snapshot (uncomment also above in repositories)
+    //compile 'de.kah2.zodiac:nova4jmt:0.15.0.1-SNAPSHOT'
+
+    // maven central releases
+    implementation 'de.kah2.zodiac:nova4jmt:0.15.0.1'
+
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+
+    // Android backports
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.2.1'
+    implementation 'net.sourceforge.streamsupport:android-retrofuture:1.6.3'
+
+    // Testing
+    testImplementation 'junit:junit:4.12'
+    testImplementation('org.threeten:threetenbp:1.3.7') {
+        exclude group: 'com.jakewharton.threetenabp', module: 'threetenabp'
+    }
+    testImplementation('org.slf4j:slf4j-simple:1.7.26') {
+        exclude group: 'org.slf4j', module: 'slf4j-android'
+    }
+    /*
+    Not needed at the moment
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+     */
+}
 
 android {
     compileSdkVersion 27
@@ -35,32 +96,35 @@ android {
     }
 }
 
-dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support:appcompat-v7:27.1.1'
+modifyPom {
+    project {
+        name = 'libZodiac-android'
+        description = 'android framework providing functionality for building a lunar calendar'
+        url = 'https://github.com/kahles/libZodiac'
 
-    implementation 'org.slf4j:slf4j-api:1.7.25'
+        scm {
+            url = 'https://github.com/kahles/libZodiac/tree/master'
+            connection = 'scm:git:git://github.com/kahles/libZodiac.git'
+            developerConnection = 'scm:git:ssh://github.com/kahles/libZodiac.git'
+        }
 
-    // This breaks the tests - comment this out for testing:
-    implementation 'org.slf4j:slf4j-android:1.7.25'
+        licenses {
+            license {
+                name = 'GNU LESSER GENERAL PUBLIC LICENSE (LGPL) version 3'
+                url = 'http://www.gnu.org/licenses/lgpl-3.0-standalone.html'
+            }
+        }
 
-    // Android backports
-    implementation 'com.jakewharton.threetenabp:threetenabp:1.1.1'
-    implementation 'net.sourceforge.streamsupport:android-retrofuture:1.6.3'
-
-    // Removed, because actual version is broken
-    //compile 'net.sourceforge.novaforjava:novaforjava:0.15.0.0'
-    // use my fork: https://sourceforge.net/u/skahle/novaforjava/ci/devel/tree/
-    implementation project(':novaforjava')
-
-    // Testing
-    testImplementation 'junit:junit:4.12'
-    testImplementation('org.threeten:threetenbp:1.3.7') {
-        exclude group: 'com.jakewharton.threetenabp', module: 'threetenabp'
+        developers {
+            developer {
+                id = 'kahles'
+                name = 'Stephan Kahle'
+                email = 'st-mvn@kah2.de'
+                timezone = '+1'
+            }
+        }
     }
-    /*
-    Not needed at the moment
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-     */
 }
+
+// always run tests before building jar
+// TODO what.dependsOn(test)
