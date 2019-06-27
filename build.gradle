@@ -16,7 +16,7 @@ plugins {
 apply plugin: 'com.bmuschko.nexus'
 
 group = "de.kah2.zodiac"
-version = androidGitVersion.name()
+version = androidGitVersion.name() + "-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -29,7 +29,6 @@ repositories {
 dependencies {
 
     implementation 'org.slf4j:slf4j-api:1.7.26'
-    implementation 'org.slf4j:slf4j-android:1.7.26'
 
     // Removed, because actual version doesn't work for multi-threaded use
     // compile 'net.sourceforge.novaforjava:novaforjava:0.15.0.0'
@@ -56,9 +55,8 @@ dependencies {
     testImplementation('org.threeten:threetenbp:1.3.7') {
         exclude group: 'com.jakewharton.threetenabp', module: 'threetenabp'
     }
-    testImplementation('org.slf4j:slf4j-simple:1.7.26') {
-        exclude group: 'org.slf4j', module: 'slf4j-android'
-    }
+    testImplementation 'org.slf4j:slf4j-simple:1.7.26'
+
     /*
     Not needed at the moment
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
@@ -125,6 +123,3 @@ modifyPom {
         }
     }
 }
-
-// always run tests before building jar
-// TODO what.dependsOn(test)
