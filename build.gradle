@@ -1,24 +1,28 @@
 buildscript {
     repositories {
         jcenter()
+        google()
     }
     dependencies {
+        classpath 'com.android.tools.build:gradle:3.4.1'
         classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
     }
 }
 
 plugins {
     id 'com.gladed.androidgitversion' version '0.4.9'
-    id 'com.android.library'
     // TODO needed? move to root? --> id 'io.codearte.nexus-staging' version '0.21.0'
 }
 
+apply plugin: 'com.android.library'
 apply plugin: 'com.bmuschko.nexus'
 
 group = "de.kah2.zodiac"
 version = androidGitVersion.name() + "-SNAPSHOT"
 
 repositories {
+    jcenter()
+    google()
     mavenCentral()
     /* For snapshots:
     maven {
