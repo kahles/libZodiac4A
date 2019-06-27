@@ -22,7 +22,7 @@ There is a "1:1" java port [novaforjava v0.15.0.0](http://novaforjava.sourceforg
 for multi-threaded calculations.
 So I made a fork containing a fix for this: [nova4jmt](https://github.com/kahles/nova4jmt).
 
-#### JUnit 4.12
+#### JUnit
 I'm trying to provide a reasonable test coverage using [JUnit](http://junit.org).
 
 #### slf4j
@@ -40,7 +40,7 @@ repositories {
 }
 
 dependencies {
-    compile 'de.kah2.zodiac:libZodiac'
+    implementation 'de.kah2.zodiac:libZodiac:0.9'
 }
 ```
 
@@ -49,6 +49,7 @@ dependencies {
 <dependency>
   <groupId>de.kah2.zodiac</groupId>
   <artifactId>libZodiac</artifactId>
+  <version>0.9</version>
 </dependency>
 ```
 
