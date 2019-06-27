@@ -56,7 +56,7 @@ dependencies {
 
     // Testing
     testImplementation 'junit:junit:4.12'
-    testImplementation('org.threeten:threetenbp:1.3.7') {
+    testImplementation('org.threeten:threetenbp:1.4.0') {
         exclude group: 'com.jakewharton.threetenabp', module: 'threetenabp'
     }
     testImplementation 'org.slf4j:slf4j-simple:1.7.26'
@@ -100,12 +100,12 @@ android {
 
 modifyPom {
     project {
-        name = 'libZodiac-android'
+        name = 'libZodiac4A'
         description = 'android framework providing functionality for building a lunar calendar'
         url = 'https://github.com/kahles/libZodiac'
 
         scm {
-            url = 'https://github.com/kahles/libZodiac/tree/master'
+            url = 'https://github.com/kahles/libZodiac/tree/android'
             connection = 'scm:git:git://github.com/kahles/libZodiac.git'
             developerConnection = 'scm:git:ssh://github.com/kahles/libZodiac.git'
         }
