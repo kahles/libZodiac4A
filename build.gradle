@@ -33,7 +33,7 @@ repositories {
 dependencies {
     
 	implementation 'org.slf4j:slf4j-api:1.7.26'
-    implementation 'org.slf4j:slf4j-simple:1.7.26'
+    testImplementation 'org.slf4j:slf4j-simple:1.7.26'
     
     // Removed, because actual version doesn't work for multi-threaded use
     // compile 'net.sourceforge.novaforjava:novaforjava:0.15.0.0'
@@ -81,6 +81,3 @@ modifyPom {
         }
     }
 }
-
-// always run tests before building jar
-jar.dependsOn(test)
