@@ -3,7 +3,7 @@ framework providing functionality for building a lunar calendar
 
 This library was created while working on [Mondtag](https://github.com/kahles/mondtag), a lunar calendar for Android.
 
-This is the plain java version - for android develpment, see the [android branch](https://github.com/kahles/libZodiac/tree/android).
+This is the plain java version - for android develpment, see the android fork [libZodiac4A](https://github.com/kahles/libZodiac4A).
 
 ### Requirements
 
