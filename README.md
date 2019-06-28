@@ -1,9 +1,11 @@
 # libZodiac
 framework providing functionality for building a lunar calendar
 
-This library was created while working on [Mondtag](https://github.com/kahles/mondtag), a lunar calendar for Android.
+This library was created while working on [Mondtag](https://github.com/kahles/mondtag), a lunar 
+calendar for Android.
 
-This is the android version - for pure java, see the [master branch](https://github.com/kahles/libZodiac).
+This is the android fork - for pure java, see the plain java repository 
+[libZodiac](https://github.com/kahles/libZodiac).
 
 ### Requirements
 
@@ -40,7 +42,7 @@ repositories {
 }
 
 dependencies {
-    compile 'de.kah2.zodiac:libZodiac'
+    compile 'de.kah2.zodiac:libZodiac:0.9'
 }
 ```
 
@@ -49,6 +51,7 @@ dependencies {
 <dependency>
   <groupId>de.kah2.zodiac</groupId>
   <artifactId>libZodiac</artifactId>
+  <version>0.9</version>
 </dependency>
 ```
 

@@ -102,12 +102,12 @@ modifyPom {
     project {
         name = 'libZodiac4A'
         description = 'android framework providing functionality for building a lunar calendar'
-        url = 'https://github.com/kahles/libZodiac'
+        url = 'https://github.com/kahles/libZodiac4A'
 
         scm {
-            url = 'https://github.com/kahles/libZodiac/tree/android'
-            connection = 'scm:git:git://github.com/kahles/libZodiac.git'
-            developerConnection = 'scm:git:ssh://github.com/kahles/libZodiac.git'
+            url = 'https://github.com/kahles/libZodiac4A/tree/master'
+            connection = 'scm:git:git://github.com/kahles/libZodiac4A.git'
+            developerConnection = 'scm:git:ssh://github.com/kahles/libZodiac4A.git'
         }
 
         licenses {
