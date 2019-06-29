@@ -40,6 +40,7 @@ public abstract class Interpreter<T extends Enum<T>> {
 
 	/**
 	 * Sets the day to interpret and runs interpretation.
+	 * @param dayToInterpret a {@link Day}-object containing the data to do interpretations with
 	 */
 	public final void setDayAndInterpret(final Day dayToInterpret) {
 
@@ -53,11 +54,12 @@ public abstract class Interpreter<T extends Enum<T>> {
 	}
 
 	/**
-	 * <p>Implement this method to do some interpretation and return the resulting {@link Quality} for this day. Use {@link #getToday()} to
+	 * <p>Implement this method to do some interpretation. Use {@link #getToday()} to
 	 * access the information available about the actual day. There are also shortcuts {@link #getPlanetary()} and {@link #getZodiac()} for
 	 * actual data.</p>
 	 * <p>By calling {@link #addAnnotation(Enum)} it is possible to add additional information. For an example, see
 	 * {@link Gardening.SowPlantInterpreter}.</p>
+	 * @return the resulting {@link Quality} for this day
 	 */
 	protected abstract Quality doInterpretation();
 
@@ -66,19 +68,25 @@ public abstract class Interpreter<T extends Enum<T>> {
 		return this.today;
 	}
 
-	/** A shortcut to access {@link ZodiacDayData} of actual Day available through {@link #getToday()}. */
+	/**
+	 * A shortcut to access {@link ZodiacDayData} of actual Day available through {@link #getToday()}.
+	 * @return the {@link ZodiacDayData} of the actual day
+	 */
 	protected final ZodiacDayData getZodiac() { return this.today.getZodiacData(); }
 
-	/** A shortcut to access {@link PlanetaryDayData} of actual Day available through {@link #getToday()}. */
+	/**
+	 * A shortcut to access {@link PlanetaryDayData} of actual Day available through {@link #getToday()}.
+	 * @return the {@link PlanetaryDayData} of the actual Day
+	 */
 	protected final PlanetaryDayData getPlanetary() { return this.today.getPlanetaryData(); }
 
-	/** Returns the interpreted {@link Quality} of this day. */
+	/** @return the interpreted {@link Quality} of this day. */
 	public final Quality getQuality() {
 		return this.quality;
 	}
 
 	/**
-	 * Adds an annotation for interpreted quality, like e.g. {@link Gardening.Plants}.
+	 * @param annotation an annotation to add for interpreted quality, like e.g. {@link Gardening.Plants}.
 	 */
 	protected final void addAnnotation(T annotation) {
 
@@ -102,6 +110,7 @@ public abstract class Interpreter<T extends Enum<T>> {
 	}
 
 	/**
+	 * @param enumClass if no annotations are available, an empty set of given class is returned
 	 * @return a copy of the selected annotations to avoid modification from outside
 	 */
 	public final EnumSet<T> getAnnotations(Class<T> enumClass) {

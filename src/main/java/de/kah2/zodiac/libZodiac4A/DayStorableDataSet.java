@@ -28,7 +28,10 @@ public class DayStorableDataSet {
 		super();
 	}
 
-	/** Constructor to transform calculated data to storable data */
+	/**
+	 * Constructor to transform calculated data to storable data
+	 * @param day the {@link Day}-object containing the data to be serialized
+	 */
 	public DayStorableDataSet(final Day day) {
 		this.date = day.getDate();
 		final PlanetaryDayData data = day.getPlanetaryData();

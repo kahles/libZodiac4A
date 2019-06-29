@@ -20,6 +20,8 @@ apply plugin: 'com.bmuschko.nexus'
 group = "de.kah2.zodiac"
 version = androidGitVersion.name() + "-SNAPSHOT"
 
+println "Version is: " + version
+
 repositories {
     jcenter()
     google()

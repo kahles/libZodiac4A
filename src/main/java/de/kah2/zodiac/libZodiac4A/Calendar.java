@@ -167,14 +167,14 @@ public class Calendar implements LocationProvider {
 	}
 
 	/**
-	 * Registers a {@link ProgressListener}.
+	 * @param progressListener the {@link ProgressListener} to register
 	 */
 	public void addProgressListener(final ProgressListener progressListener) {
 		generator.getProgressManager().addProgressListener(progressListener);
 	}
 
 	/**
-	 * Unregisters a {@link ProgressListener}
+	 * @param progressListener a {@link ProgressListener} to remove from registered listeners
 	 */
 	public void removeProgressListener(final ProgressListener progressListener) {
 		generator.getProgressManager().removeProgressListener(progressListener);
@@ -324,14 +324,14 @@ public class Calendar implements LocationProvider {
 	}
 
 	/**
-	 * Gets the range which the {@link Calendar} shall contain.
+	 * @return  the range which the {@link Calendar} shall contain.
 	 */
 	public DateRange getRangeExpected() {
 		return this.rangeExpected;
 	}
 
 	/**
-	 * Sets the range which the {@link Calendar} shall contain.
+	 * @param range the range which the {@link Calendar} shall contain.
 	 */
 	public void setRangeExpected(final DateRange range) {
 		this.rangeExpected = range;
@@ -339,6 +339,7 @@ public class Calendar implements LocationProvider {
 
 	/**
 	 * Proxy method for {@link CalendarData#get(LocalDate)}.
+	 * @param date the date of the Day to return
 	 * @return The requested {@link Day} or null, if date is out of
 	 *         {@link Calendar} range.
 	 */
@@ -347,7 +348,7 @@ public class Calendar implements LocationProvider {
 	}
 
 	/**
-	 * Returns all days contained. Consistency isn't guaranteed - if no days are available, an empty list is returned.
+	 * @return  all days contained. Consistency isn't guaranteed - if no days are available, an empty list is returned.
 	 * @throws ConcurrentModificationException If calculation isn't finished.
 	 */
 	public LinkedList<Day> getAllDays() {
@@ -390,7 +391,9 @@ public class Calendar implements LocationProvider {
 		}
 	}
 
-	/** Checks if calendar contains all days of expected range. */
+	/**
+	 * @return true, if calendar contains all days of expected range.
+	 */
 	public boolean isComplete() {
 		return this.days.isComplete( this.getRangeExpected() );
 	}
@@ -416,7 +419,7 @@ public class Calendar implements LocationProvider {
 		return this.generator.getNewlyGenerated();
 	}
 
-	/** Returns the {@link Scope} of this instance. */
+	/** @return  the {@link Scope} of this instance. */
 	public Scope getScope() {
 		return scope;
 	}

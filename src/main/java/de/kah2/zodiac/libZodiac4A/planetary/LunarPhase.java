@@ -12,6 +12,9 @@ public enum LunarPhase {
 	NEW_MOON, INCREASING, FULL_MOON, DECREASING;
 
 	/**
+	 * @param previous the day before target, which is needed for comparison
+	 * @param target the actual day, for which the {@link LunarPhase} is calculated
+	 * @param next the day after target, which is needed for comparison
 	 * @return The lunar visibility of the given day if this day knows its
 	 *         "tomorrow" and "yesterday" needed for comparison. Otherwise
 	 *         <code>null</code> is returned.

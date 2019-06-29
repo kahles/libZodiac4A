@@ -14,7 +14,8 @@ public class ZodiacDayData {
 	private final ZodiacElement element;
 
 	/**
-	 * Calculates the data provided by this class if necessary.
+	 * This constructor calculates all data provided by this class.
+	 * @param srcData the {@link PlanetaryDayData} needed for calculation
 	 */
 	public ZodiacDayData(final PlanetaryDayData srcData) {
 		this.sign = ZodiacSign.of(srcData.getLunarLongitude());
