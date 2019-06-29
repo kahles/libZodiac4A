@@ -17,7 +17,7 @@ plugins {
 apply plugin: 'com.bmuschko.nexus'
 
 group = "de.kah2.zodiac"
-version = androidGitVersion.name() //+ "-SNAPSHOT"
+version = androidGitVersion.name() + "-SNAPSHOT"
 
 println "Version is: " + version
 

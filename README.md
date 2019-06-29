@@ -40,7 +40,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'de.kah2.zodiac:libZodiac:0.9'
+    implementation 'de.kah2.zodiac:libZodiac:0.9.1'
 }
 ```
 
@@ -49,7 +49,7 @@ dependencies {
 <dependency>
   <groupId>de.kah2.zodiac</groupId>
   <artifactId>libZodiac</artifactId>
-  <version>0.9</version>
+  <version>0.9.1</version>
 </dependency>
 ```
 
