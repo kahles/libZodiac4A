@@ -9,6 +9,7 @@ import de.kah2.zodiac.libZodiac.interpretation.Interpreter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 
 /**
@@ -28,7 +29,8 @@ public class CalendarExampleSimple {
 	/**
 	 * Runs the example.
 	 */
-	public static void run(Class <? extends Interpreter> interpreterClass, LocalDate startDate, int days) throws IllegalAccessException, InstantiationException {
+	public static void run(Class <? extends Interpreter> interpreterClass, LocalDate startDate, int days)
+			throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
 		/* First step: create a Calendar */
 
 		// This is the way to calculate all data for a specific range:
@@ -68,7 +70,7 @@ public class CalendarExampleSimple {
 			builder.appendPlanetaryData(day.getPlanetaryData());
 			builder.appendZodiacData(day.getZodiacData());
 
-			final Interpreter interpreter = interpreterClass.newInstance();
+			final Interpreter interpreter = interpreterClass.getDeclaredConstructor().newInstance();
 			interpreter.setDayAndInterpret(day);
 			builder.appendInterpretation(interpreter);
 
