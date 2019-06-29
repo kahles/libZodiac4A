@@ -22,6 +22,8 @@ public class Position {
 
 	/**
 	 * Constructor.
+	 * @param lat the latitude of the position
+	 * @param lng the longitude of the position
 	 * @throws IllegalArgumentException if values aren't withing allowed range - see {@link #isValid()}
 	 */
 	public Position(final double lat, final double lng) {
@@ -45,12 +47,18 @@ public class Position {
 		return isValidLatitude(this.latitude) && isValidLongitude(this.longitude);
 	}
 
-	/** Returns true if latitude is between MIN_LATITUDE and MAX_LATITUDE. */
+	/**
+	 * @param lat a latitude value to check
+	 * @return true if latitude is between MIN_LATITUDE and MAX_LATITUDE.
+	 */
 	public static boolean isValidLatitude(double lat) {
-	 return !(lat < MIN_LATITUDE || lat > MAX_LATITUDE);
-	 }
+		return !(lat < MIN_LATITUDE || lat > MAX_LATITUDE);
+	}
 
-	/** Returns true if longitude is between MIN_LONGITUDE and MAX_LONGITUDE */
+	/**
+	 * @param lng a longitude value to check
+	 * @return true if longitude is between MIN_LONGITUDE and MAX_LONGITUDE
+	 */
 	public static boolean isValidLongitude(double lng) {
 	 return !(lng < MIN_LONGITUDE || lng > MAX_LONGITUDE );
 	 }
@@ -72,11 +80,12 @@ public class Position {
 	/**
 	 * Sets latitude or throws {@link java.lang.IllegalArgumentException}, if an invalid value was given.
 	 * Even if {@link #isValidLatitude(double)} is public we ensure given latitude is valid.
+	 * @param lat a latitude to be set
 	 */
-	public void setLatitude(double latitude) {
+	public void setLatitude(double lat) {
 
-		if ( isValidLatitude(latitude) ) {
-			this.latitude = latitude;
+		if ( isValidLatitude(lat) ) {
+			this.latitude = lat;
 		} else {
 			throw new IllegalArgumentException("Invalid latitude given.");
 		}
@@ -85,11 +94,12 @@ public class Position {
 	/**
 	 * Sets longitude or throws {@link java.lang.IllegalArgumentException}, if an invalid value was given.
 	 * Even if {@link #isValidLongitude(double)} is public we ensure given longitude is valid.
+	 * @param lng a longitude to be set
 	 */
-	public void setLongitude(double longitude) {
+	public void setLongitude(double lng) {
 
-		if ( isValidLongitude(longitude) ) {
-			this.longitude = longitude;
+		if ( isValidLongitude(lng) ) {
+			this.longitude = lng;
 		} else {
 			throw new IllegalArgumentException("Invalid longitude given.");
 		}

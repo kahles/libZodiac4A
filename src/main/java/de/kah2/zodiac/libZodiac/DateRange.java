@@ -18,6 +18,8 @@ public class DateRange implements Iterable<LocalDate> {
 	/**
 	 * Instantiates a {@link DateRange} between two dates and ensures that end
 	 * is after start.
+	 * @param date1 the first date contained
+	 * @param date2 the last date contained
 	 */
 	public DateRange(final LocalDate date1, final LocalDate date2) {
 
@@ -32,6 +34,8 @@ public class DateRange implements Iterable<LocalDate> {
 
 	/**
 	 * Allows instantiating da {@link DateRange} from two {@link Day} objects.
+	 * @param day1 a Day-object containing the start date of the range
+	 * @param day2 a Day-object containing the end date of the range
 	 */
 	public DateRange(final Day day1, final Day day2) {
 		this(day1.getDate(), day2.getDate());
@@ -43,14 +47,17 @@ public class DateRange implements Iterable<LocalDate> {
 
 	/**
 	 * Checks if a range contains the other ore if they are equal.
-	 * 
+	 * @param other the range which should be contained in actual range
 	 * @return true if <code>other</code> is contained or equal - false if not.
 	 */
 	public boolean contains(final DateRange other) {
 		return !(other.end.isAfter(this.end) || other.start.isBefore(this.start));
 	}
 
-	/** Returns true, if ranges have same start and end. */
+	/**
+	 * @param other the range to compare
+	 * @return true, if ranges have same start and end.
+	 */
 	public boolean isEqual(DateRange other) {
 		return this.getStart().isEqual( other.getStart() )
 				&& this.getEnd().isEqual( other.getEnd() );

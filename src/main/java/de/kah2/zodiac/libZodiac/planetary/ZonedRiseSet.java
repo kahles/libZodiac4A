@@ -34,6 +34,9 @@ public class ZonedRiseSet {
 	/**
 	 * This constructor instantiates this class based on {@link LocalDateTime}.
 	 * No time zone transformations will be done.
+	 * Only needed for testing purposes.
+	 * @param rise an UTC rise time
+	 * @param set an UTC set time
 	 */
 	public ZonedRiseSet(final LocalDateTime rise, final LocalDateTime set) {
 		this.rise = rise;

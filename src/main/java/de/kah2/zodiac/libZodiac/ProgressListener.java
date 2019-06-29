@@ -44,8 +44,8 @@ public interface ProgressListener {
 	}
 
 	/**
-	 * Is called when a new {@link State} is entered. State becomes <code>null</code>, when progress
-	 * is resetted.
+	 * Is called when a new {@link State} is entered.
+	 * @param state the new state, or <code>null</code>, when progress is resetted.
 	 */
 	void onStateChanged(State state);
 

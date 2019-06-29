@@ -8,6 +8,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 import de.kah2.zodiac.libZodiac.Calendar;
+import de.kah2.zodiac.libZodiac.Day;
 import de.kah2.zodiac.libZodiac.DayStorableDataSet;
 import de.kah2.zodiac.libZodiac.LocationProvider;
 import de.kah2.zodiac.nova4jmt.JulianDay;
@@ -82,6 +83,9 @@ public class PlanetaryDayData {
 
 	/**
 	 * This is used to calculate the data for a given date.
+	 * @param date the date, for which the data is to be calculated
+	 * @param locationProvider needed to get timezone and location of the "observer"
+	 * @return a new {@link PlanetaryDayData}-object based on given parameters
 	 */
 	public static PlanetaryDayData calculateFor(final LocalDate date, final LocationProvider locationProvider) {
 		final PlanetaryDayData data = new PlanetaryDayData();
@@ -202,8 +206,10 @@ public class PlanetaryDayData {
 	}
 
 	/**
-	 * Here it's best to be set this from external, because calculation for one
+	 * Here it's best to set this from external, because calculation for one
 	 * day depends on its previous and next day.
+	 * @param phase the {@link LunarPhase} to set
+	 * @see LunarPhase#of(Day, Day, Day)
 	 */
 	public final void setLunarPhase(final LunarPhase phase) {
 		this.lunarPhase = phase;

@@ -48,6 +48,7 @@ public class Day implements Comparable<Day>{
 	 *            needed for calculation of rise and set times.
 	 * @param date
 	 *            the date of the Day to generate
+	 * @return the resulting {@link Day}-object
 	 */
 	public static Day calculateFor(final LocationProvider locationProvider, final LocalDate date) {
 
@@ -59,6 +60,7 @@ public class Day implements Comparable<Day>{
 	 * 
 	 * @param storedData
 	 *            a {@link DayStorableDataSet} containing the data to import.
+	 * @return a {@link Day}-object containing all data
 	 */
 	public static Day importFrom(final DayStorableDataSet storedData) {
 
