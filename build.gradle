@@ -16,6 +16,10 @@ plugins {
 
 apply plugin: 'com.bmuschko.nexus'
 
+androidGitVersion {
+    hideBranches = ['master','devel']
+}
+
 group = "de.kah2.zodiac"
 version = androidGitVersion.name() + "-SNAPSHOT"
 
