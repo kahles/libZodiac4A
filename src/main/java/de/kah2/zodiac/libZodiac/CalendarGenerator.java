@@ -36,8 +36,13 @@ class CalendarGenerator implements ProgressListener {
 
     private final ProgressManager progressManager = new ProgressManager();
 
+    /** default for {@link #maxThreadCount} */
     private final static int NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
 
+    /** Background calculations will be done below {@link Thread#NORM_PRIORITY}, to not throttle the UI */
+    private int threadPriority = Thread.NORM_PRIORITY - 1;
+
+    /** @see #getMaxThreadCount() */
     private int maxThreadCount = 0;
 
     private ThreadPoolExecutor executor;
@@ -464,6 +469,8 @@ class CalendarGenerator implements ProgressListener {
         final CompletableFuture<Day> result = CompletableFuture.supplyAsync(() -> {
             CalendarGenerator.this.log.trace(" ++++++++ Starting calculation for " + date);
 
+            Thread.currentThread().setPriority(threadPriority);
+
             final Day day = CalendarGenerator.this.createCalculatedDay(date);
 
             CalendarGenerator.this.log.trace(" -------- Calculation finished for " + date);
@@ -628,7 +635,10 @@ class CalendarGenerator implements ProgressListener {
         return new LinkedList<>(newlyGenerated);
     }
 
-    private int getMaxThreadCount() {
+    /**
+     * @return maximal allowed count of threads, by default number of processor cores
+     */
+    public int getMaxThreadCount() {
 
         if (this.maxThreadCount < 1) {
 
@@ -639,8 +649,21 @@ class CalendarGenerator implements ProgressListener {
         return maxThreadCount;
     }
 
-    void setMaxThreadCount(int maxThreadCount) {
+    /**
+     * To allow manually setting number of threads for testing.
+     * @param  maxThreadCount maximal count of threads allowed
+     */
+    public void setMaxThreadCount(int maxThreadCount) {
         this.maxThreadCount = maxThreadCount;
+    }
+
+    /**
+     * Allows tweaking "greediness" of background threads.
+     * @param threadPriority for calculation threads, between {@link Thread#MIN_PRIORITY} and {@link Thread#MAX_PRIORITY}. Default is
+     * {@link Thread#NORM_PRIORITY}-1
+     */
+    public void setThreadPriority(int threadPriority) {
+        this.threadPriority = threadPriority;
     }
 
     /** Needed for tests to be able shut down executor externally. */
