@@ -7,7 +7,7 @@ import de.kah2.zodiac.libZodiac4A.planetary.ZonedRiseSet;
 
 /**
  * This class contains a basic set of essential data defining a {@link Day} and
- * its properties. It is intended to extend this class with functionality for
+ * its properties. This class is intended to be extended with functionality for
  * serializing the contained data.
  *
  * @author kahles
