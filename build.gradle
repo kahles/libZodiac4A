@@ -11,7 +11,7 @@ buildscript {
 
 plugins {
     id 'com.gladed.androidgitversion' version '0.4.9'
-    // TODO needed? move to root? --> id 'io.codearte.nexus-staging' version '0.21.0'
+    // TODO This doesn't work in subproject in AndroidStudio: id 'io.codearte.nexus-staging' version '0.21.0'  - move to root?
 }
 
 apply plugin: 'com.android.library'
@@ -22,7 +22,7 @@ androidGitVersion {
 }
 
 group = "de.kah2.zodiac"
-version = androidGitVersion.name() + "-SNAPSHOT"
+version = androidGitVersion.name() //+ "-SNAPSHOT"
 
 println "Version is: " + version
 
@@ -59,7 +59,7 @@ dependencies {
 
     // Android backports
     implementation 'com.jakewharton.threetenabp:threetenabp:1.2.1'
-    implementation 'net.sourceforge.streamsupport:android-retrofuture:1.6.3'
+    implementation 'net.sourceforge.streamsupport:android-retrofuture:1.7.1'
 
     // Testing
     testImplementation 'junit:junit:4.12'
@@ -133,5 +133,3 @@ modifyPom {
         }
     }
 }
-
-// FIXME DEPRECATION WARNING. The staging repository ID is not provided. The fallback mode may impact release reliability and is deprecated. Please consult the project FAQ how it can be fixed.

@@ -19,7 +19,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'de.kah2.zodiac:libZodiac4A:0.9.2'
+    implementation 'de.kah2.zodiac:libZodiac4A:0.9.2-android'
 }
 ```
 
@@ -28,7 +28,7 @@ dependencies {
 <dependency>
   <groupId>de.kah2.zodiac</groupId>
   <artifactId>libZodiac4A</artifactId>
-  <version>0.9.2</version>
+  <version>0.9.2-android</version>
 </dependency>
 ```
 
@@ -69,15 +69,15 @@ and also works well in a non-Android java project.
 
 The resulting versions may look like:
 #### Releases ####
-Here it's only the release-tag:
+Here it's only the release-tag - the suffix is used to be able to separate libZodiac-tags from libZodiac4A-tags when merging
 ```
-0.9.1
+0.9.1-android
 ```
 #### Snapshots #### 
 ```
-0.9.1-3-d3d1f17-feature-dirty
+0.9.1-android-3-d3d1f17-feature-dirty
 ```
-* `0.9.1` is the last version tag
+* `0.9.1-android` is the last version tag
 * `4` number of commits since last tag
 * `48a2119` is the last git commit revision
 * `feature` is the branch this version was built of and only appears if it was a feature-branch, and not `master` or `devel`
