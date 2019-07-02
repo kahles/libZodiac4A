@@ -17,6 +17,10 @@ plugins {
 apply plugin: 'com.android.library'
 apply plugin: 'com.bmuschko.nexus'
 
+androidGitVersion {
+    hideBranches = ['master','devel']
+}
+
 group = "de.kah2.zodiac"
 version = androidGitVersion.name() + "-SNAPSHOT"
 
@@ -129,3 +133,5 @@ modifyPom {
         }
     }
 }
+
+// FIXME DEPRECATION WARNING. The staging repository ID is not provided. The fallback mode may impact release reliability and is deprecated. Please consult the project FAQ how it can be fixed.

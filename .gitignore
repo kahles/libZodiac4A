@@ -1,2 +1,10 @@
-*.iml
-/build
+/*.iml
+/bin/
+/build/
+/out/
+/lib/
+/.classpath
+/.project
+/.settings/
+/.gradle/
+/.idea/
