@@ -11,7 +11,7 @@ buildscript {
 
 plugins {
     id 'com.gladed.androidgitversion' version '0.4.9'
-    // TODO This doesn't work in subproject in AndroidStudio: id 'io.codearte.nexus-staging' version '0.21.0'  - move to root?
+    id 'io.codearte.nexus-staging' version '0.21.0'
 }
 
 apply plugin: 'com.android.library'
@@ -22,7 +22,7 @@ androidGitVersion {
 }
 
 group = "de.kah2.zodiac"
-version = androidGitVersion.name() //+ "-SNAPSHOT"
+version = androidGitVersion.name() + "-SNAPSHOT"
 
 println "Version is: " + version
 
