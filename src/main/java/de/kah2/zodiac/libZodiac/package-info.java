@@ -9,8 +9,10 @@
  * @see de.kah2.zodiac.libZodiac.ProgressListener - implementations of this class can be registered at
  * {@link de.kah2.zodiac.libZodiac.Calendar} to receive progress updates
  * @see de.kah2.zodiac.libZodiac.planetary.PlanetaryDayData - calculates and contains the basic data needed for ...
- * @see de.kah2.zodiac.libZodiac.zodiac - contains enums and classes to manage planetary and zodiac data
- * @see de.kah2.zodiac.libZodiac.interpretation - contains classes needed for interpreting the raw data.
+ * @see de.kah2.zodiac.libZodiac.zodiac.ZodiacDayData - contains enums and classes to manage planetary and zodiac data
+ * @see de.kah2.zodiac.libZodiac.interpretation.Interpreter - abstract class to write interpreters
+ * @see de.kah2.zodiac.libZodiac.interpretation.Gardening - implementation of {@link de.kah2.zodiac.libZodiac.interpretation.Interpreter}
+ * with gardening interpretations
  * see package "examples" in tests for examples on how to use this framework.
  */
 package de.kah2.zodiac.libZodiac;
