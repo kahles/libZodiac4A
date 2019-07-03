@@ -55,8 +55,6 @@ dependencies {
     // maven central releases
     implementation 'de.kah2.zodiac:nova4jmt:0.15.0.1'
 
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-
     // Android backports
     implementation 'com.jakewharton.threetenabp:threetenabp:1.2.1'
     implementation 'net.sourceforge.streamsupport:android-retrofuture:1.7.1'
@@ -75,11 +73,11 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 27
+        targetSdkVersion 28
 
         versionCode androidGitVersion.code()
         versionName androidGitVersion.name()
