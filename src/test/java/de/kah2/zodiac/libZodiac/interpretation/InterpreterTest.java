@@ -3,13 +3,13 @@ package de.kah2.zodiac.libZodiac.interpretation;
 import de.kah2.zodiac.libZodiac.CalendarGeneratorStub;
 import de.kah2.zodiac.libZodiac.Day;
 import de.kah2.zodiac.libZodiac.TestConstantsAndHelpers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.EnumSet;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class InterpreterTest {
 
@@ -32,12 +32,12 @@ public class InterpreterTest {
             threwRightException = true;
         }
 
-        assertTrue("Should throw RuntimeException when Interpreter returns null", threwRightException);
+        assertTrue(threwRightException, "Should throw RuntimeException when Interpreter returns null");
 
         testInterpreter = createInterpreterStub(Interpreter.Quality.GOOD);
         testInterpreter.setDayAndInterpret(day);
 
-        assertEquals("Should return correct Quality", Interpreter.Quality.GOOD, testInterpreter.getQuality());
+        assertEquals(Interpreter.Quality.GOOD, testInterpreter.getQuality(), "Should return correct Quality");
     }
 
     @Test
@@ -59,13 +59,13 @@ public class InterpreterTest {
     public void testGetAnnotationCount() {
         final Interpreter<TestEnum> testInterpreter = createInterpreterStub(null);
 
-        assertEquals("Should return 0 if no annotations are set", 0, testInterpreter.getAnnotationCount());
+        assertEquals(0, testInterpreter.getAnnotationCount(), "Should return 0 if no annotations are set");
 
         testInterpreter.addAnnotation(TestEnum.A);
-        assertEquals("Should return 1 if one annotation is set", 1, testInterpreter.getAnnotationCount());
+        assertEquals(1, testInterpreter.getAnnotationCount(), "Should return 1 if one annotation is set");
 
         testInterpreter.addAnnotation(TestEnum.B);
-        assertEquals("Should return 2 if two annotations are set", 2, testInterpreter.getAnnotationCount());
+        assertEquals(2, testInterpreter.getAnnotationCount(), "Should return 2 if two annotations are set");
     }
 
     @Test
@@ -75,13 +75,13 @@ public class InterpreterTest {
 
         // Interpretion has no annotations
         EnumSet<TestEnum> annonations = testInterpreter.getAnnotations(TestEnum.class);
-        assertEquals("Should return empty set", 0, annonations.size());
+        assertEquals(0, annonations.size(), "Should return empty set");
 
         // Interpretation has annotations
         testInterpreter.addAnnotation(TestEnum.A);
         annonations = testInterpreter.getAnnotations(TestEnum.class);
-        assertEquals("Should return set with one element", 1, annonations.size());
-        assertTrue("Should contain A", annonations.contains(TestEnum.A));
+        assertEquals(1, annonations.size(), "Should return set with one element");
+        assertTrue(annonations.contains(TestEnum.A), "Should contain A");
     }
 
     @Test
@@ -91,13 +91,13 @@ public class InterpreterTest {
 
         // Interpretion has no annotations
         String[] annonations = testInterpreter.getAnnotationsAsStringArray();
-        assertEquals("Should return empty array", 0, annonations.length);
+        assertEquals(0, annonations.length, "Should return empty array");
 
         // Interpretation has annotations
         testInterpreter.addAnnotation(TestEnum.A);
         annonations = testInterpreter.getAnnotationsAsStringArray();
-        assertEquals("Should return set with one element", 1, annonations.length);
-        assertEquals("Should contain A", TestEnum.A.toString(), annonations[0]);
+        assertEquals(1, annonations.length, "Should return set with one element");
+        assertEquals(TestEnum.A.toString(), annonations[0], "Should contain A");
     }
 
     private static Interpreter<TestEnum> createInterpreterStub(Interpreter.Quality expectedQuality) {

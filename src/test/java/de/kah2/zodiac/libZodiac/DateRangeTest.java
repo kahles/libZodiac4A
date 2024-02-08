@@ -1,13 +1,13 @@
 package de.kah2.zodiac.libZodiac;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.time.Month;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DateRangeTest {
 
@@ -29,13 +29,13 @@ public class DateRangeTest {
 	public void testContainsDay() {
 		final DateRange range = new DateRange(SOME_DATE, SOME_DATE.plusDays(3));
 
-		assertFalse("Should return false when date before range requested",
-				range.contains(range.getStart().minusDays(1)));
-		assertFalse("Should return false when date after range requested", range.contains(range.getEnd().plusDays(1)));
+		assertFalse(range.contains(range.getStart().minusDays(1)),
+				"Should return false when date before range requested");
+		assertFalse(range.contains(range.getEnd().plusDays(1)), "Should return false when date after range requested");
 
 		final String rangeStr = range.toString();
 		for (final LocalDate date : range) {
-			assertTrue("Day " + date + " should be contained in " + rangeStr, range.contains(date));
+			assertTrue(range.contains(date), "Day " + date + " should be contained in " + rangeStr);
 		}
 	}
 
@@ -66,9 +66,7 @@ public class DateRangeTest {
 	@Test
 	public void testSize() {
 
-		assertEquals("DateRange of one day should have size 1",
-				1, new DateRange(SOME_DATE, SOME_DATE).size() );
-		assertEquals("DateRange of three days should have size 3",
-				3, new DateRange(SOME_DATE, SOME_DATE.plusDays(2)).size() );
+		assertEquals(1, new DateRange(SOME_DATE, SOME_DATE).size(), "DateRange of one day should have size 1" );
+		assertEquals(3, new DateRange(SOME_DATE, SOME_DATE.plusDays(2)).size(), "DateRange of three days should have size 3" );
 	}
 }
