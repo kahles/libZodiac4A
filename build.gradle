@@ -1,67 +1,69 @@
 buildscript {
     repositories {
-        jcenter()
+        mavenCentral()
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.1'
-        classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
+        classpath 'com.android.tools.build:gradle:8.2.2'
     }
 }
 
 plugins {
-    id 'com.gladed.androidgitversion' version '0.4.9'
-    id 'io.codearte.nexus-staging' version '0.21.0'
+    id 'maven-publish'
+    id 'signing'
+    id 'com.gladed.androidgitversion' version '0.4.14'
+    //id 'io.github.gradle-nexus.publish-plugin' version '1.3.0'
 }
 
 apply plugin: 'com.android.library'
-apply plugin: 'com.bmuschko.nexus'
 
 androidGitVersion {
+    format '%tag%%-count%%-commit%%-branch%%_dirty%'
     hideBranches = ['master','devel']
 }
 
-group = "de.kah2.zodiac"
-version = androidGitVersion.name() + "-SNAPSHOT"
-
-println "Version is: " + version
+afterEvaluate {
+    println(" Version name:\t " + androidGitVersion.name() )
+    println(" Version code:\t " + androidGitVersion.code() )
+}
 
 repositories {
-    jcenter()
     google()
+    mavenLocal()
     mavenCentral()
-    /* For snapshots:
+    // For snapshots:
+    /*
     maven {
         url =  'https://oss.sonatype.org/content/repositories/snapshots/'
-    } */
+    }
+    */
 }
 
 dependencies {
     
-	implementation 'org.slf4j:slf4j-api:1.7.26'
-    testImplementation 'org.slf4j:slf4j-simple:1.7.26'
+	implementation 'org.slf4j:slf4j-api:1.7.36'
+    testImplementation 'org.slf4j:slf4j-simple:1.7.36'
     
     // Removed, because actual version doesn't work for multi-threaded use
     // compile 'net.sourceforge.novaforjava:novaforjava:0.15.0.0'
 
-    // my fixed fork: https://github.com/kahles/nova4jmt
-
-    // local use
-    // compile files('../nova4java/target/nova4jmt-0.15.0.1-SNAPSHOT.jar')
+    // => my fixed fork: https://github.com/kahles/nova4jmt
 
     // maven central snapshot (uncomment also above in repositories)
-    //compile 'de.kah2.zodiac:nova4jmt:0.15.0.1-SNAPSHOT'
+    //api 'de.kah2.zodiac:nova4jmt:0.15.0.1-SNAPSHOT'
 
     // maven central releases
-    implementation 'de.kah2.zodiac:nova4jmt:0.15.0.1'
+    api 'de.kah2.zodiac:nova4jmt:0.15.0.1'
+
+    //implementation 'com.android.support:appcompat-v7:27.1.1'
 
     // Android backports
-    implementation 'com.jakewharton.threetenabp:threetenabp:1.2.1'
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.4.6'
     implementation 'net.sourceforge.streamsupport:android-retrofuture:1.7.1'
 
     // Testing
-    testImplementation 'junit:junit:4.12'
-    testImplementation('org.threeten:threetenbp:1.4.0') {
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation('org.threeten:threetenbp:1.6.8') {
         exclude group: 'com.jakewharton.threetenabp', module: 'threetenabp'
     }
 
@@ -73,11 +75,15 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 28
+
+    namespace 'de.kah2.zodiac'
+
+    compileSdk 34
 
     defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 28
+
+        minSdkVersion 21
+        targetSdkVersion 34
 
         versionCode androidGitVersion.code()
         versionName androidGitVersion.name()
@@ -100,34 +106,58 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
     }
+
+    publishing {
+        singleVariant('release') {
+            withSourcesJar()
+        }
+    }
 }
 
-modifyPom {
-    project {
-        name = 'libZodiac4A'
-        description = 'android framework providing functionality for building a lunar calendar'
-        url = 'https://github.com/kahles/libZodiac4A'
+publishing {
+    publications {
+        release(MavenPublication) {
 
-        scm {
-            url = 'https://github.com/kahles/libZodiac4A/tree/master'
-            connection = 'scm:git:git://github.com/kahles/libZodiac4A.git'
-            developerConnection = 'scm:git:ssh://github.com/kahles/libZodiac4A.git'
-        }
+            groupId = 'de.kah2.zodiac'
+            artifactId = 'libZodiac4A'
+            version = androidGitVersion.name()
 
-        licenses {
-            license {
-                name = 'GNU LESSER GENERAL PUBLIC LICENSE (LGPL) version 3'
-                url = 'http://www.gnu.org/licenses/lgpl-3.0-standalone.html'
+            afterEvaluate {
+                from components.release
             }
-        }
 
-        developers {
-            developer {
-                id = 'kahles'
-                name = 'Stephan Kahle'
-                email = 'st-mvn@kah2.de'
-                timezone = '+1'
+            pom {
+                name = 'libZodiac4A'
+                description = 'android framework providing functionality for building a lunar calendar'
+                url = 'https://github.com/kahles/libZodiac4A'
+
+                licenses {
+                    license {
+                        name = 'GNU LESSER GENERAL PUBLIC LICENSE (LGPL) version 3'
+                        url = 'http://www.gnu.org/licenses/lgpl-3.0-standalone.html'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = 'kahles'
+                        name = 'Stephan Kahle'
+                        email = 'st-mvn@kah2.de'
+                    }
+                }
+
+                scm {
+                    url = 'https://github.com/kahles/libZodiac4A/tree/master'
+                    connection = 'scm:git:git://github.com/kahles/libZodiac4A.git'
+                    developerConnection = 'scm:git:ssh://github.com/kahles/libZodiac4A.git'
+                }
             }
         }
     }
+    repositories {
+    }
+}
+
+signing {
+    sign publishing.publications.release
 }
