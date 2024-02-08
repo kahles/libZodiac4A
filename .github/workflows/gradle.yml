@@ -15,7 +15,7 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
       - name: Attach git branch
-        run: git checkout "${GITHUB_REF:11}"
+        run: git checkout "${{github.ref_name}}"
       - name: Show version
         run: ./gradlew androidGitVersion
       - name: Gradle build
