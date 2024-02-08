@@ -2,9 +2,7 @@ package de.kah2.zodiac.libZodiac.planetary;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Tests for {@link Position}.
@@ -27,8 +25,8 @@ public class PositionTest {
 
     private void checkValidation(boolean isValidLat, double lat, boolean isValidLng, double lng) {
 
-        assertEquals( isValidLat, Position.isValidLatitude(lat), "Latitude validation failed: " + lat );
-        assertEquals( isValidLng, Position.isValidLongitude(lng), "Longitude validation failed: " + lng );
+		assertThat(Position.isValidLatitude(lat)).as("Latitude validation failed: " + lat).isEqualTo(isValidLat);
+		assertThat(Position.isValidLongitude(lng)).as("Longitude validation failed: " + lng).isEqualTo(isValidLng);
 
         final boolean isValid = isValidLat && isValidLng;
 
@@ -36,11 +34,11 @@ public class PositionTest {
 
             final Position pos = new Position(lat, lng);
 
-            assertTrue(isValid, "Construction of position should NOT throw exception");
+			assertThat(isValid).as("Construction of position should NOT throw exception").isTrue();
 
         } catch (IllegalArgumentException e) {
 
-            assertFalse(isValid, "Construction of position should throw exception");
+			assertThat(isValid).as("Construction of position should throw exception").isFalse();
         }
     }
 }

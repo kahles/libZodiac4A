@@ -7,10 +7,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class CalendarDataTest {
 
@@ -20,13 +17,13 @@ public class CalendarDataTest {
 
         final List<DayStorableDataSet> dayListToImport = new LinkedList<>();
 
-        assertEquals(0, days.size(), "Importing an empty list should do nothing");
+		assertThat(days.size()).as("Importing an empty list should do nothing").isEqualTo(0);
 
         dayListToImport.add(new DayStorableDataSet( TestConstantsAndHelpers.SOME_DATE));
 
         days.importDays(dayListToImport);
 
-        assertEquals(1, days.size(), "One day should be imported");
+		assertThat(days.size()).as("One day should be imported").isEqualTo(1);
     }
 
     @Test
@@ -34,26 +31,26 @@ public class CalendarDataTest {
         final DateRange range = new DateRange( TestConstantsAndHelpers.SOME_DATE, TestConstantsAndHelpers.SOME_DATE.plusDays(3));
         final CalendarData days = new CalendarData();
 
-        assertNull(days.get( TestConstantsAndHelpers.SOME_DATE), "Null should be returned if day isn't available" );
+		assertThat(days.get(TestConstantsAndHelpers.SOME_DATE)).as("Null should be returned if day isn't available").isNull();
 
         generateDays(days, range);
 
         final LocalDate beforeStart = range.getStart().minusDays(1);
         final LocalDate afterEnd = range.getEnd().plusDays(1);
-        assertNull(days.get(beforeStart), "Should return null when date before range requested" );
-        assertNull(days.get(afterEnd), "Should return null when date after range requested" );
+		assertThat(days.get(beforeStart)).as("Should return null when date before range requested").isNull();
+		assertThat(days.get(afterEnd)).as("Should return null when date after range requested").isNull();
 
         final String rangeStr = range.toString();
         for (final LocalDate date : range) {
             final Day day = days.get(date);
-            assertNotNull(day, "Day for " + date + " contained in " + rangeStr + " should be returned");
-            assertTrue(day.getDate().isEqual(date), "Should have date as requested");
+			assertThat(day).as("Day for " + date + " contained in " + rangeStr + " should be returned").isNotNull();
+			assertThat(day.getDate().isEqual(date)).as("Should have date as requested").isTrue();
         }
 
         // extend Calendar and see if days are now contained
         generateDays(days, new DateRange(beforeStart, afterEnd));
-        assertNotNull(days.get(beforeStart), "Day for " + beforeStart + " should be returned" );
-        assertNotNull(days.get(afterEnd), "Day for " + afterEnd + " should be returned" );
+		assertThat(days.get(beforeStart)).as("Day for " + beforeStart + " should be returned").isNotNull();
+		assertThat(days.get(afterEnd)).as("Day for " + afterEnd + " should be returned").isNotNull();
     }
 
     @Test
@@ -61,7 +58,7 @@ public class CalendarDataTest {
         DateRange range = new DateRange( TestConstantsAndHelpers.SOME_DATE, TestConstantsAndHelpers.SOME_DATE.plusDays(3));
         final CalendarData days = new CalendarData();
 
-        assertTrue(days.allAsList().isEmpty(), "Calendar should be empty");
+		assertThat(days.allAsList().isEmpty()).as("Calendar should be empty").isTrue();
 
         generateDays(days, range);
 
@@ -74,8 +71,8 @@ public class CalendarDataTest {
     }
 
     private void testRangeMatchesDays(LinkedList<Day> days, DateRange expectedRange) {
-        assertTrue(days.getFirst().getDate().isEqual(expectedRange.getStart()), "Start date should match");
-        assertTrue(days.getLast().getDate().isEqual(expectedRange.getEnd()), "End date should match");
+		assertThat(days.getFirst().getDate().isEqual(expectedRange.getStart())).as("Start date should match").isTrue();
+		assertThat(days.getLast().getDate().isEqual(expectedRange.getEnd())).as("End date should match").isTrue();
     }
 
 
@@ -88,9 +85,9 @@ public class CalendarDataTest {
         LinkedList<LocalDate> missing = days.getMissingDates(rangeExpected);
         Collections.sort(missing);
 
-        assertEquals(rangeExpected.size(), missing.size(), "All dates should be returned");
-        assertTrue(rangeExpected.getStart().isEqual( missing.getFirst() ), "First missing date should be range start" );
-        assertTrue(rangeExpected.getEnd().isEqual( missing.getLast() ), "Last missing date should be range end" );
+		assertThat(missing.size()).as("All dates should be returned").isEqualTo(rangeExpected.size());
+		assertThat(rangeExpected.getStart().isEqual(missing.getFirst())).as("First missing date should be range start").isTrue();
+		assertThat(rangeExpected.getEnd().isEqual(missing.getLast())).as("Last missing date should be range end").isTrue();
 
         days.insert( CalendarGeneratorStub.stubDay( TestConstantsAndHelpers.SOME_DATE.plusDays(1) ) );
         days.insert( CalendarGeneratorStub.stubDay( TestConstantsAndHelpers.SOME_DATE.plusDays(3) ) );
@@ -98,10 +95,10 @@ public class CalendarDataTest {
         missing = days.getMissingDates(rangeExpected);
         Collections.sort(missing);
 
-        assertEquals(3, missing.size(), "Three dates should be returned");
-        assertTrue(rangeExpected.getStart().isEqual( missing.getFirst() ), "First missing date should be range start" );
-        assertTrue(TestConstantsAndHelpers.SOME_DATE.plusDays(2).isEqual( missing.get(1) ), "Second missing date should 2 days ahead of range start" );
-        assertTrue(rangeExpected.getEnd().isEqual( missing.getLast() ), "Last missing date should be range end" );
+		assertThat(missing.size()).as("Three dates should be returned").isEqualTo(3);
+		assertThat(rangeExpected.getStart().isEqual(missing.getFirst())).as("First missing date should be range start").isTrue();
+		assertThat(TestConstantsAndHelpers.SOME_DATE.plusDays(2).isEqual(missing.get(1))).as("Second missing date should 2 days ahead of range start").isTrue();
+		assertThat(rangeExpected.getEnd().isEqual(missing.getLast())).as("Last missing date should be range end").isTrue();
 
         days.insert( CalendarGeneratorStub.stubDay( TestConstantsAndHelpers.SOME_DATE ) );
         days.insert( CalendarGeneratorStub.stubDay( TestConstantsAndHelpers.SOME_DATE.plusDays(2) ) );
@@ -110,7 +107,7 @@ public class CalendarDataTest {
         missing = days.getMissingDates(rangeExpected);
         Collections.sort(missing);
 
-        assertEquals(0, missing.size(), "No dates should be returned, if no dates are missing");
+		assertThat(missing.size()).as("No dates should be returned, if no dates are missing").isEqualTo(0);
     }
 
     @Test
@@ -129,18 +126,17 @@ public class CalendarDataTest {
         List<Day> removed = calendarData.removeBefore(laterStart);
 
         Collections.sort(removed);
-        assertEquals(2, removed.size(), "2 days should be deleted");
+		assertThat(removed.size()).as("2 days should be deleted").isEqualTo(2);
 
-        assertTrue(removed.get(0).getDate().isEqual(initialRange.getStart()), "Should remove first");
+		assertThat(removed.get(0).getDate().isEqual(initialRange.getStart())).as("Should remove first").isTrue();
 
-        assertTrue(removed.get(1).getDate().isEqual(initialRange.getStart().plusDays(1)), "Should remove second");
+		assertThat(removed.get(1).getDate().isEqual(initialRange.getStart().plusDays(1))).as("Should remove second").isTrue();
 
         LinkedList<Day> days = calendarData.allAsList();
 
-        assertTrue(days.getFirst().getDate().isEqual(laterStart),
-                "Calendar should start at new range" );
+		assertThat(days.getFirst().getDate().isEqual(laterStart)).as("Calendar should start at new range").isTrue();
 
-        assertTrue(days.getLast().getDate().isEqual(initialRange.getEnd()), "Calendar should still end at old range");
+		assertThat(days.getLast().getDate().isEqual(initialRange.getEnd())).as("Calendar should still end at old range").isTrue();
     }
     
     @Test
@@ -159,18 +155,17 @@ public class CalendarDataTest {
         List<Day> removed = calendarData.removeAfter(earlierEnd);
 
         Collections.sort(removed);
-        assertEquals(2, removed.size(), "2 days should be deleted");
+		assertThat(removed.size()).as("2 days should be deleted").isEqualTo(2);
 
-        assertTrue(removed.get(0).getDate().isEqual( initialRange.getEnd().minusDays(1) ), "Should remove day before last" );
+		assertThat(removed.get(0).getDate().isEqual(initialRange.getEnd().minusDays(1))).as("Should remove day before last").isTrue();
 
-        assertTrue(removed.get(1).getDate().isEqual( initialRange.getEnd() ), "Should remove last" );
+		assertThat(removed.get(1).getDate().isEqual(initialRange.getEnd())).as("Should remove last").isTrue();
 
         LinkedList<Day> days = calendarData.allAsList();
 
-        assertTrue(days.getFirst().getDate().isEqual( initialRange.getStart() ),
-                "Calendar should still start at old range" );
+		assertThat(days.getFirst().getDate().isEqual(initialRange.getStart())).as("Calendar should still start at old range").isTrue();
 
-        assertTrue(days.getLast().getDate().isEqual(earlierEnd), "Calendar should end at new end" );
+		assertThat(days.getLast().getDate().isEqual(earlierEnd)).as("Calendar should end at new end").isTrue();
     }
 
     private void generateDays(CalendarData days, DateRange rangeToGenerate) {
