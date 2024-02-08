@@ -12,14 +12,10 @@ This is the android fork - for plain java, see the original repository
 ```groovy
 repositories {
     mavenCentral()
-    /* For snapshots:
-    maven {
-        url =  'https://oss.sonatype.org/content/repositories/snapshots/'
-    }*/
 }
 
 dependencies {
-    implementation 'de.kah2.zodiac:libZodiac4A:0.9.2-android'
+    implementation 'de.kah2.zodiac:libZodiac4A:0.9.4-android'
 }
 ```
 
@@ -28,7 +24,7 @@ dependencies {
 <dependency>
   <groupId>de.kah2.zodiac</groupId>
   <artifactId>libZodiac4A</artifactId>
-  <version>0.9.2-android</version>
+  <version>0.9.4-android</version>
 </dependency>
 ```
 
