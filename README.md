@@ -10,14 +10,10 @@ This is the plain java version - for android develpment, see the android fork [l
 ```groovy
 repositories {
     mavenCentral()
-    /* For snapshots:
-    maven {
-        url =  'https://oss.sonatype.org/content/repositories/snapshots/'
-    }*/
 }
 
 dependencies {
-    implementation 'de.kah2.zodiac:libZodiac:0.9.2'
+    implementation 'de.kah2.zodiac:libZodiac:0.9.4'
 }
 ```
 
@@ -26,7 +22,7 @@ dependencies {
 <dependency>
   <groupId>de.kah2.zodiac</groupId>
   <artifactId>libZodiac</artifactId>
-  <version>0.9.2</version>
+  <version>0.9.4</version>
 </dependency>
 ```
 
