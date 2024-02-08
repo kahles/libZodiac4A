@@ -1,6 +1,8 @@
 package de.kah2.zodiac.libZodiac4A;
 
-import org.junit.Test;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.threeten.bp.LocalDate;
@@ -9,12 +11,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import de.kah2.zodiac.libZodiac4A.planetary.PlanetaryDayData;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 public class CalendarGeneratorTest {
 
@@ -33,12 +29,10 @@ public class CalendarGeneratorTest {
         final LinkedList<Day> generated = generator.getNewlyGenerated();
 
         for (final LocalDate date : rangeExpected) {
-            assertTrue("Day for date " + date + " should be generated", this.daysContainDate(generated, date));
+			assertThat(this.daysContainDate(generated, date)).as("Day for date " + date + " should be generated").isTrue();
         }
-        assertFalse("date before range shouldn't be contained",
-                this.daysContainDate(generated, rangeExpected.getStart().minusDays(1)));
-        assertFalse("date after range shouldn't be contained",
-                this.daysContainDate(generated, rangeExpected.getEnd().plusDays(1)));
+		assertThat(this.daysContainDate(generated, rangeExpected.getStart().minusDays(1))).as("date before range shouldn't be contained").isFalse();
+		assertThat(this.daysContainDate(generated, rangeExpected.getEnd().plusDays(1))).as("date after range shouldn't be contained").isFalse();
 
         this.checkListContainsValidCalendarRange(generated);
     }
@@ -62,11 +56,9 @@ public class CalendarGeneratorTest {
         TestConstantsAndHelpers.generateAndWaitFor(generator);
         final LinkedList<Day> generated = generator.getNewlyGenerated();
 
-        assertTrue("Calendar data should start one day before expected range",
-                generated.getFirst().getDate().isEqual( TestConstantsAndHelpers.SOME_DATE.minusDays(1) ) );
+		assertThat(generated.getFirst().getDate().isEqual(TestConstantsAndHelpers.SOME_DATE.minusDays(1))).as("Calendar data should start one day before expected range").isTrue();
 
-        assertTrue("Calendar data should end one day after expected range",
-                generated.getLast().getDate().isEqual( TestConstantsAndHelpers.SOME_DATE.plusDays(1) ) );
+		assertThat(generated.getLast().getDate().isEqual(TestConstantsAndHelpers.SOME_DATE.plusDays(1))).as("Calendar data should end one day after expected range").isTrue();
 
         this.checkListContainsValidCalendarRange(generated);
     }
@@ -84,16 +76,15 @@ public class CalendarGeneratorTest {
         final TestConstantsAndHelpers.LastStateProgressListener listener = new TestConstantsAndHelpers.LastStateProgressListener();
         generator.getProgressManager().addProgressListener(listener);
 
-        assertNull("Initially state should be null", listener.getLastState());
+		assertThat(listener.getLastState()).as("Initially state should be null").isNull();
 
         generator.importDays( CalendarGeneratorStub.stubDayStorableDataSets(rangeExpected) );
 
-        assertEquals("After import:", ProgressListener.State.IMPORT_FINISHED, listener.getLastState());
+		assertThat(listener.getLastState()).as("After import:").isEqualTo(ProgressListener.State.IMPORT_FINISHED);
 
         final int maxWaitMs = 3000;
 
-        assertTrue("Should enter state FINISHED in less than " + maxWaitMs + "ms",
-                TestConstantsAndHelpers.generateAndWaitFor(generator, maxWaitMs) );
+		assertThat(TestConstantsAndHelpers.generateAndWaitFor(generator, maxWaitMs)).as("Should enter state FINISHED in less than " + maxWaitMs + "ms").isTrue();
 
 
         log.debug("Test if state changes work, if nothing has to be extended at Scope CYCLE");
@@ -108,10 +99,9 @@ public class CalendarGeneratorTest {
                 new DateRange( TestConstantsAndHelpers.SOME_DATES_LAST_EXTREME.minusDays(1), TestConstantsAndHelpers.SOME_DATES_NEXT_EXTREME.plusDays(1) )
         ) );
 
-        assertEquals("After import:", ProgressListener.State.IMPORT_FINISHED, listener.getLastState());
+		assertThat(listener.getLastState()).as("After import:").isEqualTo(ProgressListener.State.IMPORT_FINISHED);
 
-        assertTrue("Should enter state FINISHED in less than " + maxWaitMs + "ms",
-                TestConstantsAndHelpers.generateAndWaitFor(generator, maxWaitMs) );
+		assertThat(TestConstantsAndHelpers.generateAndWaitFor(generator, maxWaitMs)).as("Should enter state FINISHED in less than " + maxWaitMs + "ms").isTrue();
     }
 
     @Test
@@ -129,10 +119,8 @@ public class CalendarGeneratorTest {
 
         final LinkedList<Day> extended = generator.getNewlyGenerated();
 
-        assertFalse( "First generated should not be after last extreme.",
-                extended.getFirst().getDate().isAfter( TestConstantsAndHelpers.SOME_DATES_LAST_EXTREME) );
-        assertFalse( "Last generated should not be before next extreme.",
-                extended.getLast().getDate().isBefore( TestConstantsAndHelpers.SOME_DATES_NEXT_EXTREME) );
+		assertThat(extended.getFirst().getDate().isAfter(TestConstantsAndHelpers.SOME_DATES_LAST_EXTREME)).as("First generated should not be after last extreme.").isFalse();
+		assertThat(extended.getLast().getDate().isBefore(TestConstantsAndHelpers.SOME_DATES_NEXT_EXTREME)).as("Last generated should not be before next extreme.").isFalse();
 
         this.checkListContainsValidCalendarRange(generator.getDays().allAsList());
     }
@@ -151,9 +139,7 @@ public class CalendarGeneratorTest {
 
         this.extendAndWait(generator);
 
-        assertEquals(
-                "Nothing should be extended when we already have extremes at start and end of expected range",
-                0, generator.getNewlyGenerated().size() );
+		assertThat(generator.getNewlyGenerated().size()).as("Nothing should be extended when we already have extremes at start and end of expected range").isEqualTo(0);
 
         // Generate small range, extend to cycle with overhead from using eight threads
         // Test if nothing "unwanted" is extended when extending again
@@ -172,18 +158,14 @@ public class CalendarGeneratorTest {
 
         final LinkedList<Day> lastGenerated = generator.getNewlyGenerated();
 
-        assertEquals("Extending should generate two sets of days", // (1*threadCount in each direction)
-                2*threadCount, lastGenerated.size() );
+		assertThat(lastGenerated.size()).as("Extending should generate two sets of days").isEqualTo(2 * threadCount);
 
         this.extendAndWait(generator);
 
         final LinkedList<Day> after2ndExtension = generator.getNewlyGenerated();
-        assertEquals("Extending a second time shouldn't generate anything",
-                lastGenerated.size(), after2ndExtension.size() );
-        assertTrue("Newly generated should start at same day as last time of extension",
-                lastGenerated.getFirst().getDate().isEqual( after2ndExtension.getFirst().getDate() ) );
-        assertTrue("Newly generated should end at same day as last time of extension",
-                lastGenerated.getLast().getDate().isEqual( after2ndExtension.getLast().getDate() ) );
+		assertThat(after2ndExtension.size()).as("Extending a second time shouldn't generate anything").isEqualTo(lastGenerated.size());
+		assertThat(lastGenerated.getFirst().getDate().isEqual(after2ndExtension.getFirst().getDate())).as("Newly generated should start at same day as last time of extension").isTrue();
+		assertThat(lastGenerated.getLast().getDate().isEqual(after2ndExtension.getLast().getDate())).as("Newly generated should end at same day as last time of extension").isTrue();
     }
 
     private void extendAndWait(CalendarGenerator generator) {
@@ -218,7 +200,7 @@ public class CalendarGeneratorTest {
             }
             last = actual;
         }
-        assertTrue("Generated days should be sorted and don't contain gaps", isValid);
+		assertThat(isValid).as("Generated days should be sorted and don't contain gaps").isTrue();
     }
 
     @Test
@@ -236,8 +218,7 @@ public class CalendarGeneratorTest {
 
         final int generatedCount = generator.getNewlyGenerated().size();
 
-        assertEquals("Nothing should be generated when cycle around expectedRange is loaded", 0,
-                generatedCount);
+		assertThat(generatedCount).as("Nothing should be generated when cycle around expectedRange is loaded").isEqualTo(0);
     }
 
     @Test
@@ -280,7 +261,7 @@ public class CalendarGeneratorTest {
 
     private void testAllDaysHaveLunarPhase(LinkedList<Day> days) {
         for (Day day : days) {
-            assertNotNull( "Day " + day.getDate() + " should have lunar phase.", day.getPlanetaryData().getLunarPhase() );
+			assertThat(day.getPlanetaryData().getLunarPhase()).as("Day " + day.getDate() + " should have lunar phase.").isNotNull();
         }
     }
 
@@ -300,8 +281,7 @@ public class CalendarGeneratorTest {
         while ( actualDay.getPlanetaryData().getLunarPhase() == null
                 || !actualDay.getPlanetaryData().getLunarPhase().isLunarExtreme() ) {
 
-            assertEquals(actualDay.getDate() + " shouldn't have daysSinceLast", PlanetaryDayData.DAY_COUNT_NOT_CALCULATED,
-                    actualDay.getPlanetaryData().getDaysSinceLastMaxPhase());
+			assertThat(actualDay.getPlanetaryData().getDaysSinceLastMaxPhase()).as(actualDay.getDate() + " shouldn't have daysSinceLast").isEqualTo(PlanetaryDayData.DAY_COUNT_NOT_CALCULATED);
 
             actualDay = days.pollFirst();
         }
@@ -309,8 +289,7 @@ public class CalendarGeneratorTest {
         int count = 0;
 
         while (actualDay != null) {
-            assertEquals("daysSinceLast of " + actualDay.getDate() + " should be " + count,
-                    count, actualDay.getPlanetaryData().getDaysSinceLastMaxPhase());
+			assertThat(actualDay.getPlanetaryData().getDaysSinceLastMaxPhase()).as("daysSinceLast of " + actualDay.getDate() + " should be " + count).isEqualTo(count);
 
             actualDay = days.pollFirst();
 
@@ -330,8 +309,7 @@ public class CalendarGeneratorTest {
         while ( actualDay.getPlanetaryData().getLunarPhase() == null
                 || !actualDay.getPlanetaryData().getLunarPhase().isLunarExtreme() ) {
 
-            assertEquals(actualDay.getDate() + " shouldn't have daysUntilNext", PlanetaryDayData.DAY_COUNT_NOT_CALCULATED,
-                    actualDay.getPlanetaryData().getDaysUntilNextMaxPhase());
+			assertThat(actualDay.getPlanetaryData().getDaysUntilNextMaxPhase()).as(actualDay.getDate() + " shouldn't have daysUntilNext").isEqualTo(PlanetaryDayData.DAY_COUNT_NOT_CALCULATED);
 
             actualDay = days.pollLast();
         }
@@ -339,8 +317,7 @@ public class CalendarGeneratorTest {
         count = 0;
 
         while (actualDay != null) {
-            assertEquals("daysUntilNext of " + actualDay.getDate() + " should be " + count,
-                    count, actualDay.getPlanetaryData().getDaysUntilNextMaxPhase());
+			assertThat(actualDay.getPlanetaryData().getDaysUntilNextMaxPhase()).as("daysUntilNext of " + actualDay.getDate() + " should be " + count).isEqualTo(count);
 
             actualDay = days.pollLast();
 
@@ -358,13 +335,11 @@ public class CalendarGeneratorTest {
         final DateRange expectedRange = new DateRange( TestConstantsAndHelpers.SOME_DATE, TestConstantsAndHelpers.SOME_DATE.plusDays(3));
         final CalendarGenerator generator = new CalendarStub(expectedRange, Calendar.Scope.DAY).getGenerator();
 
-        assertTrue("Needed range should match expected range at Scope DAY when calendar is empty",
-                expectedRange.isEqual( generator.getRangeNeededToCalculate() ) );
+		assertThat(expectedRange.isEqual(generator.getRangeNeededToCalculate())).as("Needed range should match expected range at Scope DAY when calendar is empty").isTrue();
 
         generator.importDays( CalendarGeneratorStub.stubDayStorableDataSets(expectedRange) );
 
-        assertTrue("Needed range should match expected range at Scope DAY when calendar is already calculated",
-                expectedRange.isEqual( generator.getRangeNeededToCalculate() ) );
+		assertThat(expectedRange.isEqual(generator.getRangeNeededToCalculate())).as("Needed range should match expected range at Scope DAY when calendar is already calculated").isTrue();
     }
 
     @Test
@@ -383,15 +358,13 @@ public class CalendarGeneratorTest {
 
         DateRange rangeShouldBe = new DateRange( expectedRange.getStart().minusDays(1), expectedRange.getEnd().plusDays(1) );
 
-        assertTrue("Needed range should start one day before and end one day after expected range at "
-                        + scope + " when calendar is empty",
-                rangeShouldBe.isEqual( generator.getRangeNeededToCalculate() ) );
+		assertThat(rangeShouldBe.isEqual(generator.getRangeNeededToCalculate())).as("Needed range should start one day before and end one day after expected range at "
+			+ scope + " when calendar is empty").isTrue();
 
         generator.importDays( CalendarGeneratorStub.stubDayStorableDataSets(expectedRange) );
 
-        assertTrue("Needed range should start one day before and end one day after expected range at Scope "
-                        + scope + " when calendar is already calculated",
-                rangeShouldBe.isEqual( generator.getRangeNeededToCalculate() ) );
+		assertThat(rangeShouldBe.isEqual(generator.getRangeNeededToCalculate())).as("Needed range should start one day before and end one day after expected range at Scope "
+			+ scope + " when calendar is already calculated").isTrue();
     }
 
 //	private void print(Day day) {

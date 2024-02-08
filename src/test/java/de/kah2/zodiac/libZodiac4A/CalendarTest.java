@@ -1,18 +1,14 @@
 package de.kah2.zodiac.libZodiac4A;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.jupiter.api.Test;
 import org.threeten.bp.LocalDate;
 
 import java.util.LinkedList;
 import java.util.List;
 
 import de.kah2.zodiac.libZodiac4A.Calendar.Scope;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 public class CalendarTest {
 
@@ -27,11 +23,11 @@ public class CalendarTest {
 		final DateRange range = new DateRange( TestConstantsAndHelpers.SOME_DATE, TestConstantsAndHelpers.SOME_DATE.plusDays(2) );
 		Calendar calendar = new CalendarStub(range, Scope.DAY);
 
-		assertEquals("Should return empty list if calendar is empty.", 0, calendar.getValidDays().size() );
+		assertThat(calendar.getValidDays().size()).as("Should return empty list if calendar is empty.").isEqualTo(0);
 
 		calendar.importDays( CalendarGeneratorStub.stubDayStorableDataSets(range) );
 
-		assertEquals("Should return all three days", 3, calendar.getValidDays().size() );
+		assertThat(calendar.getValidDays().size()).as("Should return all three days").isEqualTo(3);
 	}
 
 	@Test
@@ -42,19 +38,17 @@ public class CalendarTest {
 
 		final Calendar calendar = new CalendarStub(expectedRange, Scope.PHASE);
 
-		assertEquals("Should return empty list if calendar is empty.", 0, calendar.getValidDays().size() );
+		assertThat(calendar.getValidDays().size()).as("Should return empty list if calendar is empty.").isEqualTo(0);
 
 		calendar.importDays( CalendarGeneratorStub.stubDayStorableDataSets(rangeToGenerate) );
 
 		final LinkedList<Day> validDays = calendar.getValidDays();
 
-		assertEquals("Should return three days", 3, validDays.size() );
-		assertTrue("Should return first of expected range", validDays.getFirst().getDate().isEqual( expectedRange.getStart() ) );
-        assertNotNull("First should have lunar phase",
-                validDays.getFirst().getPlanetaryData().getLunarPhase() );
-		assertTrue("Should return last of expected range", validDays.getLast().getDate().isEqual( expectedRange.getEnd() ) );
-        assertNotNull("Last should have lunar phase",
-                validDays.getLast().getPlanetaryData().getLunarPhase() );
+		assertThat(validDays.size()).as("Should return three days").isEqualTo(3);
+		assertThat(validDays.getFirst().getDate().isEqual(expectedRange.getStart())).as("Should return first of expected range").isTrue();
+		assertThat(validDays.getFirst().getPlanetaryData().getLunarPhase()).as("First should have lunar phase").isNotNull();
+		assertThat(validDays.getLast().getDate().isEqual(expectedRange.getEnd())).as("Should return last of expected range").isTrue();
+		assertThat(validDays.getLast().getPlanetaryData().getLunarPhase()).as("Last should have lunar phase").isNotNull();
 	}
 
 	@Test
@@ -65,35 +59,31 @@ public class CalendarTest {
 
 		Calendar calendar = new CalendarStub(expectedRange, Scope.CYCLE);
 
-		assertEquals("Should return empty list if calendar is empty.", 0, calendar.getValidDays().size() );
+		assertThat(calendar.getValidDays().size()).as("Should return empty list if calendar is empty.").isEqualTo(0);
 
         calendar.importDays( CalendarGeneratorStub.stubDayStorableDataSets(rangeToGenerate) );
 
 		LinkedList<Day> validDays = calendar.getValidDays();
 
-		assertTrue("Should start at last extreme", validDays.getFirst().getDate().isEqual( TestConstantsAndHelpers.SOME_DATES_LAST_EXTREME) );
+		assertThat(validDays.getFirst().getDate().isEqual(TestConstantsAndHelpers.SOME_DATES_LAST_EXTREME)).as("Should start at last extreme").isTrue();
 
-		assertNotNull("First should have lunar phase", validDays.getFirst().getPlanetaryData().getLunarPhase() );
+		assertThat(validDays.getFirst().getPlanetaryData().getLunarPhase()).as("First should have lunar phase").isNotNull();
 
-		assertTrue("First should be lunar extreme", validDays.getFirst().getPlanetaryData().getLunarPhase().isLunarExtreme());
+		assertThat(validDays.getFirst().getPlanetaryData().getLunarPhase().isLunarExtreme()).as("First should be lunar extreme").isTrue();
 
-		Assert.assertEquals("First should have daysSinceLast",
-				0, validDays.getFirst().getPlanetaryData().getDaysSinceLastMaxPhase());
+		assertThat(validDays.getFirst().getPlanetaryData().getDaysSinceLastMaxPhase()).as("First should have daysSinceLast").isEqualTo(0);
 
-		Assert.assertEquals("First should have daysUntilNext",
-				0, validDays.getFirst().getPlanetaryData().getDaysUntilNextMaxPhase());
+		assertThat(validDays.getFirst().getPlanetaryData().getDaysUntilNextMaxPhase()).as("First should have daysUntilNext").isEqualTo(0);
 
-		assertTrue("Should end at next extreme", validDays.getLast().getDate().isEqual( TestConstantsAndHelpers.SOME_DATES_NEXT_EXTREME) );
+		assertThat(validDays.getLast().getDate().isEqual(TestConstantsAndHelpers.SOME_DATES_NEXT_EXTREME)).as("Should end at next extreme").isTrue();
 
-		assertNotNull("Last should have lunar phase", validDays.getLast().getPlanetaryData().getLunarPhase() );
+		assertThat(validDays.getLast().getPlanetaryData().getLunarPhase()).as("Last should have lunar phase").isNotNull();
 
-		assertTrue("Last should be lunar extreme", validDays.getLast().getPlanetaryData().getLunarPhase().isLunarExtreme());
+		assertThat(validDays.getLast().getPlanetaryData().getLunarPhase().isLunarExtreme()).as("Last should be lunar extreme").isTrue();
 
-		Assert.assertEquals("Last should have daysSinceLast",
-				0, validDays.getLast().getPlanetaryData().getDaysSinceLastMaxPhase());
+		assertThat(validDays.getLast().getPlanetaryData().getDaysSinceLastMaxPhase()).as("Last should have daysSinceLast").isEqualTo(0);
 
-		Assert.assertEquals("Last should have daysUntilNext",
-				0, validDays.getLast().getPlanetaryData().getDaysUntilNextMaxPhase());
+		assertThat(validDays.getLast().getPlanetaryData().getDaysUntilNextMaxPhase()).as("Last should have daysUntilNext").isEqualTo(0);
 
 		// test what happens, when more valid days exist
 		final LinkedList<DayStorableDataSet> largerThanCycle = new LinkedList<>();
@@ -128,10 +118,8 @@ public class CalendarTest {
 
 		validDays = calendar.getValidDays();
 
-		assertTrue("Should start at first valid day",
-				validDays.getFirst().getDate().isEqual( firstValid.getDate() ) );
-		assertTrue("Should end at last valid day",
-				validDays.getLast().getDate().isEqual( lastValid.getDate() ) );
+		assertThat(validDays.getFirst().getDate().isEqual(firstValid.getDate())).as("Should start at first valid day").isTrue();
+		assertThat(validDays.getLast().getDate().isEqual(lastValid.getDate())).as("Should end at last valid day").isTrue();
 	}
 
 	@Test
@@ -148,7 +136,7 @@ public class CalendarTest {
 
 		// Now we have a calendar containing a gap ...
 
-		assertNull("Null should be returned if calendar contains invalid data.", calendar.getValidDays());
+		assertThat(calendar.getValidDays()).as("Null should be returned if calendar contains invalid data.").isNull();
 	}
 
 
@@ -200,14 +188,14 @@ public class CalendarTest {
 
 		// empty calendar shouldn't throw exception or remove anything
 		List<Day> removed = calendar.removeOverhead(true);
-		assertEquals("Nothing should be returned", 0, removed.size());
+		assertThat(removed.size()).as("Nothing should be returned").isEqualTo(0);
 
         calendar.importDays( CalendarGeneratorStub.stubDayStorableDataSets(rangeToGenerate) );
 
 		// when nothing is to delete, it shouldn't throw an exception or remove
 		// anything
 		removed = calendar.removeOverhead(true);
-		assertEquals("Nothing should be returned", 0, removed.size());
+		assertThat(removed.size()).as("Nothing should be returned").isEqualTo(0);
 
 		// should not throw exception or remove anything when expected range is
 		// bigger than calculated/imported range
@@ -217,7 +205,7 @@ public class CalendarTest {
 
 		removed = calendar.removeOverhead(true);
 
-		assertEquals("Nothing should be returned", 0, removed.size());
+		assertThat(removed.size()).as("Nothing should be returned").isEqualTo(0);
 	}
 
 	private void testRemoveOverheadLeavesPhaseIntact(final Scope scope) {
@@ -238,24 +226,18 @@ public class CalendarTest {
 		switch (scope) {
 
 			case DAY:
-				assertTrue("DAY: Calendar should start at expected range",
-						days.getFirst().getDate().isEqual( smallerRange.getStart() ) );
-				assertTrue("DAY: Calendar should end at expected range",
-						days.getLast().getDate().isEqual( smallerRange.getEnd() ) );
+				assertThat(days.getFirst().getDate().isEqual(smallerRange.getStart())).as("DAY: Calendar should start at expected range").isTrue();
+				assertThat(days.getLast().getDate().isEqual(smallerRange.getEnd())).as("DAY: Calendar should end at expected range").isTrue();
 				break;
 
 			case PHASE:
-				assertTrue("PHASE: Calendar should start one day before expected range",
-						days.getFirst().getDate().isEqual( smallerRange.getStart().minusDays(1) ) );
-				assertTrue("PHASE: Calendar should end one day after expected range",
-						days.getLast().getDate().isEqual( smallerRange.getEnd().plusDays(1) ) );
+				assertThat(days.getFirst().getDate().isEqual(smallerRange.getStart().minusDays(1))).as("PHASE: Calendar should start one day before expected range").isTrue();
+				assertThat(days.getLast().getDate().isEqual(smallerRange.getEnd().plusDays(1))).as("PHASE: Calendar should end one day after expected range").isTrue();
 				break;
 
 			case CYCLE:
-				assertTrue("CYCLE: Calendar should start one day before last lunar extreme",
-						days.getFirst().getDate().isEqual( TestConstantsAndHelpers.SOME_DATES_LAST_EXTREME.minusDays(1) ) );
-				assertTrue("PHASE: Calendar should end one day after next lunar extreme",
-						days.getLast().getDate().isEqual( TestConstantsAndHelpers.SOME_DATES_NEXT_EXTREME.plusDays(1) ) );
+				assertThat(days.getFirst().getDate().isEqual(TestConstantsAndHelpers.SOME_DATES_LAST_EXTREME.minusDays(1))).as("CYCLE: Calendar should start one day before last lunar extreme").isTrue();
+				assertThat(days.getLast().getDate().isEqual(TestConstantsAndHelpers.SOME_DATES_NEXT_EXTREME.plusDays(1))).as("PHASE: Calendar should end one day after next lunar extreme").isTrue();
 				break;
 		}
 	}
@@ -281,7 +263,7 @@ public class CalendarTest {
 		calendar.setRangeExpected(expectedRange);
 		calendar.removeOverhead(alsoDeleteFutureDays);
 
-		assertEquals("Calendar should be empty, when overhead is removed", 0, calendar.getAllDays().size());
+		assertThat(calendar.getAllDays().size()).as("Calendar should be empty, when overhead is removed").isEqualTo(0);
 	}
 
 	@Test
@@ -294,28 +276,22 @@ public class CalendarTest {
 		DateRange newRange = new DateRange(oldRange.getStart().minusDays(3), oldRange.getStart().minusDays(2));
 		calendar.setRangeExpected(newRange);
 		calendar.fixRangeExpectedToIncludeExistingDays();
-		assertTrue("expectedRange should start at new range's start",
-				calendar.getRangeExpected().getStart().isEqual(newRange.getStart()));
-		assertTrue("expectedRange should end at old range's end",
-				calendar.getRangeExpected().getEnd().isEqual(oldRange.getEnd()));
+		assertThat(calendar.getRangeExpected().getStart().isEqual(newRange.getStart())).as("expectedRange should start at new range's start").isTrue();
+		assertThat(calendar.getRangeExpected().getEnd().isEqual(oldRange.getEnd())).as("expectedRange should end at old range's end").isTrue();
 
 		// new range is after old range
 		newRange = new DateRange(oldRange.getEnd().plusDays(2), oldRange.getEnd().plusDays(3));
 		calendar.setRangeExpected(newRange);
 		calendar.fixRangeExpectedToIncludeExistingDays();
-		assertTrue("expectedRange should start at old range's start",
-				calendar.getRangeExpected().getStart().isEqual(oldRange.getStart()));
-		assertTrue("expectedRange should end at new range's end",
-				calendar.getRangeExpected().getEnd().isEqual(newRange.getEnd()));
+		assertThat(calendar.getRangeExpected().getStart().isEqual(oldRange.getStart())).as("expectedRange should start at old range's start").isTrue();
+		assertThat(calendar.getRangeExpected().getEnd().isEqual(newRange.getEnd())).as("expectedRange should end at new range's end").isTrue();
 
 		// new range is contained in old Range
 		newRange = new DateRange(oldRange.getStart().plusDays(1), oldRange.getEnd().minusDays(1));
 		calendar.setRangeExpected(newRange);
 		calendar.fixRangeExpectedToIncludeExistingDays();
-		assertTrue("expectedRange should start at old range's start",
-				calendar.getRangeExpected().getStart().isEqual(oldRange.getStart()));
-		assertTrue("expectedRange should end at old range's end",
-				calendar.getRangeExpected().getEnd().isEqual(oldRange.getEnd()));
+		assertThat(calendar.getRangeExpected().getStart().isEqual(oldRange.getStart())).as("expectedRange should start at old range's start").isTrue();
+		assertThat(calendar.getRangeExpected().getEnd().isEqual(oldRange.getEnd())).as("expectedRange should end at old range's end").isTrue();
 	}
 
 

@@ -1,5 +1,6 @@
 buildscript {
     repositories {
+        mavenLocal()
         mavenCentral()
         google()
     }
@@ -10,9 +11,9 @@ buildscript {
 
 plugins {
     id 'maven-publish'
+    id 'io.github.gradle-nexus.publish-plugin' version '1.3.0'
     id 'signing'
     id 'com.gladed.androidgitversion' version '0.4.14'
-    //id 'io.github.gradle-nexus.publish-plugin' version '1.3.0'
 }
 
 apply plugin: 'com.android.library'
@@ -27,21 +28,18 @@ afterEvaluate {
     println(" Version code:\t " + androidGitVersion.code() )
 }
 
+group = 'de.kah2.zodiac'
+version = androidGitVersion.name()
+
 repositories {
     google()
     mavenLocal()
     mavenCentral()
-    // For snapshots:
-    /*
-    maven {
-        url =  'https://oss.sonatype.org/content/repositories/snapshots/'
-    }
-    */
 }
 
 dependencies {
-    
-	implementation 'org.slf4j:slf4j-api:1.7.36'
+
+    implementation 'org.slf4j:slf4j-api:1.7.36'
     testImplementation 'org.slf4j:slf4j-simple:1.7.36'
     
     // Removed, because actual version doesn't work for multi-threaded use
@@ -57,21 +55,15 @@ dependencies {
 
     //implementation 'com.android.support:appcompat-v7:27.1.1'
 
-    // Android backports
     implementation 'com.jakewharton.threetenabp:threetenabp:1.4.6'
     implementation 'net.sourceforge.streamsupport:android-retrofuture:1.7.1'
 
-    // Testing
-    testImplementation 'junit:junit:4.13.2'
     testImplementation('org.threeten:threetenbp:1.6.8') {
         exclude group: 'com.jakewharton.threetenabp', module: 'threetenabp'
     }
 
-    /*
-    Not needed at the moment
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-     */
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
+    testImplementation 'org.assertj:assertj-core:3.23.1'
 }
 
 android {
@@ -152,6 +144,22 @@ publishing {
                     developerConnection = 'scm:git:ssh://github.com/kahles/libZodiac4A.git'
                 }
             }
+        }
+    }
+}
+
+if ( !project.hasProperty( "sonatypeUsername" ) ) {
+    ext.sonatypeUsername = "none"
+}
+if ( !project.hasProperty( "sonatypePassword" ) ) {
+    ext.sonatypePassword = "none"
+}
+
+nexusPublishing {
+    repositories {
+        sonatype {
+            username = sonatypeUsername
+            password = sonatypePassword
         }
     }
     repositories {
