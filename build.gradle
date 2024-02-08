@@ -32,8 +32,6 @@ repositories {
 
 dependencies {
 
-    implementation(platform("org.openrewrite.recipe:rewrite-recipe-bom:2.6.4"))
-
     implementation 'org.slf4j:slf4j-api:1.7.36'
     testImplementation 'org.slf4j:slf4j-simple:1.7.36'
     
