@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'de.kah2.zodiac:libZodiac4A:0.9.4-android'
+    implementation 'de.kah2.zodiac:libZodiac4A:1.0-android'
 }
 ```
 
@@ -24,11 +24,9 @@ dependencies {
 <dependency>
   <groupId>de.kah2.zodiac</groupId>
   <artifactId>libZodiac4A</artifactId>
-  <version>0.9.4-android</version>
+  <version>1.0-android</version>
 </dependency>
 ```
-https://github.com/kahles/libZodiac/blob/master/src/test/java/de/kah2/zodiac/libZodiac/example/CalendarExampleSimple.java
-https://github.com/kahles/libZodiac/blob/master/src/test/java/de/kah2/libZodiac/example/CalendarExampleSimple.java
 
 ### Usage
 - [`CalendarExampleSimple.java`](src/test/java/de/kah2/zodiac/libZodiac/example/CalendarExampleSimple.java) shows basic usage of this framework.
@@ -41,9 +39,7 @@ listening.
 
 ### Requirements
 
-#### Java 8
-I decided to use JDK8, even though it isn't fully supported by Android yet. E.g. `java.time` is only supported through a backport for 
-Android.
+#### Java 17
 
 #### gradle
 A [gradle](https://gradle.org) build script is included to manage dependencies and automate testing and building. 
@@ -58,8 +54,7 @@ So I made a fork containing a fix for this: [nova4jmt](https://github.com/kahles
 I'm trying to provide a reasonable test coverage using [JUnit](http://junit.org).
 
 #### slf4j
-For logging [slf4j](http://www.slf4j.org/) is in use. To see log output you have to require a backend in your project - e.g.
-`org.slf4j.slf4j-simple`
+For logging [slf4j](http://www.slf4j.org/) is in use.
 
 ### Versions
 The plugin [gradle-android-git-version](https://github.com/gladed/gradle-android-git-version) is used to automate versioning based on git 
