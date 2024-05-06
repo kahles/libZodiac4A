@@ -20,10 +20,11 @@ import java.util.TreeSet;
  * see de.kah2.libZodiac.example
  * @author kahles
  */
-// TODO externalize LocationProvider
-public class Calendar implements LocationProvider {
+public class Calendar {
 
 	private final Logger log = LoggerFactory.getLogger(this.getClass());
+
+	private final LocationProvider locationProvider;
 
 	// This is the range the Calendar shall contain.
 	private DateRange rangeExpected;
@@ -58,83 +59,24 @@ public class Calendar implements LocationProvider {
 
 	private final Scope scope;
 
-	private final ZoneId timeZoneId;
-	private final Position observerPosition;
-
-	/**
-	 * Creates an empty Calendar with "CYCLE" as default for
-	 * {@link Scope} and using system default {@link ZoneId}.
-	 *
-	 * @param observerPosition
-	 *            The position of the observer needed for rise and set
-	 *            calculation.
-	 * @param expectedRange
-	 *            the range defining start date and end date of the
-	 *            {@link Calendar} instance.
-	 *
-	 */
-	public Calendar(final Position observerPosition, final DateRange expectedRange) {
-		this(observerPosition, expectedRange, Scope.CYCLE);
-	}
-
-	/**
-	 * Creates an empty Calendar with "CYCLE" as default for
-	 * {@link Scope}.
-	 *
-	 * @param observerPosition
-	 *            The position of the observer needed for rise and set
-	 *            calculation.
-	 * @param zoneId
-	 *            the time zone of the observer needed for rise and set times of
-	 *            sun and moon
-	 * @param expectedRange
-	 *            the range defining start date and end date of the
-	 *            {@link Calendar} instance.
-	 *
-	 */
-	public Calendar(final Position observerPosition, final ZoneId zoneId, final DateRange expectedRange) {
-		this(observerPosition, zoneId, expectedRange, Scope.CYCLE);
-	}
-
-	/**
-	 * Creates an empty Calendar using system default {@link ZoneId}.
-	 *
-	 * @param observerPosition
-	 *            The position of the observer needed for rise and set
-	 *            calculation.
-	 * @param expectedRange
-	 *            the range defining start date and end date of the
-	 *            {@link Calendar} instance.
-	 * @param scope
-	 *            Allows to set the scope manually
-	 */
-	public Calendar(final Position observerPosition, final DateRange expectedRange, final Scope scope) {
-		this(observerPosition, ZoneId.systemDefault(), expectedRange, scope);
-	}
-
 	/**
 	 * Creates an empty Calendar.
 	 *
-	 * @param observerPosition
-	 *            The position of the observer needed for rise and set
-	 *            calculation.
-	 * @param zoneId
-	 *            the time zone of the observer needed for rise and set times of
-	 *            sun and moon
 	 * @param expectedRange
 	 *            the range defining start date and end date of the
 	 *            {@link Calendar} instance.
 	 * @param scope
 	 *            Allows to set the scope manually
+	 * @param locationProvider The {@link LocationProvider} that is needed for calculations
 	 */
-	public Calendar(final Position observerPosition, final ZoneId zoneId, final DateRange expectedRange,
-			final Scope scope) {
-
-		this.timeZoneId = zoneId;
-		this.observerPosition = observerPosition;
+	public Calendar(
+			final DateRange expectedRange,
+			final Scope scope,
+			final LocationProvider locationProvider ) {
 
 		this.rangeExpected = expectedRange;
 		this.scope = scope;
+		this.locationProvider = locationProvider;
 	}
 
 	/**
@@ -300,16 +242,6 @@ public class Calendar implements LocationProvider {
 		}
 	}
 
-	@Override
-	public ZoneId getTimeZoneId() {
-		return this.timeZoneId;
-	}
-
-	@Override
-	public Position getObserverPosition() {
-		return this.observerPosition;
-	}
-
 	/**
 	 * @return  the range which the {@link Calendar} shall contain.
 	 */
@@ -424,5 +356,12 @@ public class Calendar implements LocationProvider {
 	/** Needed for CalendarStub. */
 	CalendarData getDays() {
 		return days;
+	}
+
+	/**
+	 * @return the {@link LocationProvider} that is used for calculations
+	 */
+	public LocationProvider getLocationProvider() {
+		return locationProvider;
 	}
 }

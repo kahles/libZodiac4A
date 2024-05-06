@@ -1,9 +1,6 @@
 package de.kah2.zodiac.libZodiac.example;
 
-import de.kah2.zodiac.libZodiac.Calendar;
-import de.kah2.zodiac.libZodiac.DateRange;
-import de.kah2.zodiac.libZodiac.Day;
-import de.kah2.zodiac.libZodiac.TestConstantsAndHelpers;
+import de.kah2.zodiac.libZodiac.*;
 import de.kah2.zodiac.libZodiac.interpretation.Gardening;
 import de.kah2.zodiac.libZodiac.interpretation.Interpreter;
 import org.slf4j.Logger;
@@ -33,15 +30,16 @@ public class CalendarExampleSimple {
 		// moon), all days since last and until next lunar extreme get
 		// calculated.
 		final DateRange range = new DateRange(startDate, startDate.plusDays(days));
-		final Calendar calendar = new Calendar( TestConstantsAndHelpers.POSITION_MUNICH, range);
+		final LocationProvider locationProvider = new MunichLocationProvider();
+		final Calendar calendar = new Calendar( range, Calendar.Scope.CYCLE, locationProvider );
 
 		// If we don't need to know how far away next/previous lunar extreme is,
 		// we could reduce the Scope (and calculation time):
 		// Only 3 days get calculated: actual, previous and next
-		// final Calendar calendar = new Calendar(TestConstantsAndHelpers.POSITION_MUNICH, range, Calendar.Scope.PHASE);
+		// final Calendar calendar = new Calendar( range, Calendar.Scope.PHASE, locationProvider );
 
 		// And if we don't even need lunar PHASE:
-		// final Calendar calendar = new Calendar(TestConstantsAndHelpers.POSITION_MUNICH, range, Calendar.Scope.DAY);
+		// final Calendar calendar = new Calendar( range, Calendar.Scope.DAY, locationProvider )
 
 		/*
 		 * Second step: Initialize its "main" content. This could take some time
@@ -53,7 +51,7 @@ public class CalendarExampleSimple {
 
 		final CalendarDataStringBuilder builder = new CalendarDataStringBuilder();
 
-		builder.appendCalendarData(calendar);
+		builder.appendCalendarData( locationProvider );
 
 		for ( final Day day : calendar.getValidDays() ) {
 

@@ -74,7 +74,7 @@ public class ProgressListenerExample {
 
 		// Set up a Calendar
 		final DateRange range = new DateRange(start, end);
-		final Calendar calendar = new Calendar( TestConstantsAndHelpers.POSITION_MUNICH, range);
+		final Calendar calendar = new Calendar( range, Calendar.Scope.CYCLE, new MunichLocationProvider() );
 
 		// Add a ProgressListenerAdapter
 		calendar.addProgressListener(new SysOutProgressListener());

@@ -482,7 +482,7 @@ public class CalendarGenerator implements ProgressListener {
      * calculation.
      */
     Day createCalculatedDay(final LocalDate date) {
-        return Day.calculateFor(this.calendar, date);
+        return Day.calculateFor( calendar.getLocationProvider(), date );
     }
 
     /**

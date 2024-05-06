@@ -27,7 +27,7 @@ public class Benchmark {
 
         for (int loop = 0; loop < NUMBER_OF_LOOPS; loop ++) {
 
-            final Calendar calendar = new Calendar(TestConstantsAndHelpers.POSITION_MUNICH, RANGE, scope);
+            final Calendar calendar = new Calendar( RANGE, scope, new MunichLocationProvider() );
             calendar.addProgressListener(new BenchmarkListener());
             calendar.getGenerator().setMaxThreadCount(MAX_THREADS);
 

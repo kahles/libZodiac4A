@@ -11,8 +11,6 @@ public class TestConstantsAndHelpers {
 
 	private final static Logger LOG = LoggerFactory.getLogger(TestConstantsAndHelpers.class);
 
-	public final static Position POSITION_MUNICH = new Position(48.137, 11.57521);
-
 	public final static LocalDate SOME_DATE = LocalDate.of(2016, 9, 3);
 
 	/** Last lunar extreme before SOME_DATE - full moon */
@@ -20,21 +18,6 @@ public class TestConstantsAndHelpers {
 
 	/** Next lunar extreme after SOME_DATE - new moon */
 	public final static LocalDate SOME_DATES_NEXT_EXTREME = LocalDate.of(2016, 9, 6);
-
-
-	public final static String TIME_ZONE_STRING = "Europe/Berlin";
-
-	public final static LocationProvider LOCATION_PROVIDER = new LocationProvider() {
-		@Override
-		public ZoneId getTimeZoneId() {
-			return ZoneId.of(TIME_ZONE_STRING);
-		}
-
-		@Override
-		public Position getObserverPosition() {
-			return POSITION_MUNICH;
-		}
-	};
 
 	private final static int sleepStepMs = 1000;
 
