@@ -32,7 +32,7 @@ public class PositionTest {
 
         try {
 
-            final Position pos = new Position(lat, lng);
+            new Position(lat, lng);
 
 			assertThat(isValid).as("Construction of position should NOT throw exception").isTrue();
 

@@ -1,8 +1,8 @@
 package de.kah2.zodiac.libZodiac;
 
-import java.time.ZoneId;
-
 import de.kah2.zodiac.libZodiac.planetary.Position;
+
+import java.time.ZoneId;
 
 /**
  * This interface allows us to stub the functionality {@link Calendar} provides

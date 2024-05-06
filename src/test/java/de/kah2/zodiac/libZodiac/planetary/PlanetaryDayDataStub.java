@@ -1,12 +1,12 @@
 package de.kah2.zodiac.libZodiac.planetary;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-
 import de.kah2.zodiac.libZodiac.LocationProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 /**
  * This class simulates basic planetary data.
@@ -58,7 +58,7 @@ public class PlanetaryDayDataStub extends PlanetaryDayData {
 
 		double visibility = (double) count / HALF_CYCLE_LENGTH;
 
-		LOG.debug(date + " visibility: " + visibility);
+		LOG.debug( "{} visibility: {}", date, visibility );
 
 		return visibility;
 	}

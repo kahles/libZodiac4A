@@ -111,7 +111,7 @@ class CalendarData {
 
         NavigableSet<Day> subSet = this.data.subSet(dummyDay, true, dummyDay, true);
 
-        if ( subSet.size() == 0 ) {
+        if ( subSet.isEmpty() ) {
             return null;
         } else {
             return subSet.first();

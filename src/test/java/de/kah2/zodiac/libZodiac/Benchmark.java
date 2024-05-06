@@ -1,9 +1,10 @@
 package de.kah2.zodiac.libZodiac;
 
+import de.kah2.zodiac.libZodiac.Calendar.Scope;
+
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
-import de.kah2.zodiac.libZodiac.Calendar.Scope;
 
 /**
  * This class is used to measure generation time of a {@link Calendar}.

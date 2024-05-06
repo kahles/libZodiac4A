@@ -6,25 +6,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.ConcurrentModificationException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.SortedSet;
-import java.util.TreeSet;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.*;
+import java.util.concurrent.*;
 
 /**
  * This class contains logic for calculation of planetary data.
  */
-class CalendarGenerator implements ProgressListener {
+public class CalendarGenerator implements ProgressListener {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
@@ -118,7 +106,7 @@ class CalendarGenerator implements ProgressListener {
 
         Collection<LocalDate> missingDates = this.days.getMissingDates( range );
 
-        if (missingDates.size() == 0) {
+        if ( missingDates.isEmpty() ) {
             this.continueOnMainThread();
             return;
         }
@@ -176,7 +164,9 @@ class CalendarGenerator implements ProgressListener {
 
     /** This is not needed, because states are set by this class */
     @Override
-    public void onStateChanged(State state) { log.trace("onStateChanged: State changed to " + state); }
+    public void onStateChanged(State state) {
+
+		log.trace( "onStateChanged: State changed to {}", state ); }
 
     /**
      * Checks if a calculation step is finished and calls #doStateChange - argument is ignored. Must be synchronized,
@@ -467,13 +457,14 @@ class CalendarGenerator implements ProgressListener {
     private void startDayCreationThread(final LocalDate date) {
 
         final CompletableFuture<Day> result = CompletableFuture.supplyAsync(() -> {
-            CalendarGenerator.this.log.trace(" ++++++++ Starting calculation for " + date);
+			CalendarGenerator.this.log.trace( " ++++++++ Starting calculation for {}", date );
 
             Thread.currentThread().setPriority(threadPriority);
 
             final Day day = CalendarGenerator.this.createCalculatedDay(date);
 
-            CalendarGenerator.this.log.trace(" -------- Calculation finished for " + date);
+			CalendarGenerator.this.log.trace( " -------- Calculation finished for {}",
+                    date );
 
             return day;
         }, this.executor).exceptionally(throwable -> {
@@ -534,9 +525,8 @@ class CalendarGenerator implements ProgressListener {
     }
 
     private int incrementDayCount(int counter, Day day) {
-        this.log.debug(
-                "Looking for extreme: " + day.getDate() + " - " + day.getPlanetaryData().getLunarPhase() +
-                        "(count: " + counter + ")");
+
+		this.log.debug( "Looking for extreme: {} - {}(count: {})", day.getDate(), day.getPlanetaryData().getLunarPhase(), counter );
 
         if (counter < PlanetaryDayData.DAY_COUNT_NOT_CALCULATED) {
             counter ++;
@@ -568,8 +558,7 @@ class CalendarGenerator implements ProgressListener {
 
             current.getPlanetaryData().setLunarPhase( LunarPhase.of(previous, current, next) );
 
-            this.log.debug("      (" + previous.getDate() + ", " + current.getDate() + ", " + next.getDate() + ") => "
-                    + current.getPlanetaryData().getLunarPhase());
+			this.log.debug( "      ({}, {}, {}) => {}", previous.getDate(), current.getDate(), next.getDate(), current.getPlanetaryData().getLunarPhase() );
 
             previous = current;
             current = next;
@@ -642,7 +631,7 @@ class CalendarGenerator implements ProgressListener {
 
         if (this.maxThreadCount < 1) {
 
-            this.log.info("Setting maxThreadCount to NUMBER_OF_CORES=" + NUMBER_OF_CORES);
+			this.log.info( "Setting maxThreadCount to NUMBER_OF_CORES={}", NUMBER_OF_CORES );
             this.maxThreadCount = NUMBER_OF_CORES;
         }
 

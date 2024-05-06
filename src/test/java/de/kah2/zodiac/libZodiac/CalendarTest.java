@@ -11,11 +11,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class CalendarTest {
 
-    static {
-    	// Uncomment to have detailed output
-        // TestConstantsAndHelpers.enableLogging("trace");
-    }
-
 	@Test
 	public void testGetValidDaysReturnsRightRangeForScopeDay() {
 
@@ -165,23 +160,15 @@ public class CalendarTest {
 	private void testRemoveOverheadRemovesNothing(final Calendar.Scope scope) {
 
 		final DateRange initialRange = new DateRange( TestConstantsAndHelpers.SOME_DATE, TestConstantsAndHelpers.SOME_DATE.plusDays(2));
-        DateRange rangeToGenerate=null;
-
-        switch (scope) {
-            case DAY:
-                rangeToGenerate = initialRange;
-                break;
-            case PHASE:
-                rangeToGenerate = new DateRange(
-                        initialRange.getStart().minusDays(1),
-                        initialRange.getEnd().plusDays(1) );
-                break;
-            case CYCLE:
-                rangeToGenerate = new DateRange(
-                        TestConstantsAndHelpers.SOME_DATES_LAST_EXTREME.minusDays(1),
-                        TestConstantsAndHelpers.SOME_DATES_NEXT_EXTREME.plusDays(1) );
-                break;
-        }
+        DateRange rangeToGenerate = switch ( scope ) {
+			case DAY -> initialRange;
+			case PHASE -> new DateRange(
+					initialRange.getStart().minusDays( 1 ),
+					initialRange.getEnd().plusDays( 1 ) );
+			case CYCLE -> new DateRange(
+					TestConstantsAndHelpers.SOME_DATES_LAST_EXTREME.minusDays( 1 ),
+					TestConstantsAndHelpers.SOME_DATES_NEXT_EXTREME.plusDays( 1 ) );
+		};
 
 		final Calendar calendar = new CalendarStub(initialRange, scope);
 

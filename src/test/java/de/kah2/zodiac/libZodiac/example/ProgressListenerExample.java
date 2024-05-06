@@ -1,9 +1,9 @@
 package de.kah2.zodiac.libZodiac.example;
 
-import java.time.LocalDate;
-
-import de.kah2.zodiac.libZodiac.planetary.LunarPhase;
 import de.kah2.zodiac.libZodiac.*;
+import de.kah2.zodiac.libZodiac.planetary.LunarPhase;
+
+import java.time.LocalDate;
 
 /**
  * This example shows how to implement and use a {@link ProgressListener} and
@@ -13,11 +13,6 @@ import de.kah2.zodiac.libZodiac.*;
  * @author kahles
  */
 public class ProgressListenerExample {
-
-	static {
-		// Uncomment to have detailed output:
-		// TestConstantsAndHelpers.enableLogging();
-	}
 
 	static class SysOutProgressListener implements ProgressListener {
 

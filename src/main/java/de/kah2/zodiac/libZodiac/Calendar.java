@@ -1,6 +1,5 @@
 package de.kah2.zodiac.libZodiac;
 
-import de.kah2.zodiac.libZodiac.interpretation.Interpreter;
 import de.kah2.zodiac.libZodiac.planetary.Position;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,8 +30,6 @@ public class Calendar implements LocationProvider {
 	private final CalendarData days = new CalendarData();
 
 	private CalendarGenerator generator = new CalendarGenerator(this);
-
-	private Class<? extends Interpreter> interpreterClass;
 
 	/**
 	 * Tells the calendar, how much data is needed / how much overhead to
@@ -189,12 +186,12 @@ public class Calendar implements LocationProvider {
 
 		if (!this.days.isEmpty()) {
 			if (allDays.getFirst().getDate().isBefore(expectedStart)) {
-				this.log.debug("Fixing start of expected range: " + allDays.getFirst().getDate() + " => " + expectedStart);
+				this.log.debug( "Fixing start of expected range: {} => {}", allDays.getFirst().getDate(), expectedStart );
 				expectedStart = allDays.getFirst().getDate();
 			}
 
 			if (allDays.getLast().getDate().isAfter(expectedEnd)) {
-				this.log.debug("Fixing end of expected range: " + allDays.getLast().getDate() + " => " + expectedEnd);
+				this.log.debug( "Fixing end of expected range: {} => {}", allDays.getLast().getDate(), expectedEnd );
 				expectedEnd = allDays.getLast().getDate();
 			}
 
@@ -218,22 +215,12 @@ public class Calendar implements LocationProvider {
 	 */
 	public LinkedList<Day> removeOverhead(final boolean alsoDeleteFutureDays) {
 
-		DateRange rangeToKeep;
-
-		switch (this.scope) {
-
-			case PHASE:
-				rangeToKeep = new DateRange( this.getRangeExpected().getStart().minusDays(1), this.getRangeExpected().getEnd().plusDays(1) );
-				break;
-
-			case CYCLE:
-				rangeToKeep = this.getRangeNeededToKeepCycle(alsoDeleteFutureDays);
-				break;
-
-			default: // DAY:
-				rangeToKeep = this.getRangeExpected();
-				break;
-		}
+		DateRange rangeToKeep = switch ( this.scope ) {
+			case PHASE -> new DateRange( this.getRangeExpected().getStart().minusDays( 1 ), this.getRangeExpected().getEnd().plusDays( 1 ) );
+			case CYCLE -> this.getRangeNeededToKeepCycle( alsoDeleteFutureDays );
+			default -> // DAY:
+					this.getRangeExpected();
+		};
 
 		LinkedList<Day> removed = this.days.removeBefore( rangeToKeep.getStart() );
 

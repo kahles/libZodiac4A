@@ -67,7 +67,7 @@ public class CalendarDataStringBuilder {
 		this.appendLine("\tFood element:\t\t" + data.getElement().getFoodElement());
 	}
 
-	public void appendInterpretation( Interpreter interpreter) {
+	public void appendInterpretation( Interpreter<?> interpreter) {
 
 		final String[] annotations = interpreter.getAnnotationsAsStringArray();
 

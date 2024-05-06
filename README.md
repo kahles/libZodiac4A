@@ -25,13 +25,15 @@ dependencies {
   <version>0.9.4</version>
 </dependency>
 ```
+https://github.com/kahles/libZodiac/blob/master/src/test/java/de/kah2/zodiac/libZodiac/example/CalendarExampleSimple.java
+https://github.com/kahles/libZodiac/blob/master/src/test/java/de/kah2/libZodiac/example/CalendarExampleSimple.java
 
 ### Usage
-- [`CalendarExampleSimple.java`](src/test/java/de/kah2/libZodiac/example/CalendarExampleSimple.java) shows basic usage of this framework.
-- [`CalendarDataStringBuilder.java`](src/test/java/de/kah2/libZodiac/example/CalendarDataStringBuilder.java) shows how to access data. 
-- [`CalendarExampleStorage.java`](src/test/java/de/kah2/libZodiac/example/CalendarExampleStorage.java) shows how to create, store , load and
+- [`CalendarExampleSimple.java`](src/test/java/de/kah2/zodiac/libZodiac/example/CalendarExampleSimple.java) shows basic usage of this framework.
+- [`CalendarDataStringBuilder.java`](src/test/java/de/kah2/zodiac/libZodiac/example/CalendarDataStringBuilder.java) shows how to access data. 
+- [`CalendarExampleStorage.java`](src/test/java/de/kah2/zodiac/libZodiac/example/CalendarExampleStorage.java) shows how to create, store , load and
 extend a calendar.
-- [`ProgressListenerExample.java`](src/test/java/de/kah2/libZodiac/example/ProgressListenerExample.java) shows how to enable progress 
+- [`ProgressListenerExample.java`](src/test/java/de/kah2/zodiac/libZodiac/example/ProgressListenerExample.java) shows how to enable progress 
 listening.
 
 

@@ -13,10 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class CalendarGeneratorTest {
 
-    static {
-//        Uncomment to have detailed output:
-//        TestConstantsAndHelpers.enableLogging("trace");
-    }
+    private static final Logger log = LoggerFactory.getLogger( CalendarGeneratorTest.class );
 
     @Test
     public void testGenerateScopeDay() {
@@ -180,7 +177,7 @@ public class CalendarGeneratorTest {
                 Thread.sleep(100);
             }
             catch (InterruptedException e) {
-                e.printStackTrace();
+                log.error( "Interrupted", e );
             }
         }
 

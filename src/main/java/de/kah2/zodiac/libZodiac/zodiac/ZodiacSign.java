@@ -51,46 +51,33 @@ public enum ZodiacSign {
 		}
 
 		final int zodiacSignId = (int) lunarLongitude / 30;
-		ZodiacSign sign = null;
-
-		switch (zodiacSignId) {
-			case 0: // 0 - 30
-				sign = ARIES;
-				break;
-			case 1: // 30 - 60
-				sign = TAURUS;
-				break;
-			case 2: // 60 - 90
-				sign = GEMINI;
-				break;
-			case 3: // 90 - 120
-				sign = CANCER;
-				break;
-			case 4: // 120 - 150
-				sign = LEO;
-				break;
-			case 5: // 150 - 180
-				sign = VIRGO;
-				break;
-			case 6: // 180 - 210
-				sign = LIBRA;
-				break;
-			case 7: // 210 - 240
-				sign = SCORPIO;
-				break;
-			case 8: // 240 - 270
-				sign = SAGITTARIUS;
-				break;
-			case 9: // 270 - 300
-				sign = CAPRICORN;
-				break;
-			case 10: // 300 - 330
-				sign = AQUARIUS;
-				break;
-			case 11: // 330 - 360
-				sign = PISCES;
-				break;
-		}
+		ZodiacSign sign = switch ( zodiacSignId ) {
+			case 0 -> // 0 - 30
+					ARIES;
+			case 1 -> // 30 - 60
+					TAURUS;
+			case 2 -> // 60 - 90
+					GEMINI;
+			case 3 -> // 90 - 120
+					CANCER;
+			case 4 -> // 120 - 150
+					LEO;
+			case 5 -> // 150 - 180
+					VIRGO;
+			case 6 -> // 180 - 210
+					LIBRA;
+			case 7 -> // 210 - 240
+					SCORPIO;
+			case 8 -> // 240 - 270
+					SAGITTARIUS;
+			case 9 -> // 270 - 300
+					CAPRICORN;
+			case 10 -> // 300 - 330
+					AQUARIUS;
+			case 11 -> // 330 - 360
+					PISCES;
+			default -> null;
+		};
 
 		return sign;
 	}

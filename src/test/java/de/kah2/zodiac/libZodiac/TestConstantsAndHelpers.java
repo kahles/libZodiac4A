@@ -1,15 +1,15 @@
 package de.kah2.zodiac.libZodiac;
 
+import de.kah2.zodiac.libZodiac.planetary.Position;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.time.LocalDate;
 import java.time.ZoneId;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.impl.SimpleLogger;
-
-import de.kah2.zodiac.libZodiac.planetary.Position;
-
 public class TestConstantsAndHelpers {
+
+	private final static Logger LOG = LoggerFactory.getLogger(TestConstantsAndHelpers.class);
 
 	public final static Position POSITION_MUNICH = new Position(48.137, 11.57521);
 
@@ -38,21 +38,8 @@ public class TestConstantsAndHelpers {
 
 	private final static int sleepStepMs = 1000;
 
-	/**
-	 * Enables and configures {@link SimpleLogger}.
-	 */
-	public static void enableLogging(final String level) {
-		System.setProperty(org.slf4j.impl.SimpleLogger.DEFAULT_LOG_LEVEL_KEY, level);
-		System.setProperty(org.slf4j.impl.SimpleLogger.SHOW_THREAD_NAME_KEY, "true");
-		System.setProperty(org.slf4j.impl.SimpleLogger.SHOW_DATE_TIME_KEY, "true");
-		System.setProperty(org.slf4j.impl.SimpleLogger.DATE_TIME_FORMAT_KEY, "HH:mm:ss:SSS");
-		System.setProperty(org.slf4j.impl.SimpleLogger.SHOW_SHORT_LOG_NAME_KEY, "true");
-	}
-
 	/** Simple method to generate a {@link Calendar} and wait for results. */
 	public static void generateAndWaitFor(CalendarGenerator generator) {
-
-		final Logger log = LoggerFactory.getLogger("TestConstantsAndHelpers#generateAndWaitFor");
 
 		final LastStateProgressListener listener = new LastStateProgressListener();
 
@@ -62,11 +49,11 @@ public class TestConstantsAndHelpers {
 
 		while (listener.getLastState() != ProgressListener.State.FINISHED) {
 			try {
-				log.trace("waiting " + sleepStepMs + "ms for state change to FINISHED");
+				LOG.trace("waiting " + sleepStepMs + "ms for state change to FINISHED");
 				Thread.sleep(sleepStepMs);
 			}
 			catch (InterruptedException e) {
-				e.printStackTrace();
+				LOG.error("Interrupted", e);
 			}
 		}
 
@@ -96,14 +83,14 @@ public class TestConstantsAndHelpers {
 
 				if (msWaited > maxWait) {
 					int remaining = generator.getExecutor().shutdownNow().size();
-					LoggerFactory.getLogger("TestConstantsAndHelpers#generateAndWaitFor(CalendarGenerator,int)")
-							.trace("Terminated executor - " + remaining + " jobs were still waiting");
+					LoggerFactory.getLogger( "TestConstantsAndHelpers#generateAndWaitFor(CalendarGenerator,int)" )
+							.trace( "Terminated executor - {} jobs were still waiting", remaining );
 					exitedNormally = false;
 					break;
 				}
 			}
 			catch (InterruptedException e) {
-				e.printStackTrace();
+				LOG.error("Interrupted", e);
 			}
 		}
 
@@ -126,7 +113,7 @@ public class TestConstantsAndHelpers {
 				Thread.sleep(sleepStepMs);
 			}
 			catch (InterruptedException e) {
-				e.printStackTrace();
+				LOG.error("Interrupted", e);
 			}
 		}
 

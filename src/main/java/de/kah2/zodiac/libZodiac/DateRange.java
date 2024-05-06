@@ -79,20 +79,22 @@ public class DateRange implements Iterable<LocalDate> {
 
 	@Override
 	public Iterator<LocalDate> iterator() {
-		return new Iterator<LocalDate>() {
+		return new Iterator<>() {
 
 			private LocalDate nextDate = DateRange.this.getStart();
 
 			@Override
 			public boolean hasNext() {
-				return this.nextDate.isBefore(DateRange.this.getEnd())
-						|| this.nextDate.isEqual(DateRange.this.getEnd());
+
+				return this.nextDate.isBefore( DateRange.this.getEnd() )
+						|| this.nextDate.isEqual( DateRange.this.getEnd() );
 			}
 
 			@Override
 			public LocalDate next() {
+
 				final LocalDate currentDate = this.nextDate;
-				this.nextDate = currentDate.plusDays(1);
+				this.nextDate = currentDate.plusDays( 1 );
 				return currentDate;
 			}
 		};

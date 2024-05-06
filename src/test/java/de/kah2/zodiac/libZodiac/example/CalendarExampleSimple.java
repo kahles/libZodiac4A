@@ -19,17 +19,12 @@ import java.time.LocalDate;
  */
 public class CalendarExampleSimple {
 
-	static {
-		// Uncomment to have detailed output:
-		// TestConstantsAndHelpers.enableLogging("trace");
-	}
-
 	private final static Logger LOG = LoggerFactory.getLogger(CalendarExampleSimple.class);
 
 	/**
 	 * Runs the example.
 	 */
-	public static void run(Class <? extends Interpreter> interpreterClass, LocalDate startDate, int days)
+	public static void run(Class <? extends Interpreter<?>> interpreterClass, LocalDate startDate, int days)
 			throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
 		/* First step: create a Calendar */
 
@@ -53,7 +48,7 @@ public class CalendarExampleSimple {
 		 * for larger Calendars - so this could be run by a background thread
 		 */
 
-		LOG.info("Generating Calendar for DateRange: " + range);
+		LOG.info( "Generating Calendar for DateRange: {}", range );
 		TestConstantsAndHelpers.generateAndWaitFor(calendar);
 
 		final CalendarDataStringBuilder builder = new CalendarDataStringBuilder();
@@ -70,7 +65,7 @@ public class CalendarExampleSimple {
 			builder.appendPlanetaryData(day.getPlanetaryData());
 			builder.appendZodiacData(day.getZodiacData());
 
-			final Interpreter interpreter = interpreterClass.getDeclaredConstructor().newInstance();
+			final Interpreter<?> interpreter = interpreterClass.getDeclaredConstructor().newInstance();
 			interpreter.setDayAndInterpret(day);
 			builder.appendInterpretation(interpreter);
 
@@ -81,7 +76,7 @@ public class CalendarExampleSimple {
 			builder.appendLine("");
 		}
 
-		LOG.info("Result:\n" + builder.toString());
+		LOG.info( "Result:\n{}", builder );
 	}
 
 	public static void main(final String[] args) {
@@ -90,7 +85,7 @@ public class CalendarExampleSimple {
 		}
 		catch (Exception e) {
 			// This shouldn't happen
-			e.printStackTrace();
+			LOG.error( "Unexpcected error", e );
 		}
 	}
 }

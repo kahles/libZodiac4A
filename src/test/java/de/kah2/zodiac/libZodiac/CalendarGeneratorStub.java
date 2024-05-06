@@ -1,10 +1,10 @@
 package de.kah2.zodiac.libZodiac;
 
-import java.time.LocalDate;
-import java.util.LinkedList;
-
 import de.kah2.zodiac.libZodiac.planetary.PlanetaryDayData;
 import de.kah2.zodiac.libZodiac.planetary.PlanetaryDayDataStub;
+
+import java.time.LocalDate;
+import java.util.LinkedList;
 
 /**
  * This is a stub of {@link CalendarGenerator}, which overrides Day creation to allow

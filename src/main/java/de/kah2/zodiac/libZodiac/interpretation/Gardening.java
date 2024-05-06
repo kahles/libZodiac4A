@@ -6,18 +6,8 @@ import java.time.Month;
 
 import static de.kah2.zodiac.libZodiac.zodiac.ZodiacDirection.ASCENDING;
 import static de.kah2.zodiac.libZodiac.zodiac.ZodiacDirection.DESCENDING;
-import static de.kah2.zodiac.libZodiac.zodiac.ZodiacElement.PlantPart.FLOWER;
-import static de.kah2.zodiac.libZodiac.zodiac.ZodiacElement.PlantPart.FRUIT;
-import static de.kah2.zodiac.libZodiac.zodiac.ZodiacElement.PlantPart.LEAF;
-import static de.kah2.zodiac.libZodiac.zodiac.ZodiacElement.PlantPart.ROOT;
-import static de.kah2.zodiac.libZodiac.zodiac.ZodiacSign.ARIES;
-import static de.kah2.zodiac.libZodiac.zodiac.ZodiacSign.CANCER;
-import static de.kah2.zodiac.libZodiac.zodiac.ZodiacSign.CAPRICORN;
-import static de.kah2.zodiac.libZodiac.zodiac.ZodiacSign.GEMINI;
-import static de.kah2.zodiac.libZodiac.zodiac.ZodiacSign.LEO;
-import static de.kah2.zodiac.libZodiac.zodiac.ZodiacSign.SAGITTARIUS;
-import static de.kah2.zodiac.libZodiac.zodiac.ZodiacSign.SCORPIO;
-import static de.kah2.zodiac.libZodiac.zodiac.ZodiacSign.VIRGO;
+import static de.kah2.zodiac.libZodiac.zodiac.ZodiacElement.PlantPart.*;
+import static de.kah2.zodiac.libZodiac.zodiac.ZodiacSign.*;
 
 /**
  * <p>This class containes {@link Interpreter}s for basic gardening activities. As source I used the book
@@ -135,7 +125,7 @@ public class Gardening {
      * Mow the lawn - Rasen mähen
      * Source: 151, 155, 159
      */
-    public static class MowLawnInterpreter extends Interpreter {
+    public static class MowLawnInterpreter extends Interpreter<Plants> {
 
         @Override
         protected Quality doInterpretation() {
@@ -157,7 +147,7 @@ public class Gardening {
      * Water plants - Gießen
      * Source: 120
      */
-    public static class WaterInterpreter extends Interpreter {
+    public static class WaterInterpreter extends Interpreter<Plants> {
 
         @Override
         protected Quality doInterpretation() {
@@ -215,7 +205,7 @@ public class Gardening {
      *  Make cuttings / transplant - Stecklinge schneiden / Pflanzen umsetzen
      *  Source: 123
      */
-    public static class CuttingTransplantInterpreter extends Interpreter {
+    public static class CuttingTransplantInterpreter extends Interpreter<Plants> {
 
         @Override
         protected Quality doInterpretation() {
@@ -236,7 +226,7 @@ public class Gardening {
      * Graft - Veredeln
      * Source: 135
      */
-    public static class GraftInterpreter extends Interpreter {
+    public static class GraftInterpreter extends Interpreter<Plants> {
 
         @Override
         protected Quality doInterpretation() {

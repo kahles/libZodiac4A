@@ -2,8 +2,6 @@ package de.kah2.zodiac.libZodiac;
 
 import de.kah2.zodiac.libZodiac.planetary.PlanetaryDayData;
 import de.kah2.zodiac.libZodiac.zodiac.ZodiacDayData;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
 
@@ -15,8 +13,6 @@ import java.time.LocalDate;
  * @author kahles
  */
 public class Day implements Comparable<Day>{
-
-	private final Logger log = LoggerFactory.getLogger(this.getClass());
 
 	private final LocalDate date;
 

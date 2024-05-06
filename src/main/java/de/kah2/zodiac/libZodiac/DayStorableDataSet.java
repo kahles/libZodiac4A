@@ -1,9 +1,9 @@
 package de.kah2.zodiac.libZodiac;
 
-import java.time.LocalDate;
-
 import de.kah2.zodiac.libZodiac.planetary.PlanetaryDayData;
 import de.kah2.zodiac.libZodiac.planetary.ZonedRiseSet;
+
+import java.time.LocalDate;
 
 /**
  * This class contains a basic set of essential data defining a {@link Day} and
