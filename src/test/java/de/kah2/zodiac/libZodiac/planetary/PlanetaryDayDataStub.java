@@ -5,8 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 /**
  * This class simulates basic planetary data.
@@ -32,12 +30,19 @@ public class PlanetaryDayDataStub extends PlanetaryDayData {
 
 		data.setLunarVisibility( getFakeLunarVisibility(date) );
 
-		data.setLunarRiseSet( new ZonedRiseSet(
-				LocalDateTime.of( date, LocalTime.of(10, 0) ),
-				LocalDateTime.of( date, LocalTime.of(15,0) ) ) );
-		data.setSolarRiseSet( new ZonedRiseSet(
-				LocalDateTime.of( date, LocalTime.of(7, 0) ),
-				LocalDateTime.of( date, LocalTime.of(19,0) ) ) );
+		data.setLunarRiseSet(
+			new ZonedRiseSet(
+				date.atStartOfDay( locationProvider.getTimeZoneId() ).plusHours( 10 ).toInstant(),
+				date.atStartOfDay( locationProvider.getTimeZoneId() ).plusHours( 15 ).toInstant()
+			)
+		);
+
+		data.setSolarRiseSet(
+			new ZonedRiseSet(
+				date.atStartOfDay( locationProvider.getTimeZoneId() ).plusHours( 7 ).toInstant(),
+				date.atStartOfDay( locationProvider.getTimeZoneId() ).plusHours( 19 ).toInstant()
+			)
+		);
 
 		return data;
 	}

@@ -100,19 +100,18 @@ public class PlanetaryDayData {
 	}
 
 	private void calculateJulianDateAtDayStart(final LocalDate date, final ZoneId zoneId) {
-		final LocalDateTime dayStart = date.atStartOfDay();
-		this.julianDateAtDayStart = localDateToJulianDate(dayStart, zoneId);
+		final ZonedDateTime zonedDayStart = ZonedDateTime.of( date.atStartOfDay(), zoneId );
+		this.julianDateAtDayStart = zonedDateToJulianDate( zonedDayStart );
 	}
 
 	private void calculateJulianDateAtNoon(final LocalDate date, final ZoneId zoneId) {
-		final LocalDateTime noon = LocalDateTime.of(date, LocalTime.NOON);
-		this.julianDateAtNoon = localDateToJulianDate(noon, zoneId);
+		final ZonedDateTime zonedNoon = ZonedDateTime.of( date, LocalTime.NOON, zoneId );
+		this.julianDateAtNoon = zonedDateToJulianDate( zonedNoon );
 	}
 
-	private static double localDateToJulianDate(final LocalDateTime date, final ZoneId zoneId) {
+	private static double zonedDateToJulianDate(final ZonedDateTime date) {
 
-		final ZonedDateTime localZonedDateTime = ZonedDateTime.of(date, zoneId);
-		final Instant utcDate = localZonedDateTime.withZoneSameInstant(PlanetaryDayData.TIME_ZONE_ID_LIBNOVA)
+		final Instant utcDate = date.withZoneSameInstant(PlanetaryDayData.TIME_ZONE_ID_LIBNOVA)
 				.toInstant();
 
 		final LnDate lnDate = new LnDate();

@@ -20,6 +20,7 @@ import java.util.TreeSet;
  * see de.kah2.libZodiac.example
  * @author kahles
  */
+// TODO externalize LocationProvider
 public class Calendar implements LocationProvider {
 
 	private final Logger log = LoggerFactory.getLogger(this.getClass());

@@ -14,5 +14,6 @@ public interface LocationProvider {
 
 	ZoneId getTimeZoneId();
 
+	// TODO add missing docs
 	Position getObserverPosition();
 }
