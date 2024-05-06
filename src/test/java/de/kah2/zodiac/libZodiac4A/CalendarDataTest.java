@@ -1,13 +1,13 @@
 package de.kah2.zodiac.libZodiac4A;
 
-import org.threeten.bp.LocalDate;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class CalendarDataTest {
 

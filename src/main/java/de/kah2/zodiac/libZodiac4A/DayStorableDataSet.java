@@ -1,6 +1,6 @@
 package de.kah2.zodiac.libZodiac4A;
 
-import org.threeten.bp.LocalDate;
+import java.time.LocalDate;
 
 import de.kah2.zodiac.libZodiac4A.planetary.PlanetaryDayData;
 import de.kah2.zodiac.libZodiac4A.planetary.ZonedRiseSet;

@@ -1,7 +1,6 @@
 package de.kah2.zodiac.libZodiac4A;
 
-import org.threeten.bp.LocalDate;
-
+import java.time.LocalDate;
 import java.util.LinkedList;
 
 import de.kah2.zodiac.libZodiac4A.planetary.PlanetaryDayData;
@@ -27,7 +26,7 @@ public class CalendarGeneratorStub extends CalendarGenerator {
 	 */
 	@Override
 	Day createCalculatedDay(final LocalDate date) {
-		return stubDay(this.getCalendar(), date);
+		return stubDay( new MunichLocationProvider(), date);
 	}
 
 	/**
@@ -42,7 +41,7 @@ public class CalendarGeneratorStub extends CalendarGenerator {
 	 * This creates a day and stubs calculation of {@link PlanetaryDayData}. Uses a default {@link LocationProvider}.
 	 */
 	public static Day stubDay(final LocalDate date) {
-		return stubDay( TestConstantsAndHelpers.LOCATION_PROVIDER, date);
+		return stubDay( new MunichLocationProvider(), date);
 	}
 
 	static LinkedList<DayStorableDataSet> stubDayStorableDataSets(DateRange range) {

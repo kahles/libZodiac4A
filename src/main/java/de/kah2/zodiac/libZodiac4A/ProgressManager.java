@@ -92,7 +92,7 @@ class ProgressManager {
 	 */
 	void notifyStateChanged(final ProgressListener.State state) {
 
-		this.log.debug(">>>>>>>> State changes to " + state);
+		this.log.debug( ">>>>>>>> State changes to {}", state );
 
 		if (this.state != state) {
 
@@ -123,7 +123,7 @@ class ProgressManager {
 		this.daysGenerated++;
 		this.updatePercentageOnCalculationProgress();
 
-		this.log.debug("Day created, progress is " + this.percentGenerated);
+		this.log.debug( "Day created, progress is {}", this.percentGenerated );
 
 		for (ProgressListener listener : this.progressListeners) {
 			listener.onCalculationProgress(this.percentGenerated);

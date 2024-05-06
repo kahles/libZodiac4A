@@ -2,13 +2,15 @@ package de.kah2.zodiac.libZodiac4A.example;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.threeten.bp.LocalDate;
 
 import java.lang.reflect.InvocationTargetException;
+import java.time.LocalDate;
 
 import de.kah2.zodiac.libZodiac4A.Calendar;
 import de.kah2.zodiac.libZodiac4A.DateRange;
 import de.kah2.zodiac.libZodiac4A.Day;
+import de.kah2.zodiac.libZodiac4A.LocationProvider;
+import de.kah2.zodiac.libZodiac4A.MunichLocationProvider;
 import de.kah2.zodiac.libZodiac4A.TestConstantsAndHelpers;
 import de.kah2.zodiac.libZodiac4A.interpretation.Gardening;
 import de.kah2.zodiac.libZodiac4A.interpretation.Interpreter;
@@ -20,17 +22,12 @@ import de.kah2.zodiac.libZodiac4A.interpretation.Interpreter;
  */
 public class CalendarExampleSimple {
 
-	static {
-		// Uncomment to have detailed output:
-		// TestConstantsAndHelpers.enableLogging("trace");
-	}
-
 	private final static Logger LOG = LoggerFactory.getLogger(CalendarExampleSimple.class);
 
 	/**
 	 * Runs the example.
 	 */
-	public static void run(Class <? extends Interpreter> interpreterClass, LocalDate startDate, int days)
+	public static void run(Class <? extends Interpreter<?>> interpreterClass, LocalDate startDate, int days)
 			throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
 		/* First step: create a Calendar */
 
@@ -39,27 +36,28 @@ public class CalendarExampleSimple {
 		// moon), all days since last and until next lunar extreme get
 		// calculated.
 		final DateRange range = new DateRange(startDate, startDate.plusDays(days));
-		final Calendar calendar = new Calendar( TestConstantsAndHelpers.POSITION_MUNICH, range);
+		final LocationProvider locationProvider = new MunichLocationProvider();
+		final Calendar calendar = new Calendar( range, Calendar.Scope.CYCLE, locationProvider );
 
 		// If we don't need to know how far away next/previous lunar extreme is,
 		// we could reduce the Scope (and calculation time):
 		// Only 3 days get calculated: actual, previous and next
-		// final Calendar calendar = new Calendar(TestConstantsAndHelpers.POSITION_MUNICH, range, Calendar.Scope.PHASE);
+		// final Calendar calendar = new Calendar( range, Calendar.Scope.PHASE, locationProvider );
 
 		// And if we don't even need lunar PHASE:
-		// final Calendar calendar = new Calendar(TestConstantsAndHelpers.POSITION_MUNICH, range, Calendar.Scope.DAY);
+		// final Calendar calendar = new Calendar( range, Calendar.Scope.DAY, locationProvider )
 
 		/*
 		 * Second step: Initialize its "main" content. This could take some time
 		 * for larger Calendars - so this could be run by a background thread
 		 */
 
-		LOG.info("Generating Calendar for DateRange: " + range);
+		LOG.info( "Generating Calendar for DateRange: {}", range );
 		TestConstantsAndHelpers.generateAndWaitFor(calendar);
 
 		final CalendarDataStringBuilder builder = new CalendarDataStringBuilder();
 
-		builder.appendCalendarData(calendar);
+		builder.appendCalendarData( locationProvider );
 
 		for ( final Day day : calendar.getValidDays() ) {
 
@@ -71,7 +69,7 @@ public class CalendarExampleSimple {
 			builder.appendPlanetaryData(day.getPlanetaryData());
 			builder.appendZodiacData(day.getZodiacData());
 
-			final Interpreter interpreter = interpreterClass.getDeclaredConstructor().newInstance();
+			final Interpreter<?> interpreter = interpreterClass.getDeclaredConstructor().newInstance();
 			interpreter.setDayAndInterpret(day);
 			builder.appendInterpretation(interpreter);
 
@@ -82,7 +80,7 @@ public class CalendarExampleSimple {
 			builder.appendLine("");
 		}
 
-		LOG.info("Result:\n" + builder.toString());
+		LOG.info( "Result:\n{}", builder );
 	}
 
 	public static void main(final String[] args) {
@@ -91,7 +89,7 @@ public class CalendarExampleSimple {
 		}
 		catch (Exception e) {
 			// This shouldn't happen
-			e.printStackTrace();
+			LOG.error( "Unexpcected error", e );
 		}
 	}
 }

@@ -1,8 +1,9 @@
 package de.kah2.zodiac.libZodiac4A.planetary;
 
-import org.threeten.bp.LocalDateTime;
-import org.threeten.bp.ZoneId;
-import org.threeten.bp.ZonedDateTime;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 import de.kah2.zodiac.nova4jmt.JulianDay;
 import de.kah2.zodiac.nova4jmt.api.LnDate;
@@ -16,7 +17,7 @@ import de.kah2.zodiac.nova4jmt.api.LnRstTime;
  */
 public class ZonedRiseSet {
 
-	private final LocalDateTime rise, set;
+	private final Instant rise, set;
 	private ZoneId localTimeZone;
 
 	/**
@@ -27,31 +28,31 @@ public class ZonedRiseSet {
 	ZonedRiseSet(final LnRstTime lnRstTime, final ZoneId localTimeZone) {
 		this.localTimeZone = localTimeZone;
 
-		this.rise = this.getLocalDateTime(lnRstTime.rise);
-		this.set = this.getLocalDateTime(lnRstTime.set);
+		this.rise = this.getInstantFromJulian(lnRstTime.rise);
+		this.set = this.getInstantFromJulian(lnRstTime.set);
 	}
 
 	/**
-	 * This constructor instantiates this class based on {@link LocalDateTime}.
+	 * This constructor instantiates this class based on {@link Instant}s.
 	 * No time zone transformations will be done.
 	 * Only needed for testing purposes.
 	 * @param rise an UTC rise time
 	 * @param set an UTC set time
 	 */
-	public ZonedRiseSet(final LocalDateTime rise, final LocalDateTime set) {
+	public ZonedRiseSet(final Instant rise, final Instant set) {
 		this.rise = rise;
 		this.set = set;
 	}
 
-	public LocalDateTime getRise() {
+	public Instant getRise() {
 		return this.rise;
 	}
 
-	public LocalDateTime getSet() {
+	public Instant getSet() {
 		return this.set;
 	}
 
-	private LocalDateTime getLocalDateTime(final double julianDay) {
+	private Instant getInstantFromJulian(final double julianDay) {
 
 		final LnDate date = new LnDate();
 		JulianDay.ln_get_date(julianDay, date);
@@ -59,7 +60,7 @@ public class ZonedRiseSet {
 		final ZonedDateTime utcZonedTime = LocalDateTime
 				.of(date.years, date.months, date.days, date.hours, date.minutes)
 				.atZone(PlanetaryDayData.TIME_ZONE_ID_LIBNOVA);
-		return utcZonedTime.withZoneSameInstant(this.localTimeZone).toLocalDateTime();
+		return utcZonedTime.withZoneSameInstant(this.localTimeZone).toInstant();
 	}
 
 	@Override

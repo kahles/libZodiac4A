@@ -2,14 +2,12 @@ package de.kah2.zodiac.libZodiac4A;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.threeten.bp.LocalDate;
-import org.threeten.bp.ZoneId;
 
-import de.kah2.zodiac.libZodiac4A.planetary.Position;
+import java.time.LocalDate;
 
 public class TestConstantsAndHelpers {
 
-	public final static Position POSITION_MUNICH = new Position(48.137, 11.57521);
+	private final static Logger LOG = LoggerFactory.getLogger(TestConstantsAndHelpers.class);
 
 	public final static LocalDate SOME_DATE = LocalDate.of(2016, 9, 3);
 
@@ -19,35 +17,10 @@ public class TestConstantsAndHelpers {
 	/** Next lunar extreme after SOME_DATE - new moon */
 	public final static LocalDate SOME_DATES_NEXT_EXTREME = LocalDate.of(2016, 9, 6);
 
-
-	public final static String TIME_ZONE_STRING = "Europe/Berlin";
-
-	public final static LocationProvider LOCATION_PROVIDER = new LocationProvider() {
-		@Override
-		public ZoneId getTimeZoneId() {
-			return ZoneId.of(TIME_ZONE_STRING);
-		}
-
-		@Override
-		public Position getObserverPosition() {
-			return POSITION_MUNICH;
-		}
-	};
-
 	private final static int sleepStepMs = 1000;
-
-	/**
-	 * No functionality at android
-	 */
-	public static void enableLogging(final String level) {
-		LoggerFactory.getLogger(TestConstantsAndHelpers.class)
-				.warn("enableLogging() has no functionality on android");
-	}
 
 	/** Simple method to generate a {@link Calendar} and wait for results. */
 	public static void generateAndWaitFor(CalendarGenerator generator) {
-
-		final Logger log = LoggerFactory.getLogger("TestConstantsAndHelpers#generateAndWaitFor");
 
 		final LastStateProgressListener listener = new LastStateProgressListener();
 
@@ -57,11 +30,11 @@ public class TestConstantsAndHelpers {
 
 		while (listener.getLastState() != ProgressListener.State.FINISHED) {
 			try {
-				log.trace("waiting " + sleepStepMs + "ms for state change to FINISHED");
+				LOG.trace("waiting " + sleepStepMs + "ms for state change to FINISHED");
 				Thread.sleep(sleepStepMs);
 			}
 			catch (InterruptedException e) {
-				e.printStackTrace();
+				LOG.error("Interrupted", e);
 			}
 		}
 
@@ -91,14 +64,14 @@ public class TestConstantsAndHelpers {
 
 				if (msWaited > maxWait) {
 					int remaining = generator.getExecutor().shutdownNow().size();
-					LoggerFactory.getLogger("TestConstantsAndHelpers#generateAndWaitFor(CalendarGenerator,int)")
-							.trace("Terminated executor - " + remaining + " jobs were still waiting");
+					LoggerFactory.getLogger( "TestConstantsAndHelpers#generateAndWaitFor(CalendarGenerator,int)" )
+							.trace( "Terminated executor - {} jobs were still waiting", remaining );
 					exitedNormally = false;
 					break;
 				}
 			}
 			catch (InterruptedException e) {
-				e.printStackTrace();
+				LOG.error("Interrupted", e);
 			}
 		}
 
@@ -121,7 +94,7 @@ public class TestConstantsAndHelpers {
 				Thread.sleep(sleepStepMs);
 			}
 			catch (InterruptedException e) {
-				e.printStackTrace();
+				LOG.error("Interrupted", e);
 			}
 		}
 

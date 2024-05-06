@@ -1,8 +1,8 @@
 package de.kah2.zodiac.libZodiac4A;
 
-import org.threeten.bp.Duration;
-import org.threeten.bp.Instant;
-import org.threeten.bp.LocalDate;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDate;
 
 import de.kah2.zodiac.libZodiac4A.Calendar.Scope;
 
@@ -27,7 +27,7 @@ public class Benchmark {
 
         for (int loop = 0; loop < NUMBER_OF_LOOPS; loop ++) {
 
-            final Calendar calendar = new Calendar(TestConstantsAndHelpers.POSITION_MUNICH, RANGE, scope);
+            final Calendar calendar = new Calendar( RANGE, scope, new MunichLocationProvider() );
             calendar.addProgressListener(new BenchmarkListener());
             calendar.getGenerator().setMaxThreadCount(MAX_THREADS);
 

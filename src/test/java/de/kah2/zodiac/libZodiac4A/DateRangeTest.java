@@ -3,8 +3,9 @@ package de.kah2.zodiac.libZodiac4A;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
-import org.threeten.bp.LocalDate;
-import org.threeten.bp.Month;
+
+import java.time.LocalDate;
+import java.time.Month;
 
 public class DateRangeTest {
 

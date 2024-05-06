@@ -1,10 +1,11 @@
 package de.kah2.zodiac.libZodiac4A.example;
 
-import org.threeten.bp.LocalDate;
+import java.time.LocalDate;
 
 import de.kah2.zodiac.libZodiac4A.Calendar;
 import de.kah2.zodiac.libZodiac4A.DateRange;
 import de.kah2.zodiac.libZodiac4A.Day;
+import de.kah2.zodiac.libZodiac4A.MunichLocationProvider;
 import de.kah2.zodiac.libZodiac4A.ProgressListener;
 import de.kah2.zodiac.libZodiac4A.TestConstantsAndHelpers;
 import de.kah2.zodiac.libZodiac4A.planetary.LunarPhase;
@@ -17,11 +18,6 @@ import de.kah2.zodiac.libZodiac4A.planetary.LunarPhase;
  * @author kahles
  */
 public class ProgressListenerExample {
-
-	static {
-		// Uncomment to have detailed output:
-		// TestConstantsAndHelpers.enableLogging();
-	}
 
 	static class SysOutProgressListener implements ProgressListener {
 
@@ -83,7 +79,7 @@ public class ProgressListenerExample {
 
 		// Set up a Calendar
 		final DateRange range = new DateRange(start, end);
-		final Calendar calendar = new Calendar( TestConstantsAndHelpers.POSITION_MUNICH, range);
+		final Calendar calendar = new Calendar( range, Calendar.Scope.CYCLE, new MunichLocationProvider() );
 
 		// Add a ProgressListenerAdapter
 		calendar.addProgressListener(new SysOutProgressListener());

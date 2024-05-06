@@ -1,6 +1,6 @@
 package de.kah2.zodiac.libZodiac4A;
 
-import org.threeten.bp.ZoneId;
+import java.time.ZoneId;
 
 import de.kah2.zodiac.libZodiac4A.planetary.Position;
 
@@ -14,5 +14,6 @@ public interface LocationProvider {
 
 	ZoneId getTimeZoneId();
 
+	// TODO add missing docs
 	Position getObserverPosition();
 }

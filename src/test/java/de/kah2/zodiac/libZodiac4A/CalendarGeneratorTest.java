@@ -5,8 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.threeten.bp.LocalDate;
 
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,10 +14,7 @@ import de.kah2.zodiac.libZodiac4A.planetary.PlanetaryDayData;
 
 public class CalendarGeneratorTest {
 
-    static {
-//        Uncomment to have detailed output:
-//        TestConstantsAndHelpers.enableLogging("trace");
-    }
+    private static final Logger log = LoggerFactory.getLogger( CalendarGeneratorTest.class );
 
     @Test
     public void testGenerateScopeDay() {
@@ -181,7 +178,7 @@ public class CalendarGeneratorTest {
                 Thread.sleep(100);
             }
             catch (InterruptedException e) {
-                e.printStackTrace();
+                log.error( "Interrupted", e );
             }
         }
 

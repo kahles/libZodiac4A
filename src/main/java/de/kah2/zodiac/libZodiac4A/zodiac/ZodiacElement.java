@@ -37,29 +37,12 @@ public enum ZodiacElement {
 	}
 
 	public static ZodiacElement of(final ZodiacSign sign) {
-		ZodiacElement type = null;
-		switch (sign) {
-		case ARIES:
-		case LEO:
-		case SAGITTARIUS:
-			type = FIRE;
-			break;
-		case CAPRICORN:
-		case TAURUS:
-		case VIRGO:
-			type = EARTH;
-			break;
-		case PISCES:
-		case CANCER:
-		case SCORPIO:
-			type = WATER;
-			break;
-		case AQUARIUS:
-		case GEMINI:
-		case LIBRA:
-			type = AIR;
-			break;
-		}
+		ZodiacElement type = switch ( sign ) {
+			case ARIES, LEO, SAGITTARIUS -> FIRE;
+			case CAPRICORN, TAURUS, VIRGO -> EARTH;
+			case PISCES, CANCER, SCORPIO -> WATER;
+			case AQUARIUS, GEMINI, LIBRA -> AIR;
+		};
 		return type;
 	}
 

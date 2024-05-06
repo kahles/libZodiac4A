@@ -1,6 +1,7 @@
 package de.kah2.zodiac.libZodiac4A.example;
 
 import de.kah2.zodiac.libZodiac4A.Calendar;
+import de.kah2.zodiac.libZodiac4A.LocationProvider;
 import de.kah2.zodiac.libZodiac4A.interpretation.Interpreter;
 import de.kah2.zodiac.libZodiac4A.planetary.PlanetaryDayData;
 import de.kah2.zodiac.libZodiac4A.zodiac.ZodiacDayData;
@@ -23,9 +24,9 @@ public class CalendarDataStringBuilder {
 	/**
 	 * Adds Basic {@link Calendar} data to the result.
 	 */
-	public void appendCalendarData(final Calendar calendar) {
+	public void appendCalendarData(final LocationProvider locationProvider) {
 		this.appendLine(
-				"Calendar: Observer:\t" + calendar.getObserverPosition() + ", time zone: " + calendar.getTimeZoneId());
+				"Calendar: Observer:\t" + locationProvider.getObserverPosition() + ", time zone: " + locationProvider.getTimeZoneId());
 	}
 
 	/**
@@ -67,7 +68,7 @@ public class CalendarDataStringBuilder {
 		this.appendLine("\tFood element:\t\t" + data.getElement().getFoodElement());
 	}
 
-	public void appendInterpretation( Interpreter interpreter) {
+	public void appendInterpretation( Interpreter<?> interpreter) {
 
 		final String[] annotations = interpreter.getAnnotationsAsStringArray();
 

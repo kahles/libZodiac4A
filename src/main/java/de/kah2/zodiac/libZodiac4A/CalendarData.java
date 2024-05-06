@@ -1,7 +1,6 @@
 package de.kah2.zodiac.libZodiac4A;
 
-import org.threeten.bp.LocalDate;
-
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NavigableSet;
@@ -112,7 +111,7 @@ class CalendarData {
 
         NavigableSet<Day> subSet = this.data.subSet(dummyDay, true, dummyDay, true);
 
-        if ( subSet.size() == 0 ) {
+        if ( subSet.isEmpty() ) {
             return null;
         } else {
             return subSet.first();

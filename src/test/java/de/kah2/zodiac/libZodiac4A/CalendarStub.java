@@ -5,8 +5,8 @@ package de.kah2.zodiac.libZodiac4A;
  */
 public class CalendarStub extends Calendar{
 
-    public CalendarStub(DateRange expectedRange, Scope scope) {
-        super(TestConstantsAndHelpers.POSITION_MUNICH, expectedRange, scope);
+    public CalendarStub( DateRange expectedRange, Scope scope ) {
+        super( expectedRange, scope, new MunichLocationProvider() );
 
         final CalendarGenerator generator = new CalendarGeneratorStub(this);
 

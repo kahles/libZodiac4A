@@ -21,7 +21,7 @@ public class InterpreterTest {
 
         boolean threwRightException = false;
 
-        Interpreter testInterpreter = createInterpreterStub(null);
+        Interpreter<?> testInterpreter = createInterpreterStub(null);
 
         try {
 
@@ -101,7 +101,7 @@ public class InterpreterTest {
 
     private static Interpreter<TestEnum> createInterpreterStub(Interpreter.Quality expectedQuality) {
 
-        return new Interpreter<TestEnum>() {
+        return new Interpreter<>() {
 
             @Override
             protected Quality doInterpretation() {

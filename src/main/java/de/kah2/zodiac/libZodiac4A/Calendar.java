@@ -2,16 +2,12 @@ package de.kah2.zodiac.libZodiac4A;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.threeten.bp.LocalDate;
-import org.threeten.bp.ZoneId;
 
+import java.time.LocalDate;
 import java.util.ConcurrentModificationException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeSet;
-
-import de.kah2.zodiac.libZodiac4A.interpretation.Interpreter;
-import de.kah2.zodiac.libZodiac4A.planetary.Position;
 
 /**
  * <p>This is the "main" class of libZodiac. It contains the main logic of managing calendar data like ranges, scope, etc.</p>
@@ -22,9 +18,11 @@ import de.kah2.zodiac.libZodiac4A.planetary.Position;
  * see de.kah2.libZodiac.example
  * @author kahles
  */
-public class Calendar implements LocationProvider {
+public class Calendar {
 
 	private final Logger log = LoggerFactory.getLogger(this.getClass());
+
+	private final LocationProvider locationProvider;
 
 	// This is the range the Calendar shall contain.
 	private DateRange rangeExpected;
@@ -32,8 +30,6 @@ public class Calendar implements LocationProvider {
 	private final CalendarData days = new CalendarData();
 
 	private CalendarGenerator generator = new CalendarGenerator(this);
-
-	private Class<? extends Interpreter> interpreterClass;
 
 	/**
 	 * Tells the calendar, how much data is needed / how much overhead to
@@ -61,83 +57,24 @@ public class Calendar implements LocationProvider {
 
 	private final Scope scope;
 
-	private final ZoneId timeZoneId;
-	private final Position observerPosition;
-
-	/**
-	 * Creates an empty Calendar with "CYCLE" as default for
-	 * {@link Scope} and using system default {@link ZoneId}.
-	 *
-	 * @param observerPosition
-	 *            The position of the observer needed for rise and set
-	 *            calculation.
-	 * @param expectedRange
-	 *            the range defining start date and end date of the
-	 *            {@link Calendar} instance.
-	 *
-	 */
-	public Calendar(final Position observerPosition, final DateRange expectedRange) {
-		this(observerPosition, expectedRange, Scope.CYCLE);
-	}
-
-	/**
-	 * Creates an empty Calendar with "CYCLE" as default for
-	 * {@link Scope}.
-	 *
-	 * @param observerPosition
-	 *            The position of the observer needed for rise and set
-	 *            calculation.
-	 * @param zoneId
-	 *            the time zone of the observer needed for rise and set times of
-	 *            sun and moon
-	 * @param expectedRange
-	 *            the range defining start date and end date of the
-	 *            {@link Calendar} instance.
-	 *
-	 */
-	public Calendar(final Position observerPosition, final ZoneId zoneId, final DateRange expectedRange) {
-		this(observerPosition, zoneId, expectedRange, Scope.CYCLE);
-	}
-
-	/**
-	 * Creates an empty Calendar using system default {@link ZoneId}.
-	 *
-	 * @param observerPosition
-	 *            The position of the observer needed for rise and set
-	 *            calculation.
-	 * @param expectedRange
-	 *            the range defining start date and end date of the
-	 *            {@link Calendar} instance.
-	 * @param scope
-	 *            Allows to set the scope manually
-	 */
-	public Calendar(final Position observerPosition, final DateRange expectedRange, final Scope scope) {
-		this(observerPosition, ZoneId.systemDefault(), expectedRange, scope);
-	}
-
 	/**
 	 * Creates an empty Calendar.
 	 *
-	 * @param observerPosition
-	 *            The position of the observer needed for rise and set
-	 *            calculation.
-	 * @param zoneId
-	 *            the time zone of the observer needed for rise and set times of
-	 *            sun and moon
 	 * @param expectedRange
 	 *            the range defining start date and end date of the
 	 *            {@link Calendar} instance.
 	 * @param scope
 	 *            Allows to set the scope manually
+	 * @param locationProvider The {@link LocationProvider} that is needed for calculations
 	 */
-	public Calendar(final Position observerPosition, final ZoneId zoneId, final DateRange expectedRange,
-			final Scope scope) {
-
-		this.timeZoneId = zoneId;
-		this.observerPosition = observerPosition;
+	public Calendar(
+			final DateRange expectedRange,
+			final Scope scope,
+			final LocationProvider locationProvider ) {
 
 		this.rangeExpected = expectedRange;
 		this.scope = scope;
+		this.locationProvider = locationProvider;
 	}
 
 	/**
@@ -190,12 +127,12 @@ public class Calendar implements LocationProvider {
 
 		if (!this.days.isEmpty()) {
 			if (allDays.getFirst().getDate().isBefore(expectedStart)) {
-				this.log.debug("Fixing start of expected range: " + allDays.getFirst().getDate() + " => " + expectedStart);
+				this.log.debug( "Fixing start of expected range: {} => {}", allDays.getFirst().getDate(), expectedStart );
 				expectedStart = allDays.getFirst().getDate();
 			}
 
 			if (allDays.getLast().getDate().isAfter(expectedEnd)) {
-				this.log.debug("Fixing end of expected range: " + allDays.getLast().getDate() + " => " + expectedEnd);
+				this.log.debug( "Fixing end of expected range: {} => {}", allDays.getLast().getDate(), expectedEnd );
 				expectedEnd = allDays.getLast().getDate();
 			}
 
@@ -219,22 +156,12 @@ public class Calendar implements LocationProvider {
 	 */
 	public LinkedList<Day> removeOverhead(final boolean alsoDeleteFutureDays) {
 
-		DateRange rangeToKeep;
-
-		switch (this.scope) {
-
-			case PHASE:
-				rangeToKeep = new DateRange( this.getRangeExpected().getStart().minusDays(1), this.getRangeExpected().getEnd().plusDays(1) );
-				break;
-
-			case CYCLE:
-				rangeToKeep = this.getRangeNeededToKeepCycle(alsoDeleteFutureDays);
-				break;
-
-			default: // DAY:
-				rangeToKeep = this.getRangeExpected();
-				break;
-		}
+		DateRange rangeToKeep = switch ( this.scope ) {
+			case PHASE -> new DateRange( this.getRangeExpected().getStart().minusDays( 1 ), this.getRangeExpected().getEnd().plusDays( 1 ) );
+			case CYCLE -> this.getRangeNeededToKeepCycle( alsoDeleteFutureDays );
+			default -> // DAY:
+					this.getRangeExpected();
+		};
 
 		LinkedList<Day> removed = this.days.removeBefore( rangeToKeep.getStart() );
 
@@ -311,16 +238,6 @@ public class Calendar implements LocationProvider {
 				return current.getDate().minusDays(1);
 			}
 		}
-	}
-
-	@Override
-	public ZoneId getTimeZoneId() {
-		return this.timeZoneId;
-	}
-
-	@Override
-	public Position getObserverPosition() {
-		return this.observerPosition;
 	}
 
 	/**
@@ -437,5 +354,12 @@ public class Calendar implements LocationProvider {
 	/** Needed for CalendarStub. */
 	CalendarData getDays() {
 		return days;
+	}
+
+	/**
+	 * @return the {@link LocationProvider} that is used for calculations
+	 */
+	public LocationProvider getLocationProvider() {
+		return locationProvider;
 	}
 }

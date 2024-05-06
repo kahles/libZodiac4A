@@ -1,9 +1,5 @@
 package de.kah2.zodiac.libZodiac4A.interpretation;
 
-import org.threeten.bp.Month;
-
-import de.kah2.zodiac.libZodiac4A.planetary.LunarPhase;
-
 import static de.kah2.zodiac.libZodiac4A.zodiac.ZodiacDirection.ASCENDING;
 import static de.kah2.zodiac.libZodiac4A.zodiac.ZodiacDirection.DESCENDING;
 import static de.kah2.zodiac.libZodiac4A.zodiac.ZodiacElement.PlantPart.FLOWER;
@@ -18,6 +14,10 @@ import static de.kah2.zodiac.libZodiac4A.zodiac.ZodiacSign.LEO;
 import static de.kah2.zodiac.libZodiac4A.zodiac.ZodiacSign.SAGITTARIUS;
 import static de.kah2.zodiac.libZodiac4A.zodiac.ZodiacSign.SCORPIO;
 import static de.kah2.zodiac.libZodiac4A.zodiac.ZodiacSign.VIRGO;
+
+import java.time.Month;
+
+import de.kah2.zodiac.libZodiac4A.planetary.LunarPhase;
 
 /**
  * <p>This class containes {@link Interpreter}s for basic gardening activities. As source I used the book
@@ -135,7 +135,7 @@ public class Gardening {
      * Mow the lawn - Rasen mähen
      * Source: 151, 155, 159
      */
-    public static class MowLawnInterpreter extends Interpreter {
+    public static class MowLawnInterpreter extends Interpreter<Plants> {
 
         @Override
         protected Quality doInterpretation() {
@@ -157,7 +157,7 @@ public class Gardening {
      * Water plants - Gießen
      * Source: 120
      */
-    public static class WaterInterpreter extends Interpreter {
+    public static class WaterInterpreter extends Interpreter<Plants> {
 
         @Override
         protected Quality doInterpretation() {
@@ -215,7 +215,7 @@ public class Gardening {
      *  Make cuttings / transplant - Stecklinge schneiden / Pflanzen umsetzen
      *  Source: 123
      */
-    public static class CuttingTransplantInterpreter extends Interpreter {
+    public static class CuttingTransplantInterpreter extends Interpreter<Plants> {
 
         @Override
         protected Quality doInterpretation() {
@@ -236,7 +236,7 @@ public class Gardening {
      * Graft - Veredeln
      * Source: 135
      */
-    public static class GraftInterpreter extends Interpreter {
+    public static class GraftInterpreter extends Interpreter<Plants> {
 
         @Override
         protected Quality doInterpretation() {
