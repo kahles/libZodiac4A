@@ -1,11 +1,9 @@
 package de.kah2.zodiac.libZodiac;
 
-import de.kah2.zodiac.libZodiac.planetary.Position;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
 
 public class TestConstantsAndHelpers {
 
