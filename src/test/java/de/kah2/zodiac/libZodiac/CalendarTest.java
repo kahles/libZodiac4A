@@ -85,23 +85,23 @@ public class CalendarTest {
 		// add some data before last extreme, ...
 
 		// (needed for lunar phase)
-		largerThanCycle.add( new DayStorableDataSet( CalendarGeneratorStub.stubDay( TestConstantsAndHelpers.SOME_DATES_LAST_EXTREME.minusDays(2) ) ) );
+		largerThanCycle.add( new DayStorableDataSetPojo( CalendarGeneratorStub.stubDay( TestConstantsAndHelpers.SOME_DATES_LAST_EXTREME.minusDays(2) ) ) );
 
 		// (this should be the first returned)
 		final Day firstValid = CalendarGeneratorStub.stubDay( TestConstantsAndHelpers.SOME_DATES_LAST_EXTREME.minusDays(1) );
-		largerThanCycle.add( new DayStorableDataSet( firstValid ) );
+		largerThanCycle.add( new DayStorableDataSetPojo( firstValid ) );
 
 		// ... the complete cycle ...
 		for ( LocalDate date : new DateRange( TestConstantsAndHelpers.SOME_DATES_LAST_EXTREME, TestConstantsAndHelpers.SOME_DATES_NEXT_EXTREME) ) {
-			largerThanCycle.add( new DayStorableDataSet(CalendarGeneratorStub.stubDay(date)) );
+			largerThanCycle.add( new DayStorableDataSetPojo(CalendarGeneratorStub.stubDay(date)) );
 		}
 
 		// (this should be the last returned)
 		final Day lastValid = CalendarGeneratorStub.stubDay( TestConstantsAndHelpers.SOME_DATES_NEXT_EXTREME.plusDays(1) );
-		largerThanCycle.add( new DayStorableDataSet( lastValid ) );
+		largerThanCycle.add( new DayStorableDataSetPojo( lastValid ) );
 
 		// needed for lunar phase:
-		largerThanCycle.add( new DayStorableDataSet( CalendarGeneratorStub.stubDay( TestConstantsAndHelpers.SOME_DATES_NEXT_EXTREME.plusDays(2) ) ) );
+		largerThanCycle.add( new DayStorableDataSetPojo( CalendarGeneratorStub.stubDay( TestConstantsAndHelpers.SOME_DATES_NEXT_EXTREME.plusDays(2) ) ) );
 
 
 		// a minimal range within old cycle

@@ -84,7 +84,7 @@ public class Calendar {
 	 *            a {@link List} of {@link DayStorableDataSet}-objects of
 	 *            already calculated days.
 	 */
-	public void importDays(final List<DayStorableDataSet> storedDays){
+	public void importDays(final List<? extends DayStorableDataSet> storedDays){
 		this.generator.importDays(storedDays);
 	}
 

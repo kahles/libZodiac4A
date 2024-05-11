@@ -49,7 +49,7 @@ public class CalendarGeneratorStub extends CalendarGenerator {
 		LinkedList<DayStorableDataSet> days = new LinkedList<>();
 
 		for (LocalDate date: range) {
-			days.add( new DayStorableDataSet( stubDay(date) ) );
+			days.add( new DayStorableDataSetPojo( stubDay(date) ) );
 		}
 
 		return days;

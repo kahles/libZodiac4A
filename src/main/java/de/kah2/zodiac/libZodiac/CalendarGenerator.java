@@ -58,7 +58,7 @@ public class CalendarGenerator implements ProgressListener {
      * Main method to import data.
      * @see Calendar#importDays(List)
      */
-    void importDays(final List<DayStorableDataSet> storedDays){
+    void importDays(final List<? extends DayStorableDataSet> storedDays){
 
         this.progressManager.notifyStateChanged(State.IMPORTING);
 

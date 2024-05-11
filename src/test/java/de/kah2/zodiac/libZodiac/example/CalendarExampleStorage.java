@@ -46,11 +46,9 @@ public class CalendarExampleStorage {
 				generated.getLast().getDate() );
 
 		// Here we can store the newly created days for next time ...
-		// Have a look at DayStorableDataSet, which is intended to be
-		// extended with serialization methods.
-		final List<DayStorableDataSet> fakeDatabase = new java.util.ArrayList<>( generated.stream()
-				.map( DayStorableDataSet::new )
-				.toList() );
+		final List<DayStorableDataSetPojo> fakeDatabase = generated.stream()
+				.map( DayStorableDataSetPojo::new )
+				.toList();
 
 		// Display the results to the user and the user closes our application
 		// afterwards.
@@ -79,7 +77,7 @@ public class CalendarExampleStorage {
 
 		// Store the newly created ...
 		fakeDatabase.addAll( generated.stream()
-				.map(DayStorableDataSet::new)
+				.map( DayStorableDataSetPojo::new)
 				.toList() );
 
 		// Display the results and close the application

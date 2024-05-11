@@ -19,7 +19,7 @@ public class CalendarDataTest {
 
 		assertThat(days.size()).as("Importing an empty list should do nothing").isEqualTo(0);
 
-        dayListToImport.add(new DayStorableDataSet( TestConstantsAndHelpers.SOME_DATE));
+        dayListToImport.add(new DayStorableDataSetPojo( TestConstantsAndHelpers.SOME_DATE));
 
         days.importDays(dayListToImport);
 

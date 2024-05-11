@@ -23,9 +23,9 @@ class CalendarData {
      * <p>To import data, use {@link Calendar#importDays(List)}.</p>
      */
 
-    void importDays(final List<DayStorableDataSet> storedDays) {
+    void importDays(final List<? extends DayStorableDataSet> storedDays) {
 
-        for (DayStorableDataSet storedDay : storedDays) {
+        for ( DayStorableDataSet storedDay : storedDays) {
             this.insert(Day.importFrom(storedDay));
         }
     }
