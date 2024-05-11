@@ -41,6 +41,9 @@ public class DateRange implements Iterable<LocalDate> {
 		this(day1.getDate(), day2.getDate());
 	}
 
+	/**
+	 * Checks if a {@link LocalDate} is included in this range.
+	 */
 	public boolean contains(final LocalDate date) {
 		return !(date.isBefore(this.start) || date.isAfter(this.end));
 	}

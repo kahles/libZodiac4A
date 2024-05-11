@@ -62,6 +62,9 @@ public class PlanetaryDayData {
 	PlanetaryDayData() {
 	}
 
+	/**
+	 * Instantiates a new {@link PlanetaryDayData}-Object from existing data
+	 */
 	public static PlanetaryDayData importFrom(final DayStorableDataSet storedData) {
 		final PlanetaryDayData data = new PlanetaryDayData();
 

@@ -14,14 +14,23 @@ public enum ZodiacElement {
 			FoodElement.CARBOHYDRATE), AIR(Category.LIGHT, PlantPart.FLOWER,
 					FoodElement.FAT), EARTH(Category.COLDNESS, PlantPart.ROOT, FoodElement.SALT);
 
+	/**
+	 * The categories associated with a {@link ZodiacElement}
+	 */
 	public enum Category {
 		WARMTH, WATER, LIGHT, COLDNESS
 	}
 
+	/**
+	 * The plant parts associated with a {@link ZodiacElement}
+	 */
 	public enum PlantPart {
 		ROOT, LEAF, FLOWER, FRUIT
 	}
 
+	/**
+	 * The nutrition types associated with a {@link ZodiacElement}
+	 */
 	public enum FoodElement {
 		PROTEIN, CARBOHYDRATE, FAT, SALT
 	}
@@ -37,13 +46,12 @@ public enum ZodiacElement {
 	}
 
 	public static ZodiacElement of(final ZodiacSign sign) {
-		ZodiacElement type = switch ( sign ) {
+		return switch ( sign ) {
 			case ARIES, LEO, SAGITTARIUS -> FIRE;
 			case CAPRICORN, TAURUS, VIRGO -> EARTH;
 			case PISCES, CANCER, SCORPIO -> WATER;
 			case AQUARIUS, GEMINI, LIBRA -> AIR;
 		};
-		return type;
 	}
 
 	/**

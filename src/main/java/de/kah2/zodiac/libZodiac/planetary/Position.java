@@ -33,7 +33,7 @@ public class Position {
 					this.getLatitude() + "," + this.getLongitude());
 	}
 
-	public LnLnlatPosn to_LnLnLatPosn() {
+	LnLnlatPosn to_LnLnLatPosn() {
 		final LnLnlatPosn lnLnLatPosn = new LnLnlatPosn();
 		lnLnLatPosn.lat = this.latitude;
 		lnLnLatPosn.lng = this.longitude;
