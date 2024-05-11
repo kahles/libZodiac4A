@@ -5,8 +5,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * This class shows how to create, store, load and extend a {@link Calendar}.
@@ -48,7 +50,7 @@ public class CalendarExampleStorage {
 		// Here we can store the newly created days for next time ...
 		final List<DayStorableDataSetPojo> fakeDatabase = generated.stream()
 				.map( DayStorableDataSetPojo::new )
-				.toList();
+				.collect( Collectors.toList() );
 
 		// Display the results to the user and the user closes our application
 		// afterwards.

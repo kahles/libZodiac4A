@@ -16,8 +16,6 @@ public class Position {
 	public static final int MIN_LONGITUDE = -180;
 	public static final int MAX_LONGITUDE = 180;
 
-	public final static String VALUE_SEPARATOR = ",";
-
 	private double latitude, longitude;
 
 	/**
@@ -66,7 +64,7 @@ public class Position {
 	 /** Exports latitude and longitude separated through VALUE_SEPARATOR. */
 	@Override
 	public String toString() {
-		return this.latitude + VALUE_SEPARATOR + this.longitude;
+		return "Position[ %.4f, %.4f ]".formatted( this.latitude, this.longitude );
 	}
 
 	public double getLatitude() {

@@ -109,7 +109,7 @@ public class DateRange implements Iterable<LocalDate> {
 
 	@Override
 	public String toString() {
-		return this.getStart() + "-->" + this.getEnd();
+		return "DateRange[ %s -> %s ]".formatted( getStart(), this.getEnd() );
 	}
 
 	LinkedList<LocalDate> toList() {

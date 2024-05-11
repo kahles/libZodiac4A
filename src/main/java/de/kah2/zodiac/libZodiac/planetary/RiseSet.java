@@ -61,6 +61,6 @@ public class RiseSet {
 
 	@Override
 	public String toString() {
-		return "RiseSet{^%s, v%s}".formatted( rise, set );
+		return "RiseSet[ ^%s, v%s ]".formatted( rise, set );
 	}
 }
