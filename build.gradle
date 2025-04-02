@@ -32,8 +32,8 @@ repositories {
 
 dependencies {
 
-    implementation 'org.slf4j:slf4j-api:2.0.12'
-    testImplementation 'org.slf4j:slf4j-simple:2.0.13'
+    implementation 'org.slf4j:slf4j-api:2.0.17'
+    testImplementation 'org.slf4j:slf4j-simple:2.0.17'
     
     // Removed, because actual version doesn't work for multi-threaded use
     // compile 'net.sourceforge.novaforjava:novaforjava:0.15.0.0'
