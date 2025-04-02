@@ -22,7 +22,7 @@ dependencies {
 <dependency>
   <groupId>de.kah2.zodiac</groupId>
   <artifactId>libZodiac</artifactId>
-  <version>1.1</version>
+  <version>1.2</version>
 </dependency>
 ```
 ### Usage

@@ -35,6 +35,7 @@ class ProgressManager {
 		this.daysGenerated = 0;
 		this.percentGenerated = 0;
 
+		// TODO this shouldn't be necessary?
 		this.notifyStateChanged(null);
 	}
 
