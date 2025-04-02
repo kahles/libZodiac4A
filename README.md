@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'de.kah2.zodiac:libZodiac4A:1.0-android'
+    implementation 'de.kah2.zodiac:libZodiac4A:1.1-android'
 }
 ```
 
@@ -24,10 +24,9 @@ dependencies {
 <dependency>
   <groupId>de.kah2.zodiac</groupId>
   <artifactId>libZodiac4A</artifactId>
-  <version>1.0-android</version>
+  <version>1.1-android</version>
 </dependency>
 ```
-
 ### Usage
 - [`CalendarExampleSimple.java`](src/test/java/de/kah2/zodiac/libZodiac/example/CalendarExampleSimple.java) shows basic usage of this framework.
 - [`CalendarDataStringBuilder.java`](src/test/java/de/kah2/zodiac/libZodiac/example/CalendarDataStringBuilder.java) shows how to access data. 

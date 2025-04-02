@@ -32,14 +32,14 @@ public class PlanetaryDayDataStub extends PlanetaryDayData {
 		data.setLunarVisibility( getFakeLunarVisibility(date) );
 
 		data.setLunarRiseSet(
-			new ZonedRiseSet(
+			new RiseSet(
 				date.atStartOfDay( locationProvider.getTimeZoneId() ).plusHours( 10 ).toInstant(),
 				date.atStartOfDay( locationProvider.getTimeZoneId() ).plusHours( 15 ).toInstant()
 			)
 		);
 
 		data.setSolarRiseSet(
-			new ZonedRiseSet(
+			new RiseSet(
 				date.atStartOfDay( locationProvider.getTimeZoneId() ).plusHours( 7 ).toInstant(),
 				date.atStartOfDay( locationProvider.getTimeZoneId() ).plusHours( 19 ).toInstant()
 			)

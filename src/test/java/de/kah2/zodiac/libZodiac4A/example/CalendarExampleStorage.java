@@ -6,12 +6,14 @@ import org.slf4j.LoggerFactory;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import de.kah2.zodiac.libZodiac4A.Calendar;
 import de.kah2.zodiac.libZodiac4A.CalendarStub;
 import de.kah2.zodiac.libZodiac4A.DateRange;
 import de.kah2.zodiac.libZodiac4A.Day;
 import de.kah2.zodiac.libZodiac4A.DayStorableDataSet;
+import de.kah2.zodiac.libZodiac4A.DayStorableDataSetPojo;
 import de.kah2.zodiac.libZodiac4A.TestConstantsAndHelpers;
 
 /**
@@ -52,11 +54,9 @@ public class CalendarExampleStorage {
 				generated.getLast().getDate() );
 
 		// Here we can store the newly created days for next time ...
-		// Have a look at DayStorableDataSet, which is intended to be
-		// extended with serialization methods.
-		final List<DayStorableDataSet> fakeDatabase = new java.util.ArrayList<>( generated.stream()
-				.map( DayStorableDataSet::new )
-				.toList() );
+		final List<DayStorableDataSet> fakeDatabase = generated.stream()
+				.map( DayStorableDataSetPojo::new )
+				.collect( Collectors.toList() );
 
 		// Display the results to the user and the user closes our application
 		// afterwards.
@@ -85,7 +85,7 @@ public class CalendarExampleStorage {
 
 		// Store the newly created ...
 		fakeDatabase.addAll( generated.stream()
-				.map(DayStorableDataSet::new)
+				.map( DayStorableDataSetPojo::new)
 				.toList() );
 
 		// Display the results and close the application

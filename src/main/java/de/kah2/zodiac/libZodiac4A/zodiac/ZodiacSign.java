@@ -44,6 +44,10 @@ public enum ZodiacSign {
 	/** Ger. Fische */
 	PISCES;
 
+	/**
+	 * Instantiates a {@link ZodiacSign}-object depending on the lunar longitude.
+	 * @throws IllegalArgumentException if longitude isn't between 0 and 360 degrees
+	 */
 	public static ZodiacSign of(final double lunarLongitude) throws IllegalArgumentException {
 
 		if ( lunarLongitude < 0 || lunarLongitude > 360 ) {

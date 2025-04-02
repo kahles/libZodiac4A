@@ -12,8 +12,13 @@ import de.kah2.zodiac.libZodiac4A.planetary.Position;
  */
 public interface LocationProvider {
 
+	/**
+	 * The time zone needed to calculate exact day start times
+	 */
 	ZoneId getTimeZoneId();
 
-	// TODO add missing docs
+	/**
+	 * The geolocation needed for calculating rise and set times
+	 */
 	Position getObserverPosition();
 }

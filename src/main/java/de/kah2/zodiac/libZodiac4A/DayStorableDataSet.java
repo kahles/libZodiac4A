@@ -1,96 +1,28 @@
 package de.kah2.zodiac.libZodiac4A;
-
 import java.time.LocalDate;
 
-import de.kah2.zodiac.libZodiac4A.planetary.PlanetaryDayData;
-import de.kah2.zodiac.libZodiac4A.planetary.ZonedRiseSet;
+import de.kah2.zodiac.libZodiac4A.Day;
+import de.kah2.zodiac.libZodiac4A.planetary.RiseSet;
 
 /**
- * This class contains a basic set of essential data defining a {@link Day} and
- * its properties. This class is intended to be extended with functionality for
- * serializing the contained data.
- *
- * @author kahles
+ * This interface is intended for export and import of {@link Day}-data
+ * to allow persisting calculated data.
  */
-public class DayStorableDataSet {
+public interface DayStorableDataSet {
 
-	private LocalDate date;
+	LocalDate getDate();
 
-	private ZonedRiseSet solarRiseSet;
-	private ZonedRiseSet lunarRiseSet;
-	private double lunarVisibility;
-	private double lunarLongitude;
+	RiseSet getSolarRiseSet();
 
-	/**
-	 * Empty constructor to allow instantiating this class with database data
-	 */
-	protected DayStorableDataSet() {
-		super();
-	}
-
-	/**
-	 * Constructor to transform calculated data to storable data
-	 * @param day the {@link Day}-object containing the data to be serialized
-	 */
-	public DayStorableDataSet(final Day day) {
-		this.date = day.getDate();
-		final PlanetaryDayData data = day.getPlanetaryData();
-		this.solarRiseSet = data.getSolarRiseSet();
-		this.lunarRiseSet = data.getLunarRiseSet();
-		this.lunarVisibility = data.getLunarVisibility();
-		this.lunarLongitude = data.getLunarLongitude();
-	}
-
-	/**
-	 * Constructor for testing purposes.
-	 */
-	DayStorableDataSet(final LocalDate date) {
-		this.date = date;
-	}
-
-	public LocalDate getDate() {
-		return date;
-	}
-
-	public ZonedRiseSet getSolarRiseSet() {
-		return this.solarRiseSet;
-	}
-
-	public ZonedRiseSet getLunarRiseSet() {
-		return this.lunarRiseSet;
-	}
+	RiseSet getLunarRiseSet();
 
 	/**
 	 * @return the lunar visibility (value between 0 and 1)
 	 */
-	public double getLunarVisibility() {
-		return this.lunarVisibility;
-	}
+	double getLunarVisibility();
 
 	/**
 	 * @return the lunar longitude needed to determine zodiac sign and direction
 	 */
-	public double getLunarLongitude() {
-		return this.lunarLongitude;
-	}
-
-	protected void setDate(final LocalDate date) {
-		this.date = date;
-	}
-
-	protected void setSolarRiseSet(final ZonedRiseSet solarRiseSet) {
-		this.solarRiseSet = solarRiseSet;
-	}
-
-	protected void setLunarRiseSet(final ZonedRiseSet lunarRiseSet) {
-		this.lunarRiseSet = lunarRiseSet;
-	}
-
-	protected void setLunarVisibility(final double lunarVisibility) {
-		this.lunarVisibility = lunarVisibility;
-	}
-
-	protected void setLunarLongitude(final double lunarLongitude) {
-		this.lunarLongitude = lunarLongitude;
-	}
+	double getLunarLongitude();
 }

@@ -234,7 +234,7 @@ public class CalendarGeneratorTest {
         List<DayStorableDataSet> storedDays = new LinkedList<>();
 
         for (Day day: days) {
-            storedDays.add(new DayStorableDataSet(day));
+            storedDays.add(new DayStorableDataSetPojo(day));
         }
 
         generator = new CalendarStub(range, Calendar.Scope.CYCLE).getGenerator();

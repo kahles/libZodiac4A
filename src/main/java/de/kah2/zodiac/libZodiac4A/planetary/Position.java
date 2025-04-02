@@ -1,5 +1,7 @@
 package de.kah2.zodiac.libZodiac4A.planetary;
 
+import android.annotation.SuppressLint;
+
 import de.kah2.zodiac.nova4jmt.api.LnLnlatPosn;
 
 /**
@@ -15,8 +17,6 @@ public class Position {
 	public static final int MAX_LATITUDE = 90;
 	public static final int MIN_LONGITUDE = -180;
 	public static final int MAX_LONGITUDE = 180;
-
-	public final static String VALUE_SEPARATOR = ",";
 
 	private double latitude, longitude;
 
@@ -35,7 +35,7 @@ public class Position {
 					this.getLatitude() + "," + this.getLongitude());
 	}
 
-	public LnLnlatPosn to_LnLnLatPosn() {
+	LnLnlatPosn to_LnLnLatPosn() {
 		final LnLnlatPosn lnLnLatPosn = new LnLnlatPosn();
 		lnLnLatPosn.lat = this.latitude;
 		lnLnLatPosn.lng = this.longitude;
@@ -64,9 +64,10 @@ public class Position {
 	 }
 
 	 /** Exports latitude and longitude separated through VALUE_SEPARATOR. */
+	@SuppressLint("DefaultLocale")
 	@Override
 	public String toString() {
-		return this.latitude + VALUE_SEPARATOR + this.longitude;
+		return String.format( "Position[ %.4f, %.4f ]", this.latitude, this.longitude );
 	}
 
 	public double getLatitude() {

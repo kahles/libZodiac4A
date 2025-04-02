@@ -26,7 +26,7 @@ import de.kah2.zodiac.nova4jmt.solarsystem.Solar;
  * </p>
  * <ul>
  * <li>{@link Position} lunarPosition, double lunarVisibility,
- * {@link ZonedRiseSet} lunarRiseSet and {@link ZonedRiseSet} solarRiseSet:<br>
+ * {@link RiseSet} lunarRiseSet and {@link RiseSet} solarRiseSet:<br>
  * This is the basic data calculated in this class, they are calculated by
  * #calculate() and afterwards #isCalculated returns true.</li>
  * <li>{@link LunarPhase} lunarPhase, int daysSinceLastMaxPhase, int
@@ -58,7 +58,7 @@ public class PlanetaryDayData {
 	private double julianDateAtDayStart, julianDateAtNoon;
 
 	private double lunarVisibility;
-	private ZonedRiseSet lunarRiseSet, solarRiseSet;
+	private RiseSet lunarRiseSet, solarRiseSet;
 
 	private double lunarLongitude;
 	private LunarPhase lunarPhase = null;
@@ -69,6 +69,9 @@ public class PlanetaryDayData {
 	PlanetaryDayData() {
 	}
 
+	/**
+	 * Instantiates a new {@link PlanetaryDayData}-Object from existing data
+	 */
 	public static PlanetaryDayData importFrom(final DayStorableDataSet storedData) {
 		final PlanetaryDayData data = new PlanetaryDayData();
 
@@ -151,7 +154,7 @@ public class PlanetaryDayData {
 			// moon is circumpolar
 			this.lunarRiseSet = null;
 		} else {
-			this.lunarRiseSet = new ZonedRiseSet(lnRstTimes, zoneId);
+			this.lunarRiseSet = new RiseSet(lnRstTimes);
 		}
 	}
 
@@ -167,7 +170,7 @@ public class PlanetaryDayData {
 			// Sun is circumpolar
 			this.solarRiseSet = null;
 		} else {
-			this.solarRiseSet = new ZonedRiseSet(lnRstTimes, zoneId);
+			this.solarRiseSet = new RiseSet(lnRstTimes);
 		}
 	}
 
@@ -191,7 +194,7 @@ public class PlanetaryDayData {
 	 *         rise/set.
 	 */
 
-	public final ZonedRiseSet getLunarRiseSet() {
+	public final RiseSet getLunarRiseSet() {
 		return this.lunarRiseSet;
 	}
 
@@ -199,7 +202,7 @@ public class PlanetaryDayData {
 	 * @return Rise and set of the sun or null if it is circumpolar and doesn't
 	 *         rise/set.
 	 */
-	public final ZonedRiseSet getSolarRiseSet() {
+	public final RiseSet getSolarRiseSet() {
 		return this.solarRiseSet;
 	}
 
@@ -281,12 +284,12 @@ public class PlanetaryDayData {
 	}
 
 	/** For importing data and testing */
-	void setLunarRiseSet(final ZonedRiseSet lunarRiseSet) {
+	void setLunarRiseSet(final RiseSet lunarRiseSet) {
 		this.lunarRiseSet = lunarRiseSet;
 	}
 
 	/** For importing data and testing */
-	void setSolarRiseSet(final ZonedRiseSet solarRiseSet) {
+	void setSolarRiseSet(final RiseSet solarRiseSet) {
 		this.solarRiseSet = solarRiseSet;
 	}
 }
