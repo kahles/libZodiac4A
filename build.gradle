@@ -39,8 +39,8 @@ repositories {
 
 dependencies {
 
-    implementation 'org.slf4j:slf4j-api:2.0.12'
-    testImplementation 'org.slf4j:slf4j-simple:2.0.13'
+    implementation 'org.slf4j:slf4j-api:2.0.17'
+    testImplementation 'org.slf4j:slf4j-simple:2.0.17'
     
     // Removed, because actual version doesn't work for multi-threaded use
     // compile 'net.sourceforge.novaforjava:novaforjava:0.15.0.0'
@@ -55,8 +55,8 @@ dependencies {
 
     //implementation 'com.android.support:appcompat-v7:27.1.1'
 
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
-    testImplementation 'org.assertj:assertj-core:3.25.3'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.12.1'
+    testImplementation 'org.assertj:assertj-core:3.27.3'
 }
 
 android {

@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'de.kah2.zodiac:libZodiac4A:1.1-android'
+    implementation 'de.kah2.zodiac:libZodiac4A:1.2-android'
 }
 ```
 
@@ -24,7 +24,7 @@ dependencies {
 <dependency>
   <groupId>de.kah2.zodiac</groupId>
   <artifactId>libZodiac4A</artifactId>
-  <version>1.1-android</version>
+  <version>1.2-android</version>
 </dependency>
 ```
 ### Usage
