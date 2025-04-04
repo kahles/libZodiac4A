@@ -13,9 +13,9 @@ import de.kah2.zodiac.libZodiac4A.planetary.RiseSet;
 public class DayStorableDataSetPojo implements DayStorableDataSet {
 
 	private LocalDate date;
-
 	private RiseSet solarRiseSet;
 	private RiseSet lunarRiseSet;
+
 	private double lunarVisibility;
 	private double lunarLongitude;
 
@@ -71,7 +71,27 @@ public class DayStorableDataSetPojo implements DayStorableDataSet {
 		return this.lunarLongitude;
 	}
 
-	public void setDate( final LocalDate date ) {
+	protected void setDate( final LocalDate date ) {
 		this.date = date;
+	}
+
+	protected void setSolarRiseSet( RiseSet solarRiseSet ) {
+
+		this.solarRiseSet = solarRiseSet;
+	}
+
+	protected void setLunarRiseSet( RiseSet lunarRiseSet ) {
+
+		this.lunarRiseSet = lunarRiseSet;
+	}
+
+	protected void setLunarVisibility( double lunarVisibility ) {
+
+		this.lunarVisibility = lunarVisibility;
+	}
+
+	protected void setLunarLongitude( double lunarLongitude ) {
+
+		this.lunarLongitude = lunarLongitude;
 	}
 }
